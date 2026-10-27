@@ -298,7 +298,7 @@
     .meter-pillars {
       display: flex;
       flex-direction: column-reverse;
-      gap: 2px;
+      gap: 2.5px;
       width: 24px;
       padding: 3px;
       background: #e2e8f0;
@@ -308,7 +308,7 @@
 
     .meter-bar-segment {
       width: 100%;
-      height: 4px;
+      height: 6px;
       border-radius: 2px;
       transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
@@ -443,7 +443,7 @@
     }
 
     /* ==========================================================================
-       3. CHỒNG 15 CUỐN SÁCH 3D (.page MINA MOUNIR) VƠI DẦN & BAY RA CHỖ KHÁC
+       3. CHỒNG 8 CUỐN SÁCH 3D (.page MINA MOUNIR) VƠI DẦN & BAY RA CHỖ KHÁC
        ========================================================================== */
     .mina-stack-zone {
       position: relative;
@@ -751,7 +751,11 @@
       }
     }
 
-    /* Lưới 15 nút câu hỏi trên 1 hàng gọn gàng */
+    /* Lưới 8 nút câu hỏi trên 1 hàng gọn gàng */
+    .grid-cols-8 {
+      display: grid;
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+    }
     .grid-cols-15 {
       display: grid;
       grid-template-columns: repeat(15, minmax(0, 1fr));
@@ -791,7 +795,7 @@
         <div>
           <div class="flex items-center gap-2 flex-wrap">
             <span class="text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded bg-indigo-950 text-indigo-100">
-              Minigame 3D • 15 Câu Hỏi
+              Minigame 3D • 8 Câu Hỏi
             </span>
             <span class="text-[11px] font-semibold text-neutral-600 hidden md:inline">
               Điểm số có phản ánh đúng năng lực học sinh?
@@ -808,7 +812,7 @@
         <div class="bg-white/85 px-2.5 py-1 rounded-xl border border-white shadow-inner min-w-[142px]">
           <div class="flex justify-between text-[10px] font-extrabold mb-0.5">
             <span class="text-rose-700"><i class="fa-solid fa-layer-group mr-1"></i>Chồng Sách:</span>
-            <span id="remainingBooksLabel" class="text-rose-600">15 / 15 quyển</span>
+            <span id="remainingBooksLabel" class="text-rose-600">8 / 8 quyển</span>
           </div>
           <div class="w-full h-1.5 bg-neutral-300 rounded-full overflow-hidden">
             <div id="pressureProgressBar" class="h-full bg-gradient-to-r from-rose-600 via-amber-500 to-emerald-500 transition-all duration-500" style="width: 100%"></div>
@@ -817,7 +821,7 @@
 
         <div class="bg-white/85 px-2.5 py-1 rounded-xl border border-white shadow-inner text-center">
           <div class="text-[9px] font-bold uppercase text-neutral-500 leading-none">Đã Gỡ</div>
-          <div id="scoreCounter" class="text-xs sm:text-sm font-extrabold text-emerald-700 leading-tight">0 / 15 ★</div>
+          <div id="scoreCounter" class="text-xs sm:text-sm font-extrabold text-emerald-700 leading-tight">0 / 8 ★</div>
         </div>
 
         <!-- Nút Chọn file ảnh từ máy tính nếu cần đổi ảnh -->
@@ -842,7 +846,7 @@
   <!-- ==================== NỘI DUNG CHÍNH (2 CỘT TỰ CO GIÃN TRONG 100VH, KHÔNG CUỘN) ==================== -->
   <main class="max-w-[1620px] w-full mx-auto flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-2.5 lg:gap-3.5 items-stretch overflow-hidden">
 
-    <!-- CỘT TRÁI (6/12): BÀN HỌC GỖ 3D + KHAY SÁCH ĐÃ GỠ + CHỒNG SÁCH 15 QUYỂN VƠI DẦN -->
+    <!-- CỘT TRÁI (6/12): BÀN HỌC GỖ 3D + KHAY SÁCH ĐÃ GỠ + CHỒNG SÁCH 8 QUYỂN VƠI DẦN -->
     <section class="lg:col-span-6 min-h-0 flex flex-col overflow-hidden">
       <div class="card-3d p-2.5 sm:p-3.5 flex-1 min-h-0 flex flex-col justify-between overflow-hidden">
         <!-- Thanh tiêu đề sân khấu -->
@@ -857,7 +861,7 @@
           </div>
 
           <div id="studentMoodBadge" class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-rose-100 text-rose-800 border border-rose-300 shadow-sm shrink-0">
-            😓 Còn 15 cuốn sách áp lực trên bàn
+            😓 Còn 8 cuốn sách áp lực trên bàn
           </div>
         </div>
 
@@ -874,16 +878,16 @@
                 <i class="fa-solid fa-box-archive mr-1"></i>Khay Đã Gỡ
               </div>
               <div id="clearedTrayCountText" class="text-xs font-black text-emerald-950 leading-tight mt-0.5">
-                0 / 15 quyển
+                0 / 8 quyển
               </div>
             </div>
           </div>
 
           <!-- 2. THƯỚC ĐO CHIỀU CAO CHỒNG SÁCH VƠI DẦN (GÓC TRÊN BÊN PHẢI SÂN KHẤU) -->
-          <div class="stack-height-meter" title="Chiều cao chồng sách áp lực giảm dần từ 15 về 0">
+          <div class="stack-height-meter" title="Chiều cao chồng sách áp lực giảm dần từ 8 về 0">
             <span class="text-[9px] font-extrabold uppercase text-slate-600 leading-none">Độ Cao</span>
             <div class="meter-pillars" id="stackHeightMeterBars"></div>
-            <span id="meterNumberText" class="text-[10px] font-black text-rose-600 leading-none">15/15</span>
+            <span id="meterNumberText" class="text-[10px] font-black text-rose-600 leading-none">8/8</span>
           </div>
 
           <!-- KHUNG CANVAS 650x440 ĐƯỢC RESIZEOBSERVER SCALE TỰ ĐỘNG -->
@@ -911,7 +915,7 @@
                 </div>
 
                 <!-- VỊ TRÍ 2 (BÊN PHẢI BÀN - ĐẶT BÊN CẠNH NHÂN VẬT): CHỒNG SÁCH 3D .page VƠI DẦN -->
-                <div class="mina-stack-zone" id="minaStackContainer" title="Chồng 15 cuốn sách 3D vơi dần khi trả lời đúng">
+                <div class="mina-stack-zone" id="minaStackContainer" title="Chồng 8 cuốn sách 3D vơi dần khi trả lời đúng">
                   <!-- Render bằng JS: Đầy đủ các lớp sách còn lại để thấy rõ chiều cao vơi dần -->
                 </div>
 
@@ -928,7 +932,7 @@
                   <i class="fa-solid fa-graduation-cap mr-1"></i>Bàn Học Toàn Diện • Nhóm Thuyết Trình
                 </span>
                 <span id="deskPlaqueCount" class="text-[10px] font-extrabold uppercase tracking-wider text-amber-300">
-                  Trên bàn: 15 quyển áp lực + 1 sổ nền tảng
+                  Trên bàn: 8 quyển áp lực + 1 sổ nền tảng
                 </span>
               </div>
 
@@ -943,28 +947,28 @@
         </div>
 
         <p class="text-[10px] sm:text-[11px] font-semibold text-neutral-600 mt-1.5 text-center m-0 shrink-0">
-          <i class="fa-solid fa-sparkles text-indigo-600 mr-1"></i><strong></strong><strong></strong>
+          <i class="fa-solid fa-sparkles text-indigo-600 mr-1"></i><strong>Làm đúng:</strong> Sách bay sang Khay Thu Hồi kèm sao lấp lánh & chồng sách vơi dần • <strong>Làm sai:</strong> Sách dập mạnh phát tia lửa áp lực!
         </p>
       </div>
     </section>
 
-    <!-- CỘT PHẢI (6/12): BẢNG 15 CÂU HỎI TRẮC NGHIỆM A, B, C, D (TỰ CÂN ĐỐI 100% TRONG MÀN HÌNH NHỎ) -->
+    <!-- CỘT PHẢI (6/12): BẢNG 8 CÂU HỎI TRẮC NGHIỆM A, B, C, D (TỰ CÂN ĐỐI 100% TRONG MÀN HÌNH NHỎ) -->
     <section class="lg:col-span-6 min-h-0 flex flex-col overflow-hidden" id="rightQuizColumn">
       <div id="rightQuizCard" class="card-3d p-3 sm:p-4 flex-1 min-h-0 flex flex-col justify-between gap-2 overflow-hidden compact-on-short-screen">
 
-        <!-- Phần đầu: Thanh tiến độ 15 câu hỏi (Shrink-0) -->
+        <!-- Phần đầu: Thanh tiến độ 8 câu hỏi (Shrink-0) -->
         <div class="shrink-0">
           <div class="flex items-center justify-between gap-2 mb-1">
             <span class="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider text-neutral-600 truncate">
-              <i class="fa-solid fa-list-check mr-1 text-indigo-600"></i>15 Câu Hỏi Theo Nội Dung Của Tổ (TV1 → TV6)
+              <i class="fa-solid fa-list-check mr-1 text-indigo-600"></i>8 Câu Hỏi Trọng Tâm Của Tổ (TV1 → TV6)
             </span>
             <span id="questionProgressBadge" class="text-[10px] sm:text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-800 border border-indigo-300 shrink-0">
-              Câu 1 / 15
+              Câu 1 / 8
             </span>
           </div>
 
-          <!-- Dãy nút chọn nhanh câu 1..15 trên cùng 1 hàng -->
-          <div id="questionDotsContainer" class="grid-cols-15 gap-1"></div>
+          <!-- Dãy nút chọn nhanh câu 1..8 trên cùng 1 hàng -->
+          <div id="questionDotsContainer" class="grid-cols-8 gap-1.5"></div>
         </div>
 
         <!-- Phần giữa: Câu hỏi & 4 Đáp án A, B, C, D -->
@@ -1030,13 +1034,13 @@
         <i class="fa-solid fa-award"></i>
       </div>
       <span class="text-xs font-extrabold uppercase tracking-widest px-3 py-1 rounded-full bg-indigo-100 text-indigo-800">
-        Hoàn Thành Xuất Sắc 15/15 Câu Hỏi
+        Hoàn Thành Xuất Sắc 8/8 Câu Hỏi
       </span>
       <h2 class="text-xl sm:text-3xl font-extrabold text-neutral-900 mt-2.5">
         CỞI BỎ ÁP LỰC — ĐÁNH THỨC NĂNG LỰC!
       </h2>
       <p class="text-xs sm:text-sm font-bold text-emerald-700 mt-1.5">
-        Toàn bộ 15 cuốn sách áp lực đã bay sang Khay Thu Hồi, chỉ giữ lại cuốn sổ vàng "Nền Tảng Kiến Thức" trên bàn học!
+        Toàn bộ 8 cuốn sách áp lực đã bay sang Khay Thu Hồi, chỉ giữ lại cuốn sổ vàng "Nền Tảng Kiến Thức" trên bàn học!
       </p>
       <div class="bg-white/85 rounded-2xl p-3.5 sm:p-4 border border-neutral-300 text-left text-xs sm:text-sm text-neutral-700 mt-3.5 space-y-1.5">
         <div class="font-extrabold text-neutral-900">
@@ -1059,13 +1063,15 @@
 
   <script>
     /* ==========================================================================
-       DANH SÁCH 15 CÂU HỎI & NỘI DUNG TRANG SÁCH 3D (.page) BÊN CẠNH NHÂN VẬT
+       DANH SÁCH 8 CÂU HỎI & NỘI DUNG TRANG SÁCH 3D (.page) BÊN CẠNH NHÂN VẬT
+       (Tuyển chọn các câu trọng tâm: 1, 2, 4, 5, 12, 13, 14, 15)
        ========================================================================== */
     const QUESTIONS_DATA = [
       {
         id: 1,
+        origId: 1,
         numUp: "01",
-        numDown: "15",
+        numDown: "08",
         member: "Thành viên 1 • Mở đầu & Vấn đề",
         bookTitle: "Định Kiến Điểm Số Tuyệt Đối",
         pageHeading: "Tập 01: Định Kiến Điểm Số",
@@ -1084,8 +1090,9 @@
       },
       {
         id: 2,
+        origId: 2,
         numUp: "02",
-        numDown: "15",
+        numDown: "08",
         member: "Thành viên 2 • Khái niệm cốt lõi",
         bookTitle: "Đánh Đồng Điểm Số & Năng Lực",
         pageHeading: "Tập 02: Điểm Số vs Năng Lực",
@@ -1103,32 +1110,13 @@
         explanation: "Điểm số mang tính định lượng kết quả bài thi tại một thời điểm, trong khi Năng lực là khái niệm rộng và toàn diện hơn rất nhiều."
       },
       {
-        id: 3,
-        numUp: "03",
-        numDown: "15",
-        member: "Thành viên 2 • Ví dụ Tiếng Anh",
-        bookTitle: "Ngữ Pháp Cao Nhưng Ngại Giao Tiếp",
-        pageHeading: "Tập 03: Ví Dụ Môn Tiếng Anh",
-        pageParagraph: "Đạt 9 điểm bài kiểm tra ngữ pháp trên giấy phản ánh việc nắm vững cấu trúc câu và từ vựng. Nhưng khả năng tự tin giao tiếp với người nước ngoài, thuyết trình và làm việc nhóm trong dự án song ngữ mới chính là năng lực thực chất.",
-        spineMain: "#d97706",
-        spineDark: "#78350f",
-        question: "Trong ví dụ môn Tiếng Anh của Thành viên 2, yếu tố nào thể hiện 'Năng lực' vượt ra ngoài con số 9 điểm bài kiểm tra ngữ pháp trên giấy?",
-        options: [
-          "A. Khả năng chép phạt từ vựng thật nhanh vào vở.",
-          "B. Khả năng làm đúng các câu trắc nghiệm mẹo trong đề thi thử.",
-          "C. Khả năng tự tin giao tiếp với người nước ngoài, thuyết trình tiếng Anh và phối hợp làm dự án song ngữ.",
-          "D. Khả năng học thuộc lòng bảng động từ bất quy tắc."
-        ],
-        correct: 2,
-        explanation: "Đạt 9 điểm ngữ pháp trên giấy là điểm số, còn tự tin giao tiếp thực tế, thuyết trình và làm dự án song ngữ chính là năng lực vận dụng."
-      },
-      {
         id: 4,
-        numUp: "04",
-        numDown: "15",
+        origId: 4,
+        numUp: "03",
+        numDown: "08",
         member: "Thành viên 2 • Giá trị của điểm số",
         bookTitle: "Cực Đoan Phủ Nhận Điểm Số",
-        pageHeading: "Tập 04: Giá Trị Của Điểm Số",
+        pageHeading: "Tập 03: Giá Trị Của Điểm Số",
         pageParagraph: "Dù không đại diện cho toàn bộ năng lực, điểm số vẫn phản ánh rõ mức độ nắm vững kiến thức nền tảng, kỹ năng phân tích đề, quản lý thời gian trong phòng thi và thái độ chăm chỉ chuẩn bị bài của học sinh.",
         spineMain: "#65a30d",
         spineDark: "#365314",
@@ -1144,11 +1132,12 @@
       },
       {
         id: 5,
-        numUp: "05",
-        numDown: "15",
+        origId: 5,
+        numUp: "04",
+        numDown: "08",
         member: "Thành viên 2 • Ý nghĩa thực tiễn",
         bookTitle: "Áp Lực Bệnh Thành Tích",
-        pageHeading: "Tập 05: Căn Bệnh Thành Tích",
+        pageHeading: "Tập 04: Căn Bệnh Thành Tích",
         pageParagraph: "Hiểu đúng mối quan hệ giữa điểm số và năng lực giúp học sinh không tự mãn khi điểm cao hay tự ti khi điểm thấp; đồng thời giúp gia đình, nhà trường giảm áp lực thành tích để tôn trọng sở trường khác biệt.",
         spineMain: "#059669",
         spineDark: "#064e3b",
@@ -1163,132 +1152,13 @@
         explanation: "Hiểu đúng bản chất điểm số giúp cởi bỏ áp lực thành tích, khuyến khích học thực chất và tôn trọng sở trường riêng của từng cá nhân."
       },
       {
-        id: 6,
-        numUp: "06",
-        numDown: "15",
-        member: "Thành viên 3 • Luận điểm 1",
-        bookTitle: "Khuôn Mẫu Giấy Trắng Mực Đen",
-        pageHeading: "Tập 06: Hạn Chế Bài Thi Viết",
-        pageParagraph: "Các bài kiểm tra truyền thống trên giấy thường chỉ đo khả năng ghi nhớ lý thuyết, tái hiện thông tin và tư duy logic toán học. Điểm số bỏ sót tư duy sáng tạo, giao tiếp, làm việc nhóm và giải quyết vấn đề thực tế.",
-        spineMain: "#0891b2",
-        spineDark: "#164e63",
-        question: "Theo Luận điểm 1 của Thành viên 3, các bài kiểm tra truyền thống trên giấy có hạn chế cố định nào?",
-        options: [
-          "A. Tốn quá nhiều mực in của nhà trường.",
-          "B. Thường chỉ đo khả năng ghi nhớ lý thuyết, tái hiện thông tin và tư duy logic khuôn mẫu, bỏ sót sáng tạo, giao tiếp, làm việc nhóm và thích ứng thực tế.",
-          "C. Luôn có thời gian làm bài quá dài khiến học sinh buồn ngủ.",
-          "D. Không thể chấm điểm bằng con số cụ thể."
-        ],
-        correct: 1,
-        explanation: "Bài thi truyền thống trên giấy không thể đo lường toàn diện các kỹ năng mềm và khả năng ứng biến linh hoạt của con người."
-      },
-      {
-        id: 7,
-        numUp: "07",
-        numDown: "15",
-        member: "Thành viên 3 • Luận điểm 2",
-        bookTitle: "Tâm Lý Phòng Thi & Sự Cố Sức Khỏe",
-        pageHeading: "Tập 07: Tâm Lý Phòng Thi",
-        pageParagraph: "Điểm số nhiều khi chỉ phản ánh phong độ nhất thời tại phòng thi chứ không phải năng lực thực sự. Áp lực tâm lý, mất ngủ, lo âu hoặc sự cố sức khỏe đột xuất dễ làm tê liệt tư duy, khiến kết quả sa sút.",
-        spineMain: "#0284c7",
-        spineDark: "#0c4a6e",
-        question: "Theo Luận điểm 2 của Thành viên 3, tại sao kết quả điểm số đôi khi chỉ phản ánh 'phong độ nhất thời' tại phòng thi chứ không phải năng lực thực sự?",
-        options: [
-          "A. Vì điểm số dễ bị chi phối mạnh mẽ bởi áp lực tâm lý, lo âu, mất ngủ, sự cố sức khỏe đột xuất hoặc điều kiện phòng thi bất lợi.",
-          "B. Vì học sinh nào vào phòng thi cũng quên sạch 100% kiến thức.",
-          "C. Vì giám thị coi thi luôn cộng thêm điểm cho học sinh căng thẳng.",
-          "D. Vì đề thi luôn nằm ngoài chương trình học."
-        ],
-        correct: 0,
-        explanation: "Tâm lý căng thẳng, mất ngủ hoặc sốt đột xuất trong ngày thi có thể làm tê liệt tư duy tạm thời, khiến điểm số thấp hơn thực lực thật."
-      },
-      {
-        id: 8,
-        numUp: "08",
-        numDown: "15",
-        member: "Thành viên 3 • Luận điểm 3",
-        bookTitle: "Lát Cắt 45 Phút Ngắn Ngủi",
-        pageHeading: "Tập 08: Lát Cắt Thời Gian",
-        pageParagraph: "Học tập là một hành trình dài tích lũy. Một bài kiểm tra 45 phút hay 90 phút chỉ là một 'lát cắt' tại thời điểm cố định, không thể nói lên sự tiến bộ vượt bậc của một học sinh đi lên từ con số 0 suốt năm học.",
-        spineMain: "#2563eb",
-        spineDark: "#1e3a8a",
-        question: "Hình ảnh ẩn dụ 'Lát cắt tại một thời điểm cố định' trong Luận điểm 3 của Thành viên 3 dùng để nhấn mạnh điều gì?",
-        options: [
-          "A. Một bài thi 45–90 phút chỉ ghi nhận kết quả ở đúng mốc thời gian đó, không thể phản ánh cả hành trình nỗ lực đi lên từ con số 0 suốt năm học.",
-          "B. Bài kiểm tra càng ngắn thì đánh giá đạo đức học sinh càng chuẩn.",
-          "C. Quá trình học tập cả năm không quan trọng bằng 45 phút cuối kỳ.",
-          "D. Học sinh chỉ cần học dồn vào đêm trước ngày thi là đủ."
-        ],
-        correct: 0,
-        explanation: "Học tập là một hành trình tích lũy dài hạn; một bài kiểm tra đơn lẻ không nói lên hết sự kiên trì và mức độ tiến bộ vượt bậc của người học."
-      },
-      {
-        id: 9,
-        numUp: "09",
-        numDown: "15",
-        member: "Thành viên 4 • Tư duy Sáng tạo",
-        bookTitle: "Lối Mòn Đáp Án Mẫu An Toàn",
-        pageHeading: "Tập 09: Lối Mòn Đáp Án Mẫu",
-        pageParagraph: "Các bài kiểm tra thường có đáp án mẫu khiến học sinh đi theo lối mòn để an toàn về điểm số. Trong khi đó, sự sáng tạo lại đòi hỏi sự phá cách, dám sai để tìm ra cái mới — điều dễ bị trừ điểm trên giấy.",
-        spineMain: "#4f46e5",
-        spineDark: "#312e81",
-        question: "Theo phân tích của Thành viên 4, vì sao các thang điểm kiểm tra thông thường dễ làm hạn chế 'Năng lực Sáng tạo' của học sinh?",
-        options: [
-          "A. Vì bài kiểm tra thường đóng khung trong đáp án mẫu an toàn; trong khi sáng tạo đòi hỏi sự 'phá cách', dám sai để tìm ra cái mới.",
-          "B. Vì học sinh phổ thông chưa có khả năng sáng tạo.",
-          "C. Vì sáng tạo chỉ xuất hiện ở môn Mỹ thuật và Âm nhạc.",
-          "D. Vì đáp án mẫu luôn khuyến khích học sinh viết khác sách giáo khoa."
-        ],
-        correct: 0,
-        explanation: "Để an toàn về điểm số, học sinh thường đi theo lối mòn của đáp án mẫu thay vì thử nghiệm những góc nhìn đột phá."
-      },
-      {
-        id: 10,
-        numUp: "10",
-        numDown: "15",
-        member: "Thành viên 4 • Dẫn chứng OECD PISA",
-        bookTitle: "Ngộ Nhận Điểm Toán = Sáng Tạo",
-        pageHeading: "Tập 10: Báo Cáo PISA 2022",
-        pageParagraph: "Theo báo cáo PISA 2022 Results (Volume III, công bố 18/6/2024), OECD đã phải đánh giá Tư duy sáng tạo riêng biệt tại 64 quốc gia vì điểm Toán, Đọc hiểu hay Khoa học không phải thước đo đầy đủ cho sự sáng tạo.",
-        spineMain: "#7c3aed",
-        spineDark: "#4c1d95",
-        question: "Theo dẫn chứng 1 của Thành viên 4, việc tổ chức OECD công bố báo cáo PISA 2022 (Volume III, 18/6/2024) đánh giá riêng biệt 'Tư duy sáng tạo' tại 64 quốc gia cho thấy điều gì?",
-        options: [
-          "A. Điểm Toán, Đọc hiểu và Khoa học đã đo được 100% tư duy sáng tạo.",
-          "B. Năng lực học sinh có nhiều khía cạnh; không thể mặc nhiên xem điểm Toán, Đọc hiểu hay Khoa học là thước đo đầy đủ cho khả năng sáng tạo.",
-          "C. OECD đã bỏ hẳn môn Toán và Khoa học trong kỳ thi PISA.",
-          "D. Tư duy sáng tạo không thể rèn luyện trong nhà trường."
-        ],
-        correct: 1,
-        explanation: "OECD phải thiết kế bài đánh giá chuyên biệt cho Tư duy sáng tạo vì điểm số các môn học truyền thống không thể đại diện hoàn toàn cho năng lực này."
-      },
-      {
-        id: 11,
-        numUp: "11",
-        numDown: "15",
-        member: "Thành viên 4 • Nghiên cứu & Thực tế",
-        bookTitle: "Ảo Tưởng Độ Tin Cậy Tuyệt Đối",
-        pageHeading: "Tập 11: Độ Tin Cậy Đo Lường",
-        pageParagraph: "Nghiên cứu trên 589 học sinh Ba Lan (2012) cho thấy GPA không nhất thiết phản ánh năng lực sáng tạo; và vụ việc phải thi lại tại Tuyên Quang (2026) chứng minh điểm số chỉ phản ánh đúng năng lực khi kỳ thi khách quan.",
-        spineMain: "#9333ea",
-        spineDark: "#581c87",
-        question: "Từ nghiên cứu trên 589 học sinh ở Ba Lan (Gralewski & Karwowski, 2012) và vụ việc bất thường phải tổ chức thi lại tại Tuyên Quang (2026), Thành viên 4 rút ra thông điệp gì?",
-        options: [
-          "A. Điểm trung bình (GPA) không nhất thiết phản ánh năng lực sáng tạo; đồng thời điểm số chỉ có giá trị khi công cụ đo lường thực sự công bằng và khách quan.",
-          "B. Học sinh có điểm GPA cao luôn là người thiếu sáng tạo nhất.",
-          "C. Mọi kỳ thi đều không đáng tin cậy.",
-          "D. Không cần tổ chức bất kỳ kỳ thi tốt nghiệp nào nữa."
-        ],
-        correct: 0,
-        explanation: "Hai dẫn chứng thực tế chỉ ra rằng: GPA không đồng nhất với khả năng sáng tạo, và độ tin cậy của điểm số phụ thuộc chặt chẽ vào tính khách quan của kỳ thi."
-      },
-      {
         id: 12,
-        numUp: "12",
-        numDown: "15",
+        origId: 12,
+        numUp: "05",
+        numDown: "08",
         member: "Thành viên 4 • Thực hành Hóa học",
         bookTitle: "Lý Thuyết Suông Thiếu Thực Hành",
-        pageHeading: "Tập 12: Giờ Thực Hành Hóa",
+        pageHeading: "Tập 05: Giờ Thực Hành Hóa",
         pageParagraph: "Học sinh A đạt 9 điểm lý thuyết Hóa nhưng lúng túng khi chọn dụng cụ; Học sinh B đạt 6,5 điểm lý thuyết nhưng thao tác thí nghiệm chuẩn xác, an toàn và giải thích tốt hiện tượng. Cần kết hợp cả lý thuyết và thực hành!",
         spineMain: "#c026d3",
         spineDark: "#701a75",
@@ -1304,11 +1174,12 @@
       },
       {
         id: 13,
-        numUp: "13",
-        numDown: "15",
+        origId: 13,
+        numUp: "06",
+        numDown: "08",
         member: "Thành viên 5 • Phản hồi đa chiều",
         bookTitle: "Đánh Giá Cảm Tính Thiếu Tiêu Chí",
-        pageHeading: "Tập 13: Góc Nhìn Phản Biện",
+        pageHeading: "Tập 06: Góc Nhìn Phản Biện",
         pageParagraph: "Đánh giá quá trình giúp ghi nhận nỗ lực, giao tiếp và hợp tác; nhưng nếu thiếu tiêu chí rõ ràng sẽ dễ mang tính chủ quan. Vì vậy, điểm số vẫn cần thiết và phải kết hợp hài hòa với đánh giá quá trình.",
         spineMain: "#db2777",
         spineDark: "#831843",
@@ -1324,11 +1195,12 @@
       },
       {
         id: 14,
-        numUp: "14",
-        numDown: "15",
+        origId: 14,
+        numUp: "07",
+        numDown: "08",
         member: "Thành viên 6 • Giải pháp toàn diện",
         bookTitle: "Đơn Điệu Một Hình Thức Thi",
-        pageHeading: "Tập 14: Giải Pháp Toàn Diện",
+        pageHeading: "Tập 07: Giải Pháp Toàn Diện",
         pageParagraph: "Để đánh giá học sinh toàn diện, nhà trường cần kết hợp điểm kiểm tra với bài tập dự án, sản phẩm thực hành, thuyết trình, hoạt động nhóm và chú trọng mức độ tiến bộ của từng cá nhân.",
         spineMain: "#e11d48",
         spineDark: "#881337",
@@ -1344,11 +1216,12 @@
       },
       {
         id: 15,
-        numUp: "15",
-        numDown: "15",
+        origId: 15,
+        numUp: "08",
+        numDown: "08",
         member: "Thành viên 6 • Trách nhiệm & Thông điệp",
         bookTitle: "Áp Lực Thành Tích Từ Nhiều Phía",
-        pageHeading: "Tập 15: Sự Đồng Hành 3 Bên",
+        pageHeading: "Tập 08: Sự Đồng Hành 3 Bên",
         pageParagraph: "Giáo viên đánh giá khách quan, đa phương pháp; Học sinh chủ động học tập, rèn kỹ năng, không chạy theo điểm số bằng mọi cách; Phụ huynh khích lệ quá trình thay vì chỉ chú trọng thành tích.",
         spineMain: "#0d9488",
         spineDark: "#134e4a",
@@ -1902,14 +1775,14 @@
       const miniStackEl = document.getElementById('miniClearedStackVisual');
       const trayBox = document.getElementById('clearedBooksTray');
 
-      if (trayText) trayText.textContent = `${clearedCount} / 15 quyển`;
+      if (trayText) trayText.textContent = `${clearedCount} / ${QUESTIONS_DATA.length} quyển`;
       if (miniStackEl) {
         miniStackEl.innerHTML = '';
-        const visibleMini = solvedArray.slice(-7);
+        const visibleMini = solvedArray.slice(-8);
         visibleMini.forEach((book, i) => {
           const item = document.createElement('div');
           item.className = 'mini-book-item';
-          item.style.bottom = `${i * 4.5}px`;
+          item.style.bottom = `${i * 4}px`;
           item.style.background = book.spineMain;
           item.style.transform = `translateX(${(i % 2 === 0 ? -1 : 1)}px)`;
           miniStackEl.appendChild(item);
@@ -1922,11 +1795,11 @@
         trayBox.classList.add('tray-receive-pulse');
       }
 
-      // 2. Cập nhật Thước Đo Chiều Cao Chồng Sách 15 -> 0 (Góc trên bên phải)
+      // 2. Cập nhật Thước Đo Chiều Cao Chồng Sách 8 -> 0 (Góc trên bên phải)
       const meterBarsEl = document.getElementById('stackHeightMeterBars');
       const meterNumEl = document.getElementById('meterNumberText');
       if (meterNumEl) {
-        meterNumEl.textContent = `${remainingCount}/15`;
+        meterNumEl.textContent = `${remainingCount}/${QUESTIONS_DATA.length}`;
         meterNumEl.className = remainingCount === 0
           ? 'text-[10px] font-black text-emerald-600 leading-none'
           : 'text-[10px] font-black text-rose-600 leading-none';
@@ -1949,7 +1822,7 @@
     }
 
     /* ==========================================================================
-       RENDER ĐẦY ĐỦ 15 CUỐN SÁCH 3D (.page) ĐỂ THẤY RÕ SÁCH VƠI DẦN TỪNG QUYỂN
+       RENDER ĐẦY ĐỦ 8 CUỐN SÁCH 3D (.page) ĐỂ THẤY RÕ SÁCH VƠI DẦN TỪNG QUYỂN
        ========================================================================== */
     function renderMinaPageStackOnDesk(options = {}) {
       const { flyingQuestionIdx = null, wrongSlam = false } = options;
@@ -1960,8 +1833,8 @@
       const remainingCount = remainingQuestions.length;
 
       // Cập nhật các nhãn đếm số sách
-      document.getElementById('remainingBooksLabel').textContent = `${remainingCount} / 15 quyển`;
-      document.getElementById('scoreCounter').textContent = `${solvedQuestions.size} / 15 ★`;
+      document.getElementById('remainingBooksLabel').textContent = `${remainingCount} / ${QUESTIONS_DATA.length} quyển`;
+      document.getElementById('scoreCounter').textContent = `${solvedQuestions.size} / ${QUESTIONS_DATA.length} ★`;
       document.getElementById('deskPlaqueCount').textContent =
         `Trên bàn: ${remainingCount} quyển áp lực + 1 sổ nền tảng`;
 
@@ -1974,9 +1847,9 @@
 
       if (remainingCount === 0) {
         moodBadge.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-400 shadow-sm shrink-0';
-        moodBadge.innerHTML = '🌟 Đã gỡ hết 15 cuốn sách áp lực!';
+        moodBadge.innerHTML = '🌟 Đã gỡ hết 8 cuốn sách áp lực!';
         studentPhoto.style.filter = 'drop-shadow(0 14px 24px rgba(16, 185, 129, 0.45)) brightness(1.06)';
-      } else if (remainingCount <= 7) {
+      } else if (remainingCount <= 4) {
         moodBadge.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-amber-100 text-amber-800 border border-amber-300 shadow-sm shrink-0';
         moodBadge.innerHTML = `😊 Sách đang vơi dần! Còn ${remainingCount} cuốn`;
         studentPhoto.style.filter = 'drop-shadow(0 14px 20px rgba(32, 24, 38, 0.35)) brightness(1.02)';
@@ -1996,16 +1869,16 @@
         <div class="page foundation-page" style="--page-scale: ${currentPageScale};">
           <h1>NỀN TẢNG KIẾN THỨC & ĐIỂM SỐ KHÁCH QUAN</h1>
           <p>
-            Điểm số có vai trò quan trọng trong việc phản ánh mức độ hiểu bài và ghi nhớ kiến thức tại một thời điểm. Khi cởi bỏ hết 15 cuốn sách áp lực, cuốn sổ Nền Tảng Kiến Thức này vẫn luôn ở lại trên bàn học cùng với Sáng tạo, Giao tiếp, Thực hành và Sự tiến bộ!
+            Điểm số có vai trò quan trọng trong việc phản ánh mức độ hiểu bài và ghi nhớ kiến thức tại một thời điểm. Khi cởi bỏ hết 8 cuốn sách áp lực, cuốn sổ Nền Tảng Kiến Thức này vẫn luôn ở lại trên bàn học cùng với Sáng tạo, Giao tiếp, Thực hành và Sự tiến bộ!
           </p>
         </div>
       `;
       container.appendChild(baseLayer);
 
-      // 2. RENDER TẤT CẢ CÁC CUỐN SÁCH CÒN LẠI (TỪ 15 VỀ 0) ĐỂ THẤY RÕ ĐỘ CAO VƠI DẦN TỪNG QUYỂN
+      // 2. RENDER TẤT CẢ CÁC CUỐN SÁCH CÒN LẠI (TỪ 8 VỀ 0) ĐỂ THẤY RÕ ĐỘ CAO VƠI DẦN TỪNG QUYỂN
       const activeQ = QUESTIONS_DATA[currentQuestionIndex];
       const isCurrentSolved = solvedQuestions.has(currentQuestionIndex);
-      const stepPx = 6.2; // Mỗi cuốn sách cao thêm 6.2px -> 15 cuốn tạo thành tháp cao ~93px và thấp dần về 0
+      const stepPx = 10.5; // Mỗi cuốn sách cao thêm 10.5px -> 8 cuốn tạo thành tháp cao ~84px và thấp dần về 0
 
       for (let i = 0; i < remainingCount; i++) {
         const layerQ = remainingQuestions[i];
@@ -2047,7 +1920,7 @@
       // Nhãn nổi hiển thị chiều cao chồng sách ngay phía trên đỉnh chồng sách
       const counterTag = document.createElement('div');
       counterTag.className = 'stack-floating-counter';
-      const topY = Math.max(8, 128 - remainingCount * stepPx);
+      const topY = Math.max(8, 120 - remainingCount * stepPx);
       counterTag.style.top = `${topY}px`;
       if (remainingCount === 0) {
         counterTag.style.background = 'linear-gradient(135deg, #059669 0%, #10b981 100%)';
@@ -2138,6 +2011,7 @@
 
         btn.className = cls;
         btn.textContent = idx + 1;
+        btn.title = `Câu ${idx + 1} (Gốc: Câu ${q.origId}): ${q.bookTitle}`;
         btn.onclick = () => {
           currentQuestionIndex = idx;
           playSoundEffect('flip');
@@ -2152,12 +2026,12 @@
       const alreadySolved = solvedQuestions.has(currentQuestionIndex);
 
       document.getElementById('stageStatusHeading').textContent = alreadySolved
-        ? `Đã Gỡ Sang Khay: Cuốn #${q.numUp} — ${q.bookTitle} ✓`
-        : `Đang Mở Trên Bàn: Cuốn #${q.numUp} — ${q.bookTitle}`;
+        ? `Đã Gỡ Sang Khay: Cuốn #${q.numUp} (Câu ${q.origId}) — ${q.bookTitle} ✓`
+        : `Đang Mở Trên Bàn: Cuốn #${q.numUp} (Câu ${q.origId}) — ${q.bookTitle}`;
 
       document.getElementById('questionProgressBadge').textContent = `Câu ${currentQuestionIndex + 1} / ${QUESTIONS_DATA.length}`;
       document.getElementById('qMemberTag').textContent = q.member;
-      document.getElementById('qPressureBookTag').textContent = `Sách #${q.numUp}: ${q.bookTitle}`;
+      document.getElementById('qPressureBookTag').textContent = `Sách #${q.numUp} (Câu ${q.origId}): ${q.bookTitle}`;
       document.getElementById('questionText').textContent = q.question;
 
       const optionsGrid = document.getElementById('optionsGrid');
