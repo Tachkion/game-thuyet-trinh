@@ -1,0 +1,2329 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cởi Bỏ Áp Lực - Đánh Thức Năng Lực | 3D Desk & Book Edition</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-base: #c4bec6;
+      --card-surface: #ece7ee;
+      --card-wall: #9e96a3;
+    }
+
+    * {
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    /* KHÓA CỨNG VIEWPORT 100VW x 100VH — ĐẢM BẢO KHÔNG BAO GIỜ BỊ CUỘN DÙ MÀN HÌNH NHỎ */
+    html, body {
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #c4bec6;
+      background-image:
+        radial-gradient(circle at 15% 15%, rgba(255, 255, 255, 0.62) 0%, transparent 45%),
+        radial-gradient(circle at 85% 80%, rgba(99, 102, 241, 0.16) 0%, transparent 50%),
+        linear-gradient(145deg, #d5d0d8 0%, #c4bec6 55%, #b0a8b5 100%);
+      font-family: 'Be Vietnam Pro', sans-serif;
+      color: #231f26;
+    }
+
+    /* CANVAS PARTICLE OVERLAY TOÀN MÀN HÌNH */
+    #fx-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 60;
+    }
+
+    /* ==========================================================================
+       1. GIAO DIỆN 3D NỔI (TACTILE 3D SPATIAL UI - CLAYMORPHISM)
+       ========================================================================== */
+    .card-3d {
+      position: relative;
+      background: linear-gradient(160deg, #f6f3f8 0%, #e6e0ea 100%);
+      border-radius: 18px;
+      border: 2px solid rgba(255, 255, 255, 0.92);
+      border-bottom: 6px solid #99909f;
+      border-right: 4px solid #aea5b4;
+      box-shadow:
+        6px 10px 20px rgba(62, 54, 68, 0.22),
+        inset 0 2px 4px rgba(255, 255, 255, 0.92);
+      transform-style: preserve-3d;
+    }
+
+    .btn-3d {
+      position: relative;
+      background: linear-gradient(180deg, #ffffff 0%, #eae4ed 100%);
+      color: #2b2b2b;
+      border: 2px solid #ffffff;
+      border-bottom: 4px solid #968d9b;
+      border-right: 3px solid #aba2b0;
+      border-radius: 11px;
+      box-shadow: 3px 5px 10px rgba(65, 58, 70, 0.18);
+      transition: all 0.14s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer;
+    }
+
+    .btn-3d:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 4px 8px 14px rgba(65, 58, 70, 0.25);
+    }
+
+    .btn-3d:active:not(:disabled) {
+      transform: translateY(2px);
+      border-bottom-width: 2px;
+      box-shadow: 1px 2px 5px rgba(65, 58, 70, 0.2);
+    }
+
+    .btn-3d-primary {
+      background: linear-gradient(180deg, #6366f1 0%, #4338ca 100%);
+      color: #ffffff;
+      border-color: #818cf8;
+      border-bottom-color: #2e2585;
+      border-right-color: #3730a3;
+    }
+
+    .btn-3d-amber {
+      background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%);
+      color: #ffffff;
+      border-color: #fbbf24;
+      border-bottom-color: #92400e;
+      border-right-color: #b45309;
+    }
+
+    /* Nút đáp án A, B, C, D 3D tự động co giãn theo chiều cao màn hình */
+    .option-3d-btn {
+      position: relative;
+      text-align: left;
+      background: linear-gradient(165deg, #ffffff 0%, #eee9f2 100%);
+      border: 2px solid #ffffff;
+      border-bottom: 4px solid #9d94a3;
+      border-right: 3px solid #b3abb8;
+      border-radius: 13px;
+      padding: clamp(4px, 0.85vh, 11px) clamp(8px, 1vw, 14px);
+      box-shadow: 3px 5px 12px rgba(68, 60, 74, 0.14);
+      transition: all 0.16s cubic-bezier(0.22, 1, 0.36, 1);
+      cursor: pointer;
+      min-height: 0;
+    }
+
+    .option-3d-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      background: linear-gradient(165deg, #ffffff 0%, #f5f0f9 100%);
+      border-bottom-color: #6366f1;
+      box-shadow: 5px 8px 16px rgba(79, 70, 229, 0.2);
+    }
+
+    .option-3d-btn:active:not(:disabled) {
+      transform: translateY(2px);
+      border-bottom-width: 2px;
+    }
+
+    .option-3d-btn.correct-choice {
+      background: linear-gradient(165deg, #ecfdf5 0%, #d1fae5 100%);
+      border-color: #6ee7b7;
+      border-bottom-color: #059669;
+      border-right-color: #10b981;
+      box-shadow: 0 5px 15px rgba(5, 150, 105, 0.28);
+      animation: correctOptionPulse 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes correctOptionPulse {
+      0% { transform: scale(1); }
+      45% { transform: scale(1.025) translateY(-2px); }
+      100% { transform: scale(1); }
+    }
+
+    .option-3d-btn.wrong-choice {
+      background: linear-gradient(165deg, #fff1f2 0%, #ffe4e6 100%);
+      border-color: #fda4af;
+      border-bottom-color: #e11d48;
+      border-right-color: #f43f5e;
+      animation: shake3D 0.45s ease;
+    }
+
+    @keyframes shake3D {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-8px) rotateZ(-1deg); }
+      40% { transform: translateX(8px) rotateZ(1deg); }
+      60% { transform: translateX(-5px); }
+      80% { transform: translateX(5px); }
+    }
+
+    /* ==========================================================================
+       2. SÂN KHẤU BÀN HỌC GỖ 3D & KHAY SÁCH ĐÃ GỠ (TỰ ĐỘNG SCALE THEO MÀN HÌNH)
+       ========================================================================== */
+    .study-room-stage {
+      position: relative;
+      width: 100%;
+      flex: 1 1 0%;
+      min-height: 0;
+      perspective: 2400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 50% 28%, rgba(255, 255, 255, 0.84) 0%, rgba(218, 213, 220, 0.5) 62%, rgba(182, 174, 188, 0.72) 100%);
+      border-radius: 15px;
+      border: 2px solid rgba(255, 255, 255, 0.88);
+      box-shadow: inset 0 8px 24px rgba(70, 60, 78, 0.15);
+      overflow: hidden;
+      transition: box-shadow 0.35s ease, background 0.35s ease;
+    }
+
+    /* Hiệu ứng chớp đỏ sân khấu khi trả lời sai */
+    .study-room-stage.stage-wrong-flash {
+      animation: stageWrongFlashAnim 0.65s ease;
+    }
+
+    @keyframes stageWrongFlashAnim {
+      0%, 100% {
+        box-shadow: inset 0 8px 24px rgba(70, 60, 78, 0.15);
+      }
+      25% {
+        box-shadow: inset 0 0 65px rgba(225, 29, 72, 0.55), 0 0 25px rgba(225, 29, 72, 0.35);
+      }
+      60% {
+        box-shadow: inset 0 0 35px rgba(225, 29, 72, 0.3);
+      }
+    }
+
+    /* Hiệu ứng bừng sáng xanh ngọc khi trả lời đúng */
+    .study-room-stage.stage-correct-glow {
+      animation: stageCorrectGlowAnim 0.75s ease;
+    }
+
+    @keyframes stageCorrectGlowAnim {
+      0%, 100% {
+        box-shadow: inset 0 8px 24px rgba(70, 60, 78, 0.15);
+      }
+      35% {
+        box-shadow: inset 0 0 60px rgba(16, 185, 129, 0.45), 0 0 24px rgba(245, 158, 11, 0.35);
+      }
+    }
+
+    /* Khung chuẩn 650x440 được ResizeObserver tự động scale vừa khít mọi kích thước màn hình */
+    .desk-scene-canvas {
+      position: relative;
+      width: 650px;
+      height: 440px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      transform-origin: center center;
+      transform-style: preserve-3d;
+      flex-shrink: 0;
+    }
+
+    /* KHAY SÁCH ĐÃ GỠ (ĐÍCH ĐẾN KHI SÁCH BAY RA CHỖ KHÁC) */
+    .cleared-books-tray {
+      position: absolute;
+      top: 10px;
+      left: 14px;
+      z-index: 45;
+      background: linear-gradient(155deg, rgba(255, 255, 255, 0.94) 0%, rgba(236, 253, 245, 0.92) 100%);
+      border: 2px solid #ffffff;
+      border-bottom: 4px solid #10b981;
+      border-right: 3px solid #34d399;
+      border-radius: 14px;
+      padding: 6px 11px;
+      box-shadow: 0 8px 18px rgba(15, 118, 110, 0.18);
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+    }
+
+    .cleared-books-tray.tray-receive-pulse {
+      animation: trayCatchPulse 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes trayCatchPulse {
+      0% { transform: scale(1); }
+      45% {
+        transform: scale(1.14) rotate(-2deg);
+        box-shadow: 0 0 28px rgba(16, 185, 129, 0.65);
+      }
+      100% { transform: scale(1); }
+    }
+
+    .mini-cleared-stack {
+      position: relative;
+      width: 34px;
+      height: 36px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .mini-book-item {
+      position: absolute;
+      left: 3px;
+      width: 28px;
+      height: 5px;
+      border-radius: 2px 3px 3px 2px;
+      border-left: 4px solid rgba(0, 0, 0, 0.35);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+      transition: all 0.3s ease;
+    }
+
+    /* THƯỚC ĐO CHIỀU CAO CHỒNG SÁCH VƠI DẦN (BÊN PHẢI CHỒNG SÁCH) */
+    .stack-height-meter {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 44;
+      background: rgba(255, 255, 255, 0.88);
+      border: 2px solid #ffffff;
+      border-bottom: 4px solid #94a3b8;
+      border-radius: 13px;
+      padding: 6px 9px;
+      box-shadow: 0 6px 14px rgba(30, 41, 59, 0.14);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .meter-pillars {
+      display: flex;
+      flex-direction: column-reverse;
+      gap: 2px;
+      width: 24px;
+      padding: 3px;
+      background: #e2e8f0;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+    }
+
+    .meter-bar-segment {
+      width: 100%;
+      height: 4px;
+      border-radius: 2px;
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* Tổ hợp bàn học gỗ 3D */
+    .wooden-desk-assembly {
+      position: relative;
+      width: 100%;
+      transform-style: preserve-3d;
+    }
+
+    /* Rung chấn cả chiếc bàn học khi trả lời sai */
+    .wooden-desk-assembly.desk-wrong-slam-shake {
+      animation: deskHeavyShake 0.55s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+    }
+
+    @keyframes deskHeavyShake {
+      0%, 100% { transform: translate3d(0, 0, 0) rotateZ(0deg); }
+      15% { transform: translate3d(-10px, 7px, 0) rotateZ(-1.3deg); }
+      30% { transform: translate3d(9px, -5px, 0) rotateZ(1.1deg); }
+      45% { transform: translate3d(-7px, 5px, 0) rotateZ(-0.8deg); }
+      65% { transform: translate3d(5px, -3px, 0) rotateZ(0.6deg); }
+      85% { transform: translate3d(-3px, 2px, 0) rotateZ(-0.3deg); }
+    }
+
+    /* Hàng chứa Nhân vật (Bên trái) & Chồng sách 3D .page (Đặt bên cạnh trên mặt bàn) */
+    .desk-items-row {
+      position: relative;
+      z-index: 25;
+      display: grid;
+      grid-template-columns: 40% 60%;
+      align-items: end;
+      padding: 0 16px;
+      margin-bottom: -36px;
+    }
+
+    /* Mặt bàn gỗ 3D có chiều sâu nghiêng phối cảnh */
+    .desk-surface-3d {
+      position: relative;
+      z-index: 10;
+      height: 114px;
+      width: 96%;
+      margin: 0 auto;
+      background:
+        repeating-linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.03) 0px,
+          rgba(255, 255, 255, 0.03) 2px,
+          transparent 2px,
+          transparent 16px
+        ),
+        linear-gradient(180deg, #a86f3d 0%, #8b5628 55%, #6e4019 100%);
+      border-radius: 16px 16px 6px 6px;
+      border-top: 3px solid #ca905e;
+      transform: perspective(850px) rotateX(28deg);
+      transform-origin: bottom center;
+      box-shadow:
+        inset 0 12px 24px rgba(255, 218, 185, 0.25),
+        inset 0 -10px 20px rgba(42, 23, 8, 0.45);
+      overflow: hidden;
+    }
+
+    /* Vòng sóng xung kích trên mặt bàn gỗ khi trả lời Đúng / Sai */
+    .desk-shockwave-ring {
+      position: absolute;
+      top: 48%;
+      left: 68%;
+      width: 30px;
+      height: 18px;
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .desk-shockwave-ring.ring-wrong-active {
+      border: 5px solid #f43f5e;
+      box-shadow: 0 0 24px #e11d48, inset 0 0 14px #f43f5e;
+      animation: deskRingExpand 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .desk-shockwave-ring.ring-correct-active {
+      border: 5px solid #10b981;
+      box-shadow: 0 0 24px #34d399, inset 0 0 14px #fbbf24;
+      animation: deskRingExpand 0.72s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes deskRingExpand {
+      0% {
+        transform: translate(-50%, -50%) scale(0.3);
+        opacity: 0.95;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(9.5);
+        opacity: 0;
+      }
+    }
+
+    /* Cạnh dày phía trước của mặt bàn gỗ 3D */
+    .desk-front-edge-3d {
+      position: relative;
+      z-index: 12;
+      width: 96%;
+      height: 26px;
+      margin: 0 auto;
+      background: linear-gradient(180deg, #5c3414 0%, #3d210a 100%);
+      border-radius: 0 0 12px 12px;
+      border-top: 2px solid #8c582c;
+      border-bottom: 5px solid #261405;
+      box-shadow: 0 18px 28px rgba(34, 22, 12, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+    }
+
+    /* Chân bàn gỗ hai bên */
+    .desk-legs-row {
+      width: 88%;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      height: 18px;
+    }
+
+    .desk-leg {
+      width: 26px;
+      height: 100%;
+      background: linear-gradient(90deg, #3b200a 0%, #593315 50%, #2a1606 100%);
+      border-radius: 0 0 6px 6px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+    }
+
+    /* ==========================================================================
+       3. CHỒNG 15 CUỐN SÁCH 3D (.page MINA MOUNIR) VƠI DẦN & BAY RA CHỖ KHÁC
+       ========================================================================== */
+    .mina-stack-zone {
+      position: relative;
+      width: 100%;
+      height: 315px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 30;
+    }
+
+    /* Nhãn nổi báo số sách còn lại ngay trên đỉnh chồng sách */
+    .stack-floating-counter {
+      position: absolute;
+      left: 50%;
+      z-index: 95;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 999px;
+      border: 2px solid #a5b4fc;
+      box-shadow: 0 6px 14px rgba(30, 27, 75, 0.35);
+      white-space: nowrap;
+      pointer-events: none;
+      transition: top 0.48s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s ease;
+    }
+
+    .mina-book-layer {
+      position: absolute;
+      top: 67%;
+      left: 48%;
+      transform: translate(-50%, calc(-42% - var(--layer-offset, 0px))) translateX(var(--layer-x, 0px));
+      pointer-events: none;
+      transition:
+        transform 0.52s cubic-bezier(0.34, 1.56, 0.64, 1),
+        opacity 0.45s ease,
+        filter 0.35s ease;
+    }
+
+    .mina-book-layer.top-interactive-page {
+      pointer-events: auto;
+      cursor: pointer;
+    }
+
+    /* Hiệu ứng cả chồng sách lún nhẹ xuống khi 1 cuốn vừa bay đi ("Sách vơi dần") */
+    .mina-book-layer.stack-settle-down {
+      animation: stackSettleBounce 0.52s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes stackSettleBounce {
+      0% {
+        transform: translate(-50%, calc(-42% - var(--layer-offset, 0px) - 9px)) translateX(var(--layer-x, 0px));
+      }
+      60% {
+        transform: translate(-50%, calc(-42% - var(--layer-offset, 0px) + 3px)) translateX(var(--layer-x, 0px));
+      }
+      100% {
+        transform: translate(-50%, calc(-42% - var(--layer-offset, 0px))) translateX(var(--layer-x, 0px));
+      }
+    }
+
+    /* HIỆU ỨNG KHI LÀM ĐÚNG: Cuốn sách trên cùng bay vút theo đường vòng cung sang Khay Sách Đã Gỡ (Góc trên bên trái) */
+    .mina-book-layer.mina-fly-to-tray {
+      pointer-events: none !important;
+      animation: flyToClearedTrayArc 0.88s cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
+    }
+
+    @keyframes flyToClearedTrayArc {
+      0% {
+        transform: translate(-50%, calc(-42% - var(--layer-offset, 0px))) rotate3d(0, 0, 1, 0deg) scale(1);
+        filter: drop-shadow(0 0 0px rgba(16, 185, 129, 0));
+        opacity: 1;
+      }
+      28% {
+        transform: translate(-68%, calc(-105% - var(--layer-offset, 0px))) rotate3d(1, -1, 1, -22deg) scale(1.12);
+        filter: drop-shadow(0 18px 28px rgba(16, 185, 129, 0.65)) brightness(1.08);
+        opacity: 1;
+      }
+      68% {
+        transform: translate(-155%, -165%) rotate3d(1, 1, -1, 195deg) scale(0.46);
+        filter: drop-shadow(0 12px 24px rgba(245, 158, 11, 0.75)) brightness(1.15);
+        opacity: 0.95;
+      }
+      100% {
+        transform: translate(-225%, -195%) rotate3d(0, 0, 1, 360deg) scale(0.12);
+        filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.9));
+        opacity: 0;
+      }
+    }
+
+    /* HIỆU ỨNG KHI LÀM SAI: Cuốn sách trên cùng bật cao, hóa đỏ rực rồi DẬP MẠNH xuống chồng sách */
+    .mina-book-layer.mina-wrong-slam-top {
+      animation: topBookHeavySlam 0.58s cubic-bezier(0.36, 0.07, 0.19, 0.97) !important;
+    }
+
+    @keyframes topBookHeavySlam {
+      0% {
+        transform: translate(-50%, calc(-42% - var(--layer-offset, 0px))) scale(1);
+      }
+      28% {
+        transform: translate(-50%, calc(-42% - var(--layer-offset, 0px) - 42px)) rotate(5deg) scale(1.09);
+        filter: drop-shadow(0 25px 25px rgba(225, 29, 72, 0.75)) saturate(1.8);
+      }
+      52% {
+        transform: translate(-50%, calc(-42% - var(--layer-offset, 0px) + 18px)) rotate(-3deg) scale(0.95);
+        filter: drop-shadow(0 4px 12px rgba(225, 29, 72, 0.95)) brightness(0.9);
+      }
+      75% {
+        transform: translate(-50%, calc(-42% - var(--layer-offset, 0px) - 5px)) rotate(1.5deg) scale(1.02);
+      }
+      100% {
+        transform: translate(-50%, calc(-42% - var(--layer-offset, 0px))) scale(1);
+      }
+    }
+
+    /* Các cuốn bên dưới bị ép lún xuống khi trả lời sai */
+    .mina-book-layer.mina-wrong-compress {
+      animation: stackWrongCompress 0.58s ease !important;
+    }
+
+    @keyframes stackWrongCompress {
+      0%, 100% {
+        transform: translate(-50%, calc(-42% - var(--layer-offset, 0px))) translateX(var(--layer-x, 0px));
+      }
+      50% {
+        transform: translate(-50%, calc(-42% - var(--layer-offset, 0px) + 12px)) translateX(var(--layer-x, 0px)) scaleY(0.92);
+      }
+    }
+
+    /* Dấu đóng "ÁP LỰC ĐÈ NẶNG!" nện xuống chồng sách khi trả lời sai */
+    .wrong-pressure-stamp {
+      position: absolute;
+      top: 26%;
+      left: 50%;
+      z-index: 98;
+      transform: translate(-50%, -50%) rotate(-12deg) scale(2.2);
+      background: rgba(225, 29, 72, 0.95);
+      color: #ffffff;
+      border: 3px solid #fecdd3;
+      padding: 6px 16px;
+      border-radius: 12px;
+      font-weight: 900;
+      font-size: 14px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      box-shadow: 0 12px 28px rgba(159, 18, 57, 0.65);
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    .wrong-pressure-stamp.stamp-slam-active {
+      animation: stampSlamAnim 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes stampSlamAnim {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -120%) rotate(-18deg) scale(2.4);
+      }
+      35% {
+        opacity: 1;
+        transform: translate(-50%, -50%) rotate(-10deg) scale(0.95);
+      }
+      55% {
+        opacity: 1;
+        transform: translate(-50%, -50%) rotate(-12deg) scale(1.04);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -65%) rotate(-12deg) scale(0.85);
+      }
+    }
+
+    /* CHUẨN CSS .page TỪ ĐOẠN CODE CỦA BẠN */
+    .page {
+      box-sizing: content-box !important;
+      position: relative;
+      width: 400px;
+      height: 600px;
+      padding: 30px;
+      background: var(--page-bg, #FFF);
+      border-left: 30px solid var(--spine-main, #FF2929);
+      transform: rotate(-45deg) skewX(10deg) scale(var(--page-scale, 0.285));
+      transform-origin: center center;
+      box-shadow: -35px 35px 38px rgba(0, 0, 0, 0.42);
+      font-family: 'Be Vietnam Pro', Verdana, sans-serif;
+      color: #2b2b2b;
+      transition: transform 0.32s ease, box-shadow 0.32s ease, border-color 0.32s ease;
+    }
+
+    .mina-book-layer.top-interactive-page:hover .page {
+      transform: rotate(-43deg) skewX(10deg) scale(calc(var(--page-scale, 0.285) + 0.015)) translate(6px, -6px);
+      box-shadow: -50px 50px 48px rgba(0, 0, 0, 0.52);
+    }
+
+    .page h1 {
+      margin: 0 0 16px 0;
+      padding: 0 0 10px 0;
+      text-align: center;
+      font-size: 25px;
+      font-weight: 800;
+      color: var(--page-title-color, #dc2626);
+      border-bottom: 3px solid rgba(0, 0, 0, 0.08);
+      line-height: 1.25;
+    }
+
+    .page p {
+      margin: 0;
+      padding: 0;
+      text-align: justify;
+      font-size: 18.5px;
+      line-height: 1.54;
+      color: #334155;
+      font-weight: 500;
+    }
+
+    .page:before {
+      box-sizing: content-box !important;
+      content: "";
+      width: 30px;
+      height: 100%;
+      background: var(--spine-dark, #8a0e0e);
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: skewY(-45deg) translate(-57px, -43px);
+    }
+
+    .page:after {
+      box-sizing: content-box !important;
+      content: "";
+      width: 106%;
+      height: 30px;
+      background: repeating-linear-gradient(
+        0deg,
+        #d4d4d8 0px,
+        #f4f4f5 3px,
+        #bcbcc2 6px
+      );
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      transform: skewX(-45deg) translate(-11px, 30px);
+    }
+
+    /* Cuốn sách Nền tảng Kiến thức màu vàng nằm dưới đáy chồng sách .page */
+    .page.foundation-page {
+      --page-bg: #fef9c3;
+      --spine-main: #d97706;
+      --spine-dark: #92400e;
+      --page-title-color: #92400e;
+      box-shadow: -35px 35px 36px rgba(146, 64, 14, 0.42);
+    }
+
+    /* ==========================================================================
+       4. KHUNG ẢNH NHÂN VẬT IMPORT TRỰC TIẾP TỪ BÊN NGOÀI + HIỆU ỨNG BIỂU CẢM
+       ========================================================================== */
+    .character-seat-zone {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      z-index: 28;
+    }
+
+    #student-photo {
+      width: auto;
+      height: 235px;
+      max-width: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 14px 20px rgba(32, 24, 38, 0.38));
+      transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.45s ease;
+    }
+
+    /* Khi trả lời đúng: Nhân vật nhổm dậy nhẹ nhõm & sáng bừng */
+    #student-photo.student-cheer-anim {
+      animation: studentReliefJump 0.68s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes studentReliefJump {
+      0%, 100% { transform: translateY(0) scale(1); }
+      40% {
+        transform: translateY(-12px) scale(1.04);
+        filter: drop-shadow(0 18px 26px rgba(16, 185, 129, 0.65)) brightness(1.12);
+      }
+    }
+
+    /* Khi trả lời sai: Nhân vật bị ép xuống dưới đám mây áp lực đỏ sẫm */
+    #student-photo.student-stress-flinch {
+      animation: studentStressCrunch 0.58s ease;
+    }
+
+    @keyframes studentStressCrunch {
+      0%, 100% { transform: translateY(0) scale(1, 1); }
+      35% {
+        transform: translateY(10px) scale(1.04, 0.91);
+        filter: drop-shadow(0 8px 24px rgba(225, 29, 72, 0.75)) brightness(0.84) contrast(1.12);
+      }
+      70% {
+        transform: translateY(4px) scale(1.01, 0.97);
+      }
+    }
+
+    /* Lưới 15 nút câu hỏi trên 1 hàng gọn gàng */
+    .grid-cols-15 {
+      display: grid;
+      grid-template-columns: repeat(15, minmax(0, 1fr));
+    }
+
+    /* Đảm bảo cột câu hỏi tự động thu gọn khoảng cách trên màn hình có chiều cao thấp (< 720px) */
+    @media (max-height: 740px) {
+      .compact-on-short-screen {
+        padding-top: 6px !important;
+        padding-bottom: 6px !important;
+        gap: 6px !important;
+      }
+      .option-3d-btn {
+        padding: 5px 10px !important;
+        border-bottom-width: 3px !important;
+      }
+      #feedbackBox {
+        min-height: 44px !important;
+        padding-top: 4px !important;
+        padding-bottom: 4px !important;
+      }
+    }
+  </style>
+</head>
+<body class="h-screen w-screen overflow-hidden p-1.5 sm:p-2.5 lg:p-3.5 flex flex-col gap-2">
+
+  <!-- CANVAS PARTICLE OVERLAY TOÀN MÀN HÌNH -->
+  <canvas id="fx-canvas"></canvas>
+
+  <!-- ==================== THANH HEADER 3D GỌN GÀNG (SHRINK-0) ==================== -->
+  <header class="max-w-[1620px] w-full mx-auto shrink-0">
+    <div class="card-3d px-3 py-1.5 sm:px-4 sm:py-2 flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-600 to-violet-700 text-white flex items-center justify-center shadow-md border-b-4 border-indigo-950 shrink-0">
+          <i class="fa-solid fa-book-open-reader text-base"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded bg-indigo-950 text-indigo-100">
+              Minigame 3D • 15 Câu Hỏi
+            </span>
+            <span class="text-[11px] font-semibold text-neutral-600 hidden md:inline">
+              Điểm số có phản ánh đúng năng lực học sinh?
+            </span>
+          </div>
+          <h1 class="text-xs sm:text-base lg:text-lg font-extrabold text-neutral-900 tracking-tight leading-tight">
+            CỞI BỎ ÁP LỰC — ĐÁNH THỨC NĂNG LỰC
+          </h1>
+        </div>
+      </div>
+
+      <!-- Tiến độ & Công cụ -->
+      <div class="flex items-center gap-1.5 sm:gap-2">
+        <div class="bg-white/85 px-2.5 py-1 rounded-xl border border-white shadow-inner min-w-[142px]">
+          <div class="flex justify-between text-[10px] font-extrabold mb-0.5">
+            <span class="text-rose-700"><i class="fa-solid fa-layer-group mr-1"></i>Chồng Sách:</span>
+            <span id="remainingBooksLabel" class="text-rose-600">15 / 15 quyển</span>
+          </div>
+          <div class="w-full h-1.5 bg-neutral-300 rounded-full overflow-hidden">
+            <div id="pressureProgressBar" class="h-full bg-gradient-to-r from-rose-600 via-amber-500 to-emerald-500 transition-all duration-500" style="width: 100%"></div>
+          </div>
+        </div>
+
+        <div class="bg-white/85 px-2.5 py-1 rounded-xl border border-white shadow-inner text-center">
+          <div class="text-[9px] font-bold uppercase text-neutral-500 leading-none">Đã Gỡ</div>
+          <div id="scoreCounter" class="text-xs sm:text-sm font-extrabold text-emerald-700 leading-tight">0 / 15 ★</div>
+        </div>
+
+        <!-- Nút Chọn file ảnh từ máy tính nếu cần đổi ảnh -->
+        <label for="uploadAvatarInput" class="btn-3d px-2.5 py-1 text-[11px] font-bold flex items-center gap-1" title="Chọn ảnh Untitled_design-removebg-preview.png từ máy">
+          <i class="fa-solid fa-upload text-indigo-600"></i>
+          <span class="hidden xl:inline">Đổi Ảnh</span>
+        </label>
+        <input id="uploadAvatarInput" type="file" accept="image/*" class="hidden" onchange="handleManualImageUpload(event)" />
+
+        <button id="soundToggleBtn" onclick="toggleAudio()" class="btn-3d w-8 h-8 flex items-center justify-center text-neutral-700 text-xs" title="Bật/Tắt âm thanh">
+          <i id="soundToggleIcon" class="fa-solid fa-volume-high"></i>
+        </button>
+
+        <button onclick="restartQuiz()" class="btn-3d px-2.5 py-1 text-[11px] font-bold flex items-center gap-1 text-rose-700" title="Chơi lại từ đầu">
+          <i class="fa-solid fa-rotate-right"></i>
+          <span class="hidden sm:inline">Làm Lại</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== NỘI DUNG CHÍNH (2 CỘT TỰ CO GIÃN TRONG 100VH, KHÔNG CUỘN) ==================== -->
+  <main class="max-w-[1620px] w-full mx-auto flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-2.5 lg:gap-3.5 items-stretch overflow-hidden">
+
+    <!-- CỘT TRÁI (6/12): BÀN HỌC GỖ 3D + KHAY SÁCH ĐÃ GỠ + CHỒNG SÁCH 15 QUYỂN VƠI DẦN -->
+    <section class="lg:col-span-6 min-h-0 flex flex-col overflow-hidden">
+      <div class="card-3d p-2.5 sm:p-3.5 flex-1 min-h-0 flex flex-col justify-between overflow-hidden">
+        <!-- Thanh tiêu đề sân khấu -->
+        <div class="flex flex-wrap items-center justify-between gap-2 pb-1.5 mb-1.5 border-b border-neutral-300/80 shrink-0">
+          <div class="min-w-0">
+            <span class="text-[10px] font-extrabold uppercase tracking-wider text-indigo-700 block">
+              <i class="fa-solid fa-wand-magic-sparkles mr-1"></i>Sân Khấu 3D • Sách Vơi Dần & Bay Sang Khay Thu Hồi
+            </span>
+            <h2 id="stageStatusHeading" class="text-xs sm:text-sm font-extrabold text-neutral-800 truncate">
+              Đang mở Cuốn #01: Định Kiến Điểm Số Tuyệt Đối
+            </h2>
+          </div>
+
+          <div id="studentMoodBadge" class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-rose-100 text-rose-800 border border-rose-300 shadow-sm shrink-0">
+            😓 Còn 15 cuốn sách áp lực trên bàn
+          </div>
+        </div>
+
+        <!-- SÂN KHẤU PHÒNG HỌC & CHIẾC BÀN GỖ 3D (TỰ ĐỘNG SCALE THEO KHUNG NHÌN) -->
+        <div class="study-room-stage" id="stageViewport">
+
+          <!-- 1. KHAY SÁCH ĐÃ GỠ (GÓC TRÊN BÊN TRÁI SÂN KHẤU - NƠI SÁCH BAY TỚI KHI LÀM ĐÚNG) -->
+          <div class="cleared-books-tray" id="clearedBooksTray" title="Sách trả lời đúng sẽ bay về khay này">
+            <div class="mini-cleared-stack" id="miniClearedStackVisual">
+              <!-- Các cuốn sách mini đã gỡ sẽ xếp chồng tại đây -->
+            </div>
+            <div>
+              <div class="text-[9px] font-extrabold uppercase tracking-wider text-emerald-700 leading-none">
+                <i class="fa-solid fa-box-archive mr-1"></i>Khay Đã Gỡ
+              </div>
+              <div id="clearedTrayCountText" class="text-xs font-black text-emerald-950 leading-tight mt-0.5">
+                0 / 15 quyển
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. THƯỚC ĐO CHIỀU CAO CHỒNG SÁCH VƠI DẦN (GÓC TRÊN BÊN PHẢI SÂN KHẤU) -->
+          <div class="stack-height-meter" title="Chiều cao chồng sách áp lực giảm dần từ 15 về 0">
+            <span class="text-[9px] font-extrabold uppercase text-slate-600 leading-none">Độ Cao</span>
+            <div class="meter-pillars" id="stackHeightMeterBars"></div>
+            <span id="meterNumberText" class="text-[10px] font-black text-rose-600 leading-none">15/15</span>
+          </div>
+
+          <!-- KHUNG CANVAS 650x440 ĐƯỢC RESIZEOBSERVER SCALE TỰ ĐỘNG -->
+          <div class="desk-scene-canvas" id="deskSceneCanvas">
+
+            <!-- TỔ HỢP BÀN HỌC GỖ 3D -->
+            <div class="wooden-desk-assembly" id="woodenDeskAssembly">
+              <div class="desk-items-row">
+
+                <!-- VỊ TRÍ 1 (BÊN TRÁI BÀN): ẢNH NHÂN VẬT IMPORT TỪ BÊN NGOÀI -->
+                <div class="character-seat-zone" id="characterSeatZone">
+                  <div id="missingImageNotice" class="hidden mb-1 px-2 py-0.5 rounded-lg bg-amber-100/95 border border-amber-400 text-[10px] font-bold text-amber-900 text-center shadow">
+                    <label for="uploadAvatarInput" class="cursor-pointer underline">
+                      Bấm nạp ảnh Untitled_design-removebg-preview.png
+                    </label>
+                  </div>
+
+                  <img
+                    id="student-photo"
+                    src="Untitled_design-removebg-preview.png"
+                    alt="Học sinh ngồi bên bàn học"
+                    onload="handleImageLoadedSuccess()"
+                    onerror="tryNextImagePath(this)"
+                  />
+                </div>
+
+                <!-- VỊ TRÍ 2 (BÊN PHẢI BÀN - ĐẶT BÊN CẠNH NHÂN VẬT): CHỒNG SÁCH 3D .page VƠI DẦN -->
+                <div class="mina-stack-zone" id="minaStackContainer" title="Chồng 15 cuốn sách 3D vơi dần khi trả lời đúng">
+                  <!-- Render bằng JS: Đầy đủ các lớp sách còn lại để thấy rõ chiều cao vơi dần -->
+                </div>
+
+              </div>
+
+              <!-- Mặt bàn gỗ 3D kèm vòng sóng xung kích -->
+              <div class="desk-surface-3d">
+                <div id="deskShockwaveRing" class="desk-shockwave-ring"></div>
+              </div>
+
+              <!-- Cạnh trước bàn gỗ 3D -->
+              <div class="desk-front-edge-3d">
+                <span class="text-[10px] font-extrabold uppercase tracking-widest text-amber-200/90">
+                  <i class="fa-solid fa-graduation-cap mr-1"></i>Bàn Học Toàn Diện • Nhóm Thuyết Trình
+                </span>
+                <span id="deskPlaqueCount" class="text-[10px] font-extrabold uppercase tracking-wider text-amber-300">
+                  Trên bàn: 15 quyển áp lực + 1 sổ nền tảng
+                </span>
+              </div>
+
+              <!-- Chân bàn gỗ -->
+              <div class="desk-legs-row">
+                <div class="desk-leg"></div>
+                <div class="desk-leg"></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <p class="text-[10px] sm:text-[11px] font-semibold text-neutral-600 mt-1.5 text-center m-0 shrink-0">
+          <i class="fa-solid fa-sparkles text-indigo-600 mr-1"></i><strong>Làm đúng:</strong> Sách bay sang Khay Thu Hồi kèm sao lấp lánh & chồng sách vơi dần • <strong>Làm sai:</strong> Sách dập mạnh phát tia lửa áp lực!
+        </p>
+      </div>
+    </section>
+
+    <!-- CỘT PHẢI (6/12): BẢNG 15 CÂU HỎI TRẮC NGHIỆM A, B, C, D (TỰ CÂN ĐỐI 100% TRONG MÀN HÌNH NHỎ) -->
+    <section class="lg:col-span-6 min-h-0 flex flex-col overflow-hidden" id="rightQuizColumn">
+      <div id="rightQuizCard" class="card-3d p-3 sm:p-4 flex-1 min-h-0 flex flex-col justify-between gap-2 overflow-hidden compact-on-short-screen">
+
+        <!-- Phần đầu: Thanh tiến độ 15 câu hỏi (Shrink-0) -->
+        <div class="shrink-0">
+          <div class="flex items-center justify-between gap-2 mb-1">
+            <span class="text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider text-neutral-600 truncate">
+              <i class="fa-solid fa-list-check mr-1 text-indigo-600"></i>15 Câu Hỏi Theo Nội Dung Của Tổ (TV1 → TV6)
+            </span>
+            <span id="questionProgressBadge" class="text-[10px] sm:text-[11px] font-extrabold px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-800 border border-indigo-300 shrink-0">
+              Câu 1 / 15
+            </span>
+          </div>
+
+          <!-- Dãy nút chọn nhanh câu 1..15 trên cùng 1 hàng -->
+          <div id="questionDotsContainer" class="grid-cols-15 gap-1"></div>
+        </div>
+
+        <!-- Phần giữa: Câu hỏi & 4 Đáp án A, B, C, D -->
+        <div class="flex-1 min-h-0 flex flex-col justify-between gap-1.5 sm:gap-2 overflow-hidden">
+          <!-- Nội dung câu hỏi -->
+          <div class="bg-white/95 rounded-xl p-2.5 sm:p-3 border-2 border-white shadow-sm shrink-0">
+            <div class="flex flex-wrap items-center gap-1.5 mb-1">
+              <span id="qMemberTag" class="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-indigo-600 text-white">
+                Thành viên 1
+              </span>
+              <span id="qPressureBookTag" class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-rose-100 text-rose-900 border border-rose-300 truncate max-w-[260px] sm:max-w-none">
+                Sách đang mở: #01
+              </span>
+            </div>
+            <h3 id="questionText" class="font-extrabold text-neutral-900 leading-snug m-0" style="font-size: clamp(0.8rem, 1.18vh + 0.28vw, 1.02rem);">
+              Đang tải câu hỏi...
+            </h3>
+          </div>
+
+          <!-- 4 Đáp án A, B, C, D -->
+          <div id="optionsGrid" class="flex-1 min-h-0 grid grid-rows-4 gap-1.5 sm:gap-2 overflow-hidden"></div>
+        </div>
+
+        <!-- Phần cuối: Hộp giải thích & Điều hướng cố định chiều cao -->
+        <div class="pt-1.5 border-t border-neutral-300/80 shrink-0 flex flex-col gap-1.5">
+          <!-- Khung thông báo giải thích luôn giữ chỗ cố định -->
+          <div id="feedbackBox" class="rounded-xl px-2.5 py-1.5 border-2 bg-white/75 border-neutral-300/80 min-h-[48px] flex items-center transition-all">
+            <div class="flex items-center gap-2 w-full">
+              <div id="feedbackIcon" class="w-6 h-6 sm:w-7 sm:h-7 rounded-lg flex items-center justify-center text-xs shrink-0 font-bold bg-indigo-100 text-indigo-700">
+                <i class="fa-solid fa-lightbulb"></i>
+              </div>
+              <div class="text-[11px] sm:text-xs leading-tight min-w-0 flex-1">
+                <div id="feedbackTitle" class="font-extrabold text-neutral-800 truncate">Hãy chọn 1 trong 4 đáp án A, B, C, D</div>
+                <p id="feedbackExplanation" class="text-neutral-600 m-0 line-clamp-2 text-[10.5px] sm:text-[11.5px]">Mỗi câu trả lời đúng sẽ khiến cuốn sách trên cùng bay sang Khay Thu Hồi và làm chồng sách vơi dần.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between gap-2">
+            <button id="prevQuestionBtn" onclick="navigateQuestion(-1)" class="btn-3d px-3 py-1.5 text-xs font-extrabold flex items-center gap-1.5">
+              <i class="fa-solid fa-arrow-left"></i> Câu Trước
+            </button>
+
+            <span id="actionHintText" class="text-[10.5px] font-bold text-neutral-600 text-center hidden sm:inline truncate">
+              Chọn đáp án đúng để sách bay sang khay thu hồi!
+            </span>
+
+            <button id="nextQuestionBtn" onclick="navigateQuestion(1)" class="btn-3d btn-3d-primary px-3.5 py-1.5 text-xs font-extrabold flex items-center gap-1.5">
+              <span>Câu Tiếp Theo</span> <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== MODAL CHIẾN THẮNG ==================== -->
+  <div id="summaryModal" class="fixed inset-0 bg-neutral-950/75 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div class="card-3d max-w-xl w-full p-6 sm:p-7 text-center">
+      <div class="w-18 h-18 sm:w-20 sm:h-20 rounded-3xl bg-gradient-to-br from-amber-400 to-emerald-500 text-white text-3xl sm:text-4xl flex items-center justify-center mx-auto shadow-xl border-b-4 border-emerald-800 mb-3">
+        <i class="fa-solid fa-award"></i>
+      </div>
+      <span class="text-xs font-extrabold uppercase tracking-widest px-3 py-1 rounded-full bg-indigo-100 text-indigo-800">
+        Hoàn Thành Xuất Sắc 15/15 Câu Hỏi
+      </span>
+      <h2 class="text-xl sm:text-3xl font-extrabold text-neutral-900 mt-2.5">
+        CỞI BỎ ÁP LỰC — ĐÁNH THỨC NĂNG LỰC!
+      </h2>
+      <p class="text-xs sm:text-sm font-bold text-emerald-700 mt-1.5">
+        Toàn bộ 15 cuốn sách áp lực đã bay sang Khay Thu Hồi, chỉ giữ lại cuốn sổ vàng "Nền Tảng Kiến Thức" trên bàn học!
+      </p>
+      <div class="bg-white/85 rounded-2xl p-3.5 sm:p-4 border border-neutral-300 text-left text-xs sm:text-sm text-neutral-700 mt-3.5 space-y-1.5">
+        <div class="font-extrabold text-neutral-900">
+          <i class="fa-solid fa-quote-left text-amber-500 mr-1.5"></i>Thông điệp đúc kết của Nhóm:
+        </div>
+        <p class="m-0 leading-relaxed">
+          <strong>“Điểm số quan trọng, nhưng không phải thước đo duy nhất của năng lực.”</strong> Hãy kết hợp kiến thức nền tảng với tư duy sáng tạo, giao tiếp, làm việc nhóm, thực hành và ghi nhận cả hành trình tiến bộ của mỗi học sinh!
+        </p>
+      </div>
+      <div class="mt-5 flex flex-wrap justify-center gap-3">
+        <button onclick="closeSummaryModal()" class="btn-3d px-4 py-2 text-xs sm:text-sm font-extrabold">
+          Xem Lại Bàn Học 3D
+        </button>
+        <button onclick="restartQuiz()" class="btn-3d btn-3d-amber px-5 py-2 text-xs sm:text-sm font-extrabold">
+          <i class="fa-solid fa-rotate-right mr-1.5"></i> Chơi Lại Từ Đầu
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       DANH SÁCH 15 CÂU HỎI & NỘI DUNG TRANG SÁCH 3D (.page) BÊN CẠNH NHÂN VẬT
+       ========================================================================== */
+    const QUESTIONS_DATA = [
+      {
+        id: 1,
+        numUp: "01",
+        numDown: "15",
+        member: "Thành viên 1 • Mở đầu & Vấn đề",
+        bookTitle: "Định Kiến Điểm Số Tuyệt Đối",
+        pageHeading: "Tập 01: Định Kiến Điểm Số",
+        pageParagraph: "Nhiều người vẫn mặc định con số trên bài kiểm tra là thước đo duy nhất quyết định giá trị một học sinh. Tuy nhiên, quan điểm của nhóm khẳng định: Điểm số chỉ phản ánh một phần kiến thức tại một thời điểm, không thể đại diện cho toàn bộ năng lực con người.",
+        spineMain: "#FF2929",
+        spineDark: "#8a0e0e",
+        question: "Câu hỏi trọng tâm của bài thuyết trình và quan điểm thống nhất của cả nhóm về mối quan hệ giữa Điểm số và Năng lực học sinh là gì?",
+        options: [
+          "A. Điểm số phản ánh tuyệt đối 100% năng lực và giá trị của một học sinh.",
+          "B. Điểm số phản ánh một phần năng lực (kiến thức, kỹ năng làm bài) nhưng không thể phản ánh đầy đủ toàn bộ năng lực.",
+          "C. Điểm số hoàn toàn vô nghĩa và cần xóa bỏ ngay lập tức khỏi trường học.",
+          "D. Chỉ những học sinh đạt điểm 10 mới có khả năng thành công trong thực tế."
+        ],
+        correct: 1,
+        explanation: "Ngay từ phần mở đầu (Thành viên 1), nhóm đã xác định rõ: Điểm số phản ánh một phần năng lực nhưng không thể đại diện cho toàn bộ năng lực đa dạng của mỗi học sinh."
+      },
+      {
+        id: 2,
+        numUp: "02",
+        numDown: "15",
+        member: "Thành viên 2 • Khái niệm cốt lõi",
+        bookTitle: "Đánh Đồng Điểm Số & Năng Lực",
+        pageHeading: "Tập 02: Điểm Số vs Năng Lực",
+        pageParagraph: "Điểm số là thước đo định lượng bằng con số theo quy chuẩn, đáp án mẫu tại một thời điểm. Trong khi đó, Năng lực là tổng hòa giữa kiến thức, kỹ năng, thái độ và khả năng vận dụng vào các tình huống thực tiễn cuộc sống.",
+        spineMain: "#ea580c",
+        spineDark: "#7c2d12",
+        question: "Theo phần giải thích khái niệm của Thành viên 2, sự khác biệt cốt lõi giữa 'Điểm số' và 'Năng lực học sinh' là gì?",
+        options: [
+          "A. Điểm số là thước đo định lượng theo đáp án mẫu tại một thời điểm; còn Năng lực là tổng hòa kiến thức, kỹ năng, thái độ và khả năng vận dụng vào thực tế.",
+          "B. Điểm số rộng hơn năng lực vì bao gồm cả đạo đức và kỹ năng sống.",
+          "C. Điểm số và năng lực là hai khái niệm hoàn toàn giống nhau.",
+          "D. Năng lực chỉ là khả năng học thuộc lòng nhanh trước ngày thi."
+        ],
+        correct: 0,
+        explanation: "Điểm số mang tính định lượng kết quả bài thi tại một thời điểm, trong khi Năng lực là khái niệm rộng và toàn diện hơn rất nhiều."
+      },
+      {
+        id: 3,
+        numUp: "03",
+        numDown: "15",
+        member: "Thành viên 2 • Ví dụ Tiếng Anh",
+        bookTitle: "Ngữ Pháp Cao Nhưng Ngại Giao Tiếp",
+        pageHeading: "Tập 03: Ví Dụ Môn Tiếng Anh",
+        pageParagraph: "Đạt 9 điểm bài kiểm tra ngữ pháp trên giấy phản ánh việc nắm vững cấu trúc câu và từ vựng. Nhưng khả năng tự tin giao tiếp với người nước ngoài, thuyết trình và làm việc nhóm trong dự án song ngữ mới chính là năng lực thực chất.",
+        spineMain: "#d97706",
+        spineDark: "#78350f",
+        question: "Trong ví dụ môn Tiếng Anh của Thành viên 2, yếu tố nào thể hiện 'Năng lực' vượt ra ngoài con số 9 điểm bài kiểm tra ngữ pháp trên giấy?",
+        options: [
+          "A. Khả năng chép phạt từ vựng thật nhanh vào vở.",
+          "B. Khả năng làm đúng các câu trắc nghiệm mẹo trong đề thi thử.",
+          "C. Khả năng tự tin giao tiếp với người nước ngoài, thuyết trình tiếng Anh và phối hợp làm dự án song ngữ.",
+          "D. Khả năng học thuộc lòng bảng động từ bất quy tắc."
+        ],
+        correct: 2,
+        explanation: "Đạt 9 điểm ngữ pháp trên giấy là điểm số, còn tự tin giao tiếp thực tế, thuyết trình và làm dự án song ngữ chính là năng lực vận dụng."
+      },
+      {
+        id: 4,
+        numUp: "04",
+        numDown: "15",
+        member: "Thành viên 2 • Giá trị của điểm số",
+        bookTitle: "Cực Đoan Phủ Nhận Điểm Số",
+        pageHeading: "Tập 04: Giá Trị Của Điểm Số",
+        pageParagraph: "Dù không đại diện cho toàn bộ năng lực, điểm số vẫn phản ánh rõ mức độ nắm vững kiến thức nền tảng, kỹ năng phân tích đề, quản lý thời gian trong phòng thi và thái độ chăm chỉ chuẩn bị bài của học sinh.",
+        spineMain: "#65a30d",
+        spineDark: "#365314",
+        question: "Dù không đại diện cho toàn bộ năng lực, điểm số vẫn phản ánh rõ nét những khía cạnh quan trọng nào của học sinh?",
+        options: [
+          "A. Mức độ nắm vững kiến thức nền tảng, kỹ năng làm bài trong khuôn khổ và thái độ chuẩn bị bài.",
+          "B. Chỉ phản ánh sự may mắn khi khoanh trắc nghiệm.",
+          "C. Phản ánh chính xác 100% chỉ số cảm xúc (EQ) và tài năng lãnh đạo.",
+          "D. Không phản ánh được bất kỳ thông tin nào về việc học."
+        ],
+        correct: 0,
+        explanation: "Thành viên 2 làm rõ điểm số vẫn phản ánh mức độ hiểu bài, khả năng ghi nhớ công thức/phương pháp giải và sự chăm chỉ ôn tập."
+      },
+      {
+        id: 5,
+        numUp: "05",
+        numDown: "15",
+        member: "Thành viên 2 • Ý nghĩa thực tiễn",
+        bookTitle: "Áp Lực Bệnh Thành Tích",
+        pageHeading: "Tập 05: Căn Bệnh Thành Tích",
+        pageParagraph: "Hiểu đúng mối quan hệ giữa điểm số và năng lực giúp học sinh không tự mãn khi điểm cao hay tự ti khi điểm thấp; đồng thời giúp gia đình, nhà trường giảm áp lực thành tích để tôn trọng sở trường khác biệt.",
+        spineMain: "#059669",
+        spineDark: "#064e3b",
+        question: "Vì sao việc nhìn nhận đúng mối quan hệ giữa điểm số và năng lực lại đặc biệt đáng quan tâm đối với học sinh, gia đình và nhà trường?",
+        options: [
+          "A. Để học sinh bỏ bê việc học lý thuyết trên lớp.",
+          "B. Giúp học sinh không tự mãn khi điểm cao hay tự ti khi điểm thấp; giúp gia đình & nhà trường giảm 'bệnh thành tích' và phù hợp xu hướng giáo dục phát triển năng lực.",
+          "C. Để nhà trường tăng thêm thật nhiều kỳ thi sát hạch mỗi tuần.",
+          "D. Để phụ huynh dễ dàng so sánh con mình với 'con nhà người ta'."
+        ],
+        correct: 1,
+        explanation: "Hiểu đúng bản chất điểm số giúp cởi bỏ áp lực thành tích, khuyến khích học thực chất và tôn trọng sở trường riêng của từng cá nhân."
+      },
+      {
+        id: 6,
+        numUp: "06",
+        numDown: "15",
+        member: "Thành viên 3 • Luận điểm 1",
+        bookTitle: "Khuôn Mẫu Giấy Trắng Mực Đen",
+        pageHeading: "Tập 06: Hạn Chế Bài Thi Viết",
+        pageParagraph: "Các bài kiểm tra truyền thống trên giấy thường chỉ đo khả năng ghi nhớ lý thuyết, tái hiện thông tin và tư duy logic toán học. Điểm số bỏ sót tư duy sáng tạo, giao tiếp, làm việc nhóm và giải quyết vấn đề thực tế.",
+        spineMain: "#0891b2",
+        spineDark: "#164e63",
+        question: "Theo Luận điểm 1 của Thành viên 3, các bài kiểm tra truyền thống trên giấy có hạn chế cố định nào?",
+        options: [
+          "A. Tốn quá nhiều mực in của nhà trường.",
+          "B. Thường chỉ đo khả năng ghi nhớ lý thuyết, tái hiện thông tin và tư duy logic khuôn mẫu, bỏ sót sáng tạo, giao tiếp, làm việc nhóm và thích ứng thực tế.",
+          "C. Luôn có thời gian làm bài quá dài khiến học sinh buồn ngủ.",
+          "D. Không thể chấm điểm bằng con số cụ thể."
+        ],
+        correct: 1,
+        explanation: "Bài thi truyền thống trên giấy không thể đo lường toàn diện các kỹ năng mềm và khả năng ứng biến linh hoạt của con người."
+      },
+      {
+        id: 7,
+        numUp: "07",
+        numDown: "15",
+        member: "Thành viên 3 • Luận điểm 2",
+        bookTitle: "Tâm Lý Phòng Thi & Sự Cố Sức Khỏe",
+        pageHeading: "Tập 07: Tâm Lý Phòng Thi",
+        pageParagraph: "Điểm số nhiều khi chỉ phản ánh phong độ nhất thời tại phòng thi chứ không phải năng lực thực sự. Áp lực tâm lý, mất ngủ, lo âu hoặc sự cố sức khỏe đột xuất dễ làm tê liệt tư duy, khiến kết quả sa sút.",
+        spineMain: "#0284c7",
+        spineDark: "#0c4a6e",
+        question: "Theo Luận điểm 2 của Thành viên 3, tại sao kết quả điểm số đôi khi chỉ phản ánh 'phong độ nhất thời' tại phòng thi chứ không phải năng lực thực sự?",
+        options: [
+          "A. Vì điểm số dễ bị chi phối mạnh mẽ bởi áp lực tâm lý, lo âu, mất ngủ, sự cố sức khỏe đột xuất hoặc điều kiện phòng thi bất lợi.",
+          "B. Vì học sinh nào vào phòng thi cũng quên sạch 100% kiến thức.",
+          "C. Vì giám thị coi thi luôn cộng thêm điểm cho học sinh căng thẳng.",
+          "D. Vì đề thi luôn nằm ngoài chương trình học."
+        ],
+        correct: 0,
+        explanation: "Tâm lý căng thẳng, mất ngủ hoặc sốt đột xuất trong ngày thi có thể làm tê liệt tư duy tạm thời, khiến điểm số thấp hơn thực lực thật."
+      },
+      {
+        id: 8,
+        numUp: "08",
+        numDown: "15",
+        member: "Thành viên 3 • Luận điểm 3",
+        bookTitle: "Lát Cắt 45 Phút Ngắn Ngủi",
+        pageHeading: "Tập 08: Lát Cắt Thời Gian",
+        pageParagraph: "Học tập là một hành trình dài tích lũy. Một bài kiểm tra 45 phút hay 90 phút chỉ là một 'lát cắt' tại thời điểm cố định, không thể nói lên sự tiến bộ vượt bậc của một học sinh đi lên từ con số 0 suốt năm học.",
+        spineMain: "#2563eb",
+        spineDark: "#1e3a8a",
+        question: "Hình ảnh ẩn dụ 'Lát cắt tại một thời điểm cố định' trong Luận điểm 3 của Thành viên 3 dùng để nhấn mạnh điều gì?",
+        options: [
+          "A. Một bài thi 45–90 phút chỉ ghi nhận kết quả ở đúng mốc thời gian đó, không thể phản ánh cả hành trình nỗ lực đi lên từ con số 0 suốt năm học.",
+          "B. Bài kiểm tra càng ngắn thì đánh giá đạo đức học sinh càng chuẩn.",
+          "C. Quá trình học tập cả năm không quan trọng bằng 45 phút cuối kỳ.",
+          "D. Học sinh chỉ cần học dồn vào đêm trước ngày thi là đủ."
+        ],
+        correct: 0,
+        explanation: "Học tập là một hành trình tích lũy dài hạn; một bài kiểm tra đơn lẻ không nói lên hết sự kiên trì và mức độ tiến bộ vượt bậc của người học."
+      },
+      {
+        id: 9,
+        numUp: "09",
+        numDown: "15",
+        member: "Thành viên 4 • Tư duy Sáng tạo",
+        bookTitle: "Lối Mòn Đáp Án Mẫu An Toàn",
+        pageHeading: "Tập 09: Lối Mòn Đáp Án Mẫu",
+        pageParagraph: "Các bài kiểm tra thường có đáp án mẫu khiến học sinh đi theo lối mòn để an toàn về điểm số. Trong khi đó, sự sáng tạo lại đòi hỏi sự phá cách, dám sai để tìm ra cái mới — điều dễ bị trừ điểm trên giấy.",
+        spineMain: "#4f46e5",
+        spineDark: "#312e81",
+        question: "Theo phân tích của Thành viên 4, vì sao các thang điểm kiểm tra thông thường dễ làm hạn chế 'Năng lực Sáng tạo' của học sinh?",
+        options: [
+          "A. Vì bài kiểm tra thường đóng khung trong đáp án mẫu an toàn; trong khi sáng tạo đòi hỏi sự 'phá cách', dám sai để tìm ra cái mới.",
+          "B. Vì học sinh phổ thông chưa có khả năng sáng tạo.",
+          "C. Vì sáng tạo chỉ xuất hiện ở môn Mỹ thuật và Âm nhạc.",
+          "D. Vì đáp án mẫu luôn khuyến khích học sinh viết khác sách giáo khoa."
+        ],
+        correct: 0,
+        explanation: "Để an toàn về điểm số, học sinh thường đi theo lối mòn của đáp án mẫu thay vì thử nghiệm những góc nhìn đột phá."
+      },
+      {
+        id: 10,
+        numUp: "10",
+        numDown: "15",
+        member: "Thành viên 4 • Dẫn chứng OECD PISA",
+        bookTitle: "Ngộ Nhận Điểm Toán = Sáng Tạo",
+        pageHeading: "Tập 10: Báo Cáo PISA 2022",
+        pageParagraph: "Theo báo cáo PISA 2022 Results (Volume III, công bố 18/6/2024), OECD đã phải đánh giá Tư duy sáng tạo riêng biệt tại 64 quốc gia vì điểm Toán, Đọc hiểu hay Khoa học không phải thước đo đầy đủ cho sự sáng tạo.",
+        spineMain: "#7c3aed",
+        spineDark: "#4c1d95",
+        question: "Theo dẫn chứng 1 của Thành viên 4, việc tổ chức OECD công bố báo cáo PISA 2022 (Volume III, 18/6/2024) đánh giá riêng biệt 'Tư duy sáng tạo' tại 64 quốc gia cho thấy điều gì?",
+        options: [
+          "A. Điểm Toán, Đọc hiểu và Khoa học đã đo được 100% tư duy sáng tạo.",
+          "B. Năng lực học sinh có nhiều khía cạnh; không thể mặc nhiên xem điểm Toán, Đọc hiểu hay Khoa học là thước đo đầy đủ cho khả năng sáng tạo.",
+          "C. OECD đã bỏ hẳn môn Toán và Khoa học trong kỳ thi PISA.",
+          "D. Tư duy sáng tạo không thể rèn luyện trong nhà trường."
+        ],
+        correct: 1,
+        explanation: "OECD phải thiết kế bài đánh giá chuyên biệt cho Tư duy sáng tạo vì điểm số các môn học truyền thống không thể đại diện hoàn toàn cho năng lực này."
+      },
+      {
+        id: 11,
+        numUp: "11",
+        numDown: "15",
+        member: "Thành viên 4 • Nghiên cứu & Thực tế",
+        bookTitle: "Ảo Tưởng Độ Tin Cậy Tuyệt Đối",
+        pageHeading: "Tập 11: Độ Tin Cậy Đo Lường",
+        pageParagraph: "Nghiên cứu trên 589 học sinh Ba Lan (2012) cho thấy GPA không nhất thiết phản ánh năng lực sáng tạo; và vụ việc phải thi lại tại Tuyên Quang (2026) chứng minh điểm số chỉ phản ánh đúng năng lực khi kỳ thi khách quan.",
+        spineMain: "#9333ea",
+        spineDark: "#581c87",
+        question: "Từ nghiên cứu trên 589 học sinh ở Ba Lan (Gralewski & Karwowski, 2012) và vụ việc bất thường phải tổ chức thi lại tại Tuyên Quang (2026), Thành viên 4 rút ra thông điệp gì?",
+        options: [
+          "A. Điểm trung bình (GPA) không nhất thiết phản ánh năng lực sáng tạo; đồng thời điểm số chỉ có giá trị khi công cụ đo lường thực sự công bằng và khách quan.",
+          "B. Học sinh có điểm GPA cao luôn là người thiếu sáng tạo nhất.",
+          "C. Mọi kỳ thi đều không đáng tin cậy.",
+          "D. Không cần tổ chức bất kỳ kỳ thi tốt nghiệp nào nữa."
+        ],
+        correct: 0,
+        explanation: "Hai dẫn chứng thực tế chỉ ra rằng: GPA không đồng nhất với khả năng sáng tạo, và độ tin cậy của điểm số phụ thuộc chặt chẽ vào tính khách quan của kỳ thi."
+      },
+      {
+        id: 12,
+        numUp: "12",
+        numDown: "15",
+        member: "Thành viên 4 • Thực hành Hóa học",
+        bookTitle: "Lý Thuyết Suông Thiếu Thực Hành",
+        pageHeading: "Tập 12: Giờ Thực Hành Hóa",
+        pageParagraph: "Học sinh A đạt 9 điểm lý thuyết Hóa nhưng lúng túng khi chọn dụng cụ; Học sinh B đạt 6,5 điểm lý thuyết nhưng thao tác thí nghiệm chuẩn xác, an toàn và giải thích tốt hiện tượng. Cần kết hợp cả lý thuyết và thực hành!",
+        spineMain: "#c026d3",
+        spineDark: "#701a75",
+        question: "Trong tình huống giờ thực hành Hóa học (Học sinh A đạt 9 điểm lý thuyết nhưng lúng túng khi chọn dụng cụ; Học sinh B đạt 6,5 điểm lý thuyết nhưng thao tác thí nghiệm chuẩn xác, an toàn), nhận định nào là đúng đắn nhất?",
+        options: [
+          "A. Học sinh B chắc chắn giỏi Hóa học toàn diện hơn Học sinh A.",
+          "B. Học sinh A giỏi toàn diện hơn vì 9 điểm lớn hơn 6,5 điểm.",
+          "C. Kết quả kiểm tra lý thuyết và năng lực thực hành không hoàn toàn đồng nhất; cần kết hợp cả thi viết với quan sát thực hành và báo cáo thí nghiệm.",
+          "D. Môn Hóa học không cần kiểm tra lý thuyết trên giấy."
+        ],
+        correct: 2,
+        explanation: "Tình huống minh họa rõ: Nếu chỉ nhìn vào điểm bài thi viết, giáo viên sẽ bỏ sót thế mạnh thực hành của B và chưa kịp hỗ trợ kỹ năng thao tác cho A."
+      },
+      {
+        id: 13,
+        numUp: "13",
+        numDown: "15",
+        member: "Thành viên 5 • Phản hồi đa chiều",
+        bookTitle: "Đánh Giá Cảm Tính Thiếu Tiêu Chí",
+        pageHeading: "Tập 13: Góc Nhìn Phản Biện",
+        pageParagraph: "Đánh giá quá trình giúp ghi nhận nỗ lực, giao tiếp và hợp tác; nhưng nếu thiếu tiêu chí rõ ràng sẽ dễ mang tính chủ quan. Vì vậy, điểm số vẫn cần thiết và phải kết hợp hài hòa với đánh giá quá trình.",
+        spineMain: "#db2777",
+        spineDark: "#831843",
+        question: "Khi thảo luận và phản hồi các ý kiến trái chiều, Thành viên 5 chỉ ra hạn chế gì nếu chỉ 'đánh giá quá trình học tập' mà thiếu đi điểm số và tiêu chí rõ ràng?",
+        options: [
+          "A. Đánh giá quá trình hoàn toàn không có bất kỳ hạn chế nào.",
+          "B. Có thể mang tính chủ quan và khó bảo đảm tính thống nhất, công bằng nếu thiếu bộ tiêu chí đánh giá rõ ràng.",
+          "C. Khiến học sinh không bao giờ làm bài tập nhóm nữa.",
+          "D. Làm học sinh quên hết kỹ năng giao tiếp."
+        ],
+        correct: 1,
+        explanation: "Thành viên 5 giữ góc nhìn rất công tâm: Điểm số giúp định lượng khách quan, còn đánh giá quá trình ghi nhận nỗ lực nhưng cần tiêu chí rõ ràng để tránh cảm tính."
+      },
+      {
+        id: 14,
+        numUp: "14",
+        numDown: "15",
+        member: "Thành viên 6 • Giải pháp toàn diện",
+        bookTitle: "Đơn Điệu Một Hình Thức Thi",
+        pageHeading: "Tập 14: Giải Pháp Toàn Diện",
+        pageParagraph: "Để đánh giá học sinh toàn diện, nhà trường cần kết hợp điểm kiểm tra với bài tập dự án, sản phẩm thực hành, thuyết trình, hoạt động nhóm và chú trọng mức độ tiến bộ của từng cá nhân.",
+        spineMain: "#e11d48",
+        spineDark: "#881337",
+        question: "Để đánh giá học sinh toàn diện và công bằng hơn, Thành viên 6 đã đề xuất giải pháp kết hợp như thế nào?",
+        options: [
+          "A. Kết hợp điểm kiểm tra với bài tập dự án, sản phẩm thực hành, thuyết trình, hoạt động nhóm và ghi nhận mức độ tiến bộ của từng học sinh.",
+          "B. Chỉ chấm điểm dựa trên một bài thi duy nhất vào cuối năm học.",
+          "C. Xóa bỏ toàn bộ các bài kiểm tra và không nhận xét học sinh.",
+          "D. Áp dụng chung một bài kiểm tra lý thuyết cho tất cả các môn năng khiếu và thực hành."
+        ],
+        correct: 0,
+        explanation: "Đánh giá toàn diện đòi hỏi đa dạng hóa hình thức: kết hợp bài kiểm tra định kỳ với dự án thực tế, thuyết trình, làm việc nhóm và theo dõi sự tiến bộ."
+      },
+      {
+        id: 15,
+        numUp: "15",
+        numDown: "15",
+        member: "Thành viên 6 • Trách nhiệm & Thông điệp",
+        bookTitle: "Áp Lực Thành Tích Từ Nhiều Phía",
+        pageHeading: "Tập 15: Sự Đồng Hành 3 Bên",
+        pageParagraph: "Giáo viên đánh giá khách quan, đa phương pháp; Học sinh chủ động học tập, rèn kỹ năng, không chạy theo điểm số bằng mọi cách; Phụ huynh khích lệ quá trình thay vì chỉ chú trọng thành tích.",
+        spineMain: "#0d9488",
+        spineDark: "#134e4a",
+        question: "Để thông điệp 'Điểm số quan trọng, nhưng không phải thước đo duy nhất của năng lực' đi vào thực tế, trách nhiệm của Giáo viên – Học sinh – Phụ huynh cần phối hợp ra sao?",
+        options: [
+          "A. Mọi trách nhiệm đều thuộc về phía nhà trường và giáo viên.",
+          "B. Giáo viên đánh giá khách quan, đa phương pháp; Học sinh chủ động rèn kỹ năng, không chạy theo điểm số bằng mọi cách; Phụ huynh khích lệ quá trình thay vì chỉ nhìn thành tích.",
+          "C. Phụ huynh chỉ cần yêu cầu con đạt điểm 10 ở tất cả các môn.",
+          "D. Học sinh chỉ cần học những môn có thi đại học, bỏ qua các kỹ năng mềm."
+        ],
+        correct: 1,
+        explanation: "Sự thay đổi tích cực chỉ bền vững khi cả Giáo viên, Học sinh và Phụ huynh cùng tôn trọng sự khác biệt, ghi nhận sự cố gắng và khuyến khích tiến bộ toàn diện!"
+      }
+    ];
+
+    /* ==========================================================================
+       HỆ THỐNG PARTICLE ENGINE 60FPS TRÊN CANVAS (#fx-canvas)
+       - Làm Đúng: Sao 4 cánh phát sáng, trang giấy bay lượn, vòng hào quang & sao băng đuổi theo sách
+       - Làm Sai: Khói xám bốc lên từ bàn, tia sét áp lực đỏ, vòng chấn động & mây đen trên đầu nhân vật
+       ========================================================================== */
+    const fxCanvas = document.getElementById('fx-canvas');
+    const fxCtx = fxCanvas.getContext('2d');
+    let particles = [];
+    let shockwaves = [];
+    let animFrameId = null;
+
+    function resizeFxCanvas() {
+      const dpr = window.devicePixelRatio || 1;
+      fxCanvas.width = window.innerWidth * dpr;
+      fxCanvas.height = window.innerHeight * dpr;
+      fxCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function ensureParticleLoop() {
+      if (!animFrameId) {
+        animFrameId = requestAnimationFrame(updateAndDrawParticles);
+      }
+    }
+
+    function drawFourPointStar(ctx, x, y, radius, rotation, color, alpha) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(rotation);
+      ctx.globalAlpha = Math.max(0, alpha);
+      ctx.fillStyle = color;
+      ctx.shadowColor = color;
+      ctx.shadowBlur = 10;
+      ctx.beginPath();
+      for (let i = 0; i < 4; i++) {
+        ctx.lineTo(Math.cos((i * Math.PI) / 2) * radius, Math.sin((i * Math.PI) / 2) * radius);
+        ctx.lineTo(
+          Math.cos(((i + 0.5) * Math.PI) / 2) * (radius * 0.35),
+          Math.sin(((i + 0.5) * Math.PI) / 2) * (radius * 0.35)
+        );
+      }
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function drawMiniPaperSheet(ctx, x, y, w, h, rot, color, alpha) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(rot);
+      ctx.globalAlpha = Math.max(0, alpha);
+      ctx.fillStyle = '#ffffff';
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(-w / 2, -h / 2, w, h, 2);
+      ctx.fill();
+      ctx.stroke();
+      // Kẻ dòng chữ nhỏ trên trang giấy bay
+      ctx.fillStyle = '#94a3b8';
+      ctx.fillRect(-w / 2 + 3, -h / 4, w - 6, 1.5);
+      ctx.fillRect(-w / 2 + 3, 0, w - 8, 1.5);
+      ctx.restore();
+    }
+
+    function drawJaggedStressSpark(ctx, x, y, size, rot, color, alpha) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(rot);
+      ctx.globalAlpha = Math.max(0, alpha);
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2.6;
+      ctx.shadowColor = '#e11d48';
+      ctx.shadowBlur = 8;
+      ctx.beginPath();
+      ctx.moveTo(-size, -size * 0.4);
+      ctx.lineTo(-size * 0.2, size * 0.2);
+      ctx.lineTo(size * 0.1, -size * 0.3);
+      ctx.lineTo(size, size * 0.5);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function updateAndDrawParticles() {
+      fxCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+      // 1. Vẽ vòng sóng năng lượng (Shockwaves)
+      for (let i = shockwaves.length - 1; i >= 0; i--) {
+        const sw = shockwaves[i];
+        sw.radius += sw.speed;
+        sw.alpha -= sw.decay;
+        if (sw.alpha <= 0) {
+          shockwaves.splice(i, 1);
+          continue;
+        }
+        fxCtx.save();
+        fxCtx.globalAlpha = Math.max(0, sw.alpha);
+        fxCtx.strokeStyle = sw.color;
+        fxCtx.lineWidth = sw.lineWidth;
+        fxCtx.shadowColor = sw.color;
+        fxCtx.shadowBlur = 12;
+        fxCtx.beginPath();
+        fxCtx.arc(sw.x, sw.y, sw.radius, 0, Math.PI * 2);
+        fxCtx.stroke();
+        fxCtx.restore();
+      }
+
+      // 2. Cập nhật và vẽ từng hạt Particle
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += p.gravity;
+        p.vx *= p.drag;
+        p.vy *= p.drag;
+        p.rotation += p.vRot;
+        p.alpha -= p.decay;
+
+        if (p.alpha <= 0) {
+          particles.splice(i, 1);
+          continue;
+        }
+
+        if (p.shape === 'star') {
+          drawFourPointStar(fxCtx, p.x, p.y, p.size, p.rotation, p.color, p.alpha);
+        } else if (p.shape === 'paper') {
+          drawMiniPaperSheet(fxCtx, p.x, p.y + Math.sin(p.rotation * 2) * 2, p.size * 1.35, p.size * 1.75, p.rotation, p.color, p.alpha);
+        } else if (p.shape === 'spark') {
+          drawJaggedStressSpark(fxCtx, p.x, p.y, p.size, p.rotation, p.color, p.alpha);
+        } else if (p.shape === 'smoke') {
+          p.size += 0.25;
+          fxCtx.save();
+          fxCtx.globalAlpha = Math.max(0, p.alpha * 0.65);
+          const grad = fxCtx.createRadialGradient(p.x, p.y, 1, p.x, p.y, p.size);
+          grad.addColorStop(0, p.color);
+          grad.addColorStop(1, 'rgba(30, 27, 46, 0)');
+          fxCtx.fillStyle = grad;
+          fxCtx.beginPath();
+          fxCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          fxCtx.fill();
+          fxCtx.restore();
+        } else {
+          // Hạt tròn phát sáng
+          fxCtx.save();
+          fxCtx.globalAlpha = Math.max(0, p.alpha);
+          fxCtx.fillStyle = p.color;
+          fxCtx.shadowColor = p.color;
+          fxCtx.shadowBlur = 8;
+          fxCtx.beginPath();
+          fxCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          fxCtx.fill();
+          fxCtx.restore();
+        }
+      }
+
+      if (particles.length > 0 || shockwaves.length > 0) {
+        animFrameId = requestAnimationFrame(updateAndDrawParticles);
+      } else {
+        animFrameId = null;
+      }
+    }
+
+    // Hiệu ứng Particle khi trả lời ĐÚNG: Bùng nổ tại chồng sách + Đuôi sao băng bay tới Khay Đã Gỡ
+    function triggerCorrectBookFlightParticles(bookColor) {
+      const stackEl = document.getElementById('minaStackContainer');
+      const trayEl = document.getElementById('clearedBooksTray');
+      if (!stackEl || !trayEl) return;
+
+      const sRect = stackEl.getBoundingClientRect();
+      const tRect = trayEl.getBoundingClientRect();
+
+      const startX = sRect.left + sRect.width * 0.5;
+      const startY = sRect.top + sRect.height * 0.48;
+      const endX = tRect.left + tRect.width * 0.45;
+      const endY = tRect.top + tRect.height * 0.5;
+
+      // Vòng sáng lan tỏa tại điểm sách cất cánh
+      shockwaves.push({
+        x: startX,
+        y: startY,
+        radius: 12,
+        speed: 4.8,
+        lineWidth: 4,
+        color: '#10b981',
+        alpha: 0.9,
+        decay: 0.025
+      });
+
+      const colors = ['#10b981', '#fbbf24', '#34d399', '#6366f1', '#f59e0b', bookColor || '#ec4899'];
+
+      // 38 hạt ngôi sao + trang giấy bay + hạt sáng bùng lên từ chồng sách
+      for (let i = 0; i < 38; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 2 + Math.random() * 7.5;
+        const shapePool = ['star', 'star', 'paper', 'orb'];
+        particles.push({
+          x: startX + (Math.random() - 0.5) * 45,
+          y: startY + (Math.random() - 0.5) * 35,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 2.2,
+          gravity: 0.12,
+          drag: 0.97,
+          size: 5 + Math.random() * 6,
+          rotation: Math.random() * Math.PI * 2,
+          vRot: (Math.random() - 0.5) * 0.14,
+          color: colors[i % colors.length],
+          alpha: 1,
+          decay: 0.015 + Math.random() * 0.012,
+          shape: shapePool[i % shapePool.length]
+        });
+      }
+
+      // Đuôi sao băng đuổi theo quỹ đạo cuốn sách bay về Khay Sách Đã Gỡ trong 700ms
+      const steps = 14;
+      for (let step = 1; step <= steps; step++) {
+        setTimeout(() => {
+          const t = step / steps;
+          // Quỹ đạo cong Bezier bậc 2
+          const ctrlX = (startX + endX) * 0.5 + 30;
+          const ctrlY = Math.min(startY, endY) - 110;
+          const curX = (1 - t) * (1 - t) * startX + 2 * (1 - t) * t * ctrlX + t * t * endX;
+          const curY = (1 - t) * (1 - t) * startY + 2 * (1 - t) * t * ctrlY + t * t * endY;
+
+          for (let k = 0; k < 4; k++) {
+            particles.push({
+              x: curX + (Math.random() - 0.5) * 18,
+              y: curY + (Math.random() - 0.5) * 18,
+              vx: (Math.random() - 0.5) * 2.4,
+              vy: (Math.random() - 0.5) * 2.4 - 0.6,
+              gravity: 0.05,
+              drag: 0.96,
+              size: 4 + Math.random() * 4.5,
+              rotation: Math.random() * Math.PI,
+              vRot: 0.12,
+              color: k % 2 === 0 ? '#fbbf24' : '#34d399',
+              alpha: 0.95,
+              decay: 0.028,
+              shape: k === 0 ? 'star' : 'orb'
+            });
+          }
+          ensureParticleLoop();
+        }, step * 46);
+      }
+
+      // Khi sách đáp vào Khay Đã Gỡ (~720ms): Nổ vòng hào quang vàng-xanh tại khay
+      setTimeout(() => {
+        shockwaves.push({
+          x: endX,
+          y: endY,
+          radius: 6,
+          speed: 3.6,
+          lineWidth: 3.5,
+          color: '#fbbf24',
+          alpha: 0.95,
+          decay: 0.032
+        });
+        for (let j = 0; j < 20; j++) {
+          const a = Math.random() * Math.PI * 2;
+          const sp = 1.5 + Math.random() * 4.8;
+          particles.push({
+            x: endX,
+            y: endY,
+            vx: Math.cos(a) * sp,
+            vy: Math.sin(a) * sp,
+            gravity: 0.08,
+            drag: 0.95,
+            size: 4 + Math.random() * 4,
+            rotation: Math.random() * Math.PI,
+            vRot: 0.15,
+            color: j % 2 === 0 ? '#10b981' : '#f59e0b',
+            alpha: 1,
+            decay: 0.025,
+            shape: 'star'
+          });
+        }
+        ensureParticleLoop();
+      }, 720);
+
+      ensureParticleLoop();
+    }
+
+    // Hiệu ứng Particle khi trả lời SAI: Sách dập xuống phát khói bụi xám, tia lửa điện đỏ & mây đen trên đầu nhân vật
+    function triggerWrongSlamParticles() {
+      const stackEl = document.getElementById('minaStackContainer');
+      const charEl = document.getElementById('characterSeatZone');
+      if (!stackEl) return;
+
+      const sRect = stackEl.getBoundingClientRect();
+      const impactX = sRect.left + sRect.width * 0.5;
+      const impactY = sRect.top + sRect.height * 0.58;
+
+      // Vòng chấn động đỏ thẫm
+      shockwaves.push({
+        x: impactX,
+        y: impactY,
+        radius: 15,
+        speed: 5.5,
+        lineWidth: 5,
+        color: '#e11d48',
+        alpha: 0.95,
+        decay: 0.028
+      });
+
+      // 24 đám khói bụi áp lực bốc ra hai bên mặt bàn
+      for (let i = 0; i < 24; i++) {
+        const dir = i % 2 === 0 ? -1 : 1;
+        particles.push({
+          x: impactX + (Math.random() - 0.5) * 60,
+          y: impactY + (Math.random() - 0.5) * 20,
+          vx: dir * (2 + Math.random() * 6),
+          vy: -1 - Math.random() * 3.5,
+          gravity: -0.04,
+          drag: 0.96,
+          size: 12 + Math.random() * 14,
+          rotation: Math.random() * Math.PI,
+          vRot: 0.04,
+          color: i % 3 === 0 ? 'rgba(225, 29, 72, 0.55)' : 'rgba(71, 85, 105, 0.65)',
+          alpha: 0.85,
+          decay: 0.02,
+          shape: 'smoke'
+        });
+      }
+
+      // 22 tia sét/tia lửa áp lực màu đỏ & cam văng ra
+      const errColors = ['#e11d48', '#f43f5e', '#fb7185', '#f97316'];
+      for (let i = 0; i < 22; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 3 + Math.random() * 7;
+        particles.push({
+          x: impactX,
+          y: impactY - 15,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 1.5,
+          gravity: 0.18,
+          drag: 0.96,
+          size: 6 + Math.random() * 6,
+          rotation: angle,
+          vRot: (Math.random() - 0.5) * 0.2,
+          color: errColors[i % errColors.length],
+          alpha: 1,
+          decay: 0.022,
+          shape: 'spark'
+        });
+      }
+
+      // Khói mây đen u ám quanh đầu nhân vật học sinh
+      if (charEl) {
+        const cRect = charEl.getBoundingClientRect();
+        const headX = cRect.left + cRect.width * 0.52;
+        const headY = cRect.top + cRect.height * 0.28;
+        for (let k = 0; k < 12; k++) {
+          particles.push({
+            x: headX + (Math.random() - 0.5) * 55,
+            y: headY + (Math.random() - 0.5) * 30,
+            vx: (Math.random() - 0.5) * 2.2,
+            vy: -0.8 - Math.random() * 1.8,
+            gravity: -0.02,
+            drag: 0.97,
+            size: 14 + Math.random() * 12,
+            rotation: 0,
+            vRot: 0.02,
+            color: k % 2 === 0 ? 'rgba(51, 65, 85, 0.7)' : 'rgba(190, 18, 60, 0.5)',
+            alpha: 0.85,
+            decay: 0.02,
+            shape: 'smoke'
+          });
+        }
+      }
+
+      ensureParticleLoop();
+    }
+
+    /* ==========================================================================
+       BIẾN TRẠNG THÁI & ÂM THANH WEB AUDIO API
+       ========================================================================== */
+    let currentQuestionIndex = 0;
+    const solvedQuestions = new Set();
+    const selectedAnswers = {};
+    const currentPageScale = 0.275;
+    let soundEnabled = true;
+    let audioCtx = null;
+
+    function playSoundEffect(type) {
+      if (!soundEnabled) return;
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        const now = audioCtx.currentTime;
+
+        if (type === 'correct') {
+          // Âm thanh arpeggio chiến thắng + tiếng vuốt gió khi sách bay
+          const notes = [523.25, 659.25, 783.99, 1046.5, 1318.5];
+          notes.forEach((freq, idx) => {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, now + idx * 0.055);
+            gain.gain.setValueAtTime(0.14, now + idx * 0.055);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.055 + 0.28);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now + idx * 0.055);
+            osc.stop(now + idx * 0.055 + 0.29);
+          });
+        } else if (type === 'wrong') {
+          // Tiếng sách dập nặng nề (Heavy Slam Thud + Buzz)
+          const osc1 = audioCtx.createOscillator();
+          const gain1 = audioCtx.createGain();
+          osc1.type = 'sawtooth';
+          osc1.frequency.setValueAtTime(160, now);
+          osc1.frequency.exponentialRampToValueAtTime(48, now + 0.32);
+          gain1.gain.setValueAtTime(0.2, now);
+          gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+          osc1.connect(gain1);
+          gain1.connect(audioCtx.destination);
+          osc1.start(now);
+          osc1.stop(now + 0.36);
+
+          const osc2 = audioCtx.createOscillator();
+          const gain2 = audioCtx.createGain();
+          osc2.type = 'square';
+          osc2.frequency.setValueAtTime(95, now + 0.08);
+          osc2.frequency.linearRampToValueAtTime(65, now + 0.28);
+          gain2.gain.setValueAtTime(0.1, now + 0.08);
+          gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+          osc2.connect(gain2);
+          gain2.connect(audioCtx.destination);
+          osc2.start(now + 0.08);
+          osc2.stop(now + 0.31);
+        } else if (type === 'flip') {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(420, now);
+          osc.frequency.exponentialRampToValueAtTime(660, now + 0.08);
+          gain.gain.setValueAtTime(0.06, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.09);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.1);
+        }
+      } catch (e) {}
+    }
+
+    function toggleAudio() {
+      soundEnabled = !soundEnabled;
+      const icon = document.getElementById('soundToggleIcon');
+      icon.className = soundEnabled ? 'fa-solid fa-volume-high' : 'fa-solid fa-volume-xmark text-rose-600';
+    }
+
+    /* ==========================================================================
+       TỰ ĐỘNG CO GIÃN SÂN KHẤU 3D & ĐẢM BẢO CỘT CÂU HỎI HIỂN THỊ 100% TRÊN MỌI MÀN HÌNH NHỎ
+       ========================================================================== */
+    function fitDeskSceneToViewport() {
+      const viewport = document.getElementById('stageViewport');
+      const canvas = document.getElementById('deskSceneCanvas');
+      if (viewport && canvas) {
+        const vw = viewport.clientWidth;
+        const vh = viewport.clientHeight;
+        const baseW = 650;
+        const baseH = 440;
+        const scale = Math.min((vw - 10) / baseW, (vh - 10) / baseH, 1.1);
+        canvas.style.transform = `scale(${Math.max(0.42, scale)})`;
+      }
+    }
+
+    /* ==========================================================================
+       IMPORT TRỰC TIẾP ẢNH NHÂN VẬT TỪ BÊN NGOÀI (LOCAL / VERCEL / LOCALSTORAGE)
+       ========================================================================== */
+    const CANDIDATE_IMAGE_PATHS = [
+      'Untitled_design-removebg-preview.png',
+      './Untitled_design-removebg-preview.png',
+      'Untitled design.jpg',
+      './Untitled design.jpg',
+      'Untitled%20design.jpg',
+      'student.png',
+      'student.jpg'
+    ];
+    let pathTryCursor = 0;
+
+    function handleImageLoadedSuccess() {
+      const notice = document.getElementById('missingImageNotice');
+      if (notice) notice.classList.add('hidden');
+    }
+
+    function tryNextImagePath(imgElement) {
+      try {
+        const cachedV4 = localStorage.getItem('saved_student_avatar_v4') || localStorage.getItem('clay_student_img_v3');
+        if (cachedV4 && imgElement.src !== cachedV4) {
+          imgElement.src = cachedV4;
+          return;
+        }
+      } catch (e) {}
+
+      pathTryCursor++;
+      if (pathTryCursor < CANDIDATE_IMAGE_PATHS.length) {
+        imgElement.src = CANDIDATE_IMAGE_PATHS[pathTryCursor];
+      } else {
+        imgElement.onerror = null;
+        const notice = document.getElementById('missingImageNotice');
+        if (notice) notice.classList.remove('hidden');
+      }
+    }
+
+    function handleManualImageUpload(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        const dataUrl = ev.target.result;
+        const imgEl = document.getElementById('student-photo');
+        imgEl.src = dataUrl;
+        handleImageLoadedSuccess();
+        try {
+          localStorage.setItem('saved_student_avatar_v4', dataUrl);
+          localStorage.setItem('clay_student_img_v3', dataUrl);
+        } catch (err) {}
+      };
+      reader.readAsDataURL(file);
+    }
+
+    /* ==========================================================================
+       CẬP NHẬT KHAY SÁCH ĐÃ GỠ & THƯỚC ĐO ĐỘ CAO CHỒNG SÁCH VƠI DẦN
+       ========================================================================== */
+    function renderClearedTrayAndHeightMeter(justCaughtBook = false) {
+      const solvedArray = Array.from(solvedQuestions).map(idx => QUESTIONS_DATA[idx]);
+      const clearedCount = solvedArray.length;
+      const remainingCount = QUESTIONS_DATA.length - clearedCount;
+
+      // 1. Cập nhật Khay Sách Đã Gỡ (Góc trên bên trái)
+      const trayText = document.getElementById('clearedTrayCountText');
+      const miniStackEl = document.getElementById('miniClearedStackVisual');
+      const trayBox = document.getElementById('clearedBooksTray');
+
+      if (trayText) trayText.textContent = `${clearedCount} / 15 quyển`;
+      if (miniStackEl) {
+        miniStackEl.innerHTML = '';
+        const visibleMini = solvedArray.slice(-7);
+        visibleMini.forEach((book, i) => {
+          const item = document.createElement('div');
+          item.className = 'mini-book-item';
+          item.style.bottom = `${i * 4.5}px`;
+          item.style.background = book.spineMain;
+          item.style.transform = `translateX(${(i % 2 === 0 ? -1 : 1)}px)`;
+          miniStackEl.appendChild(item);
+        });
+      }
+
+      if (justCaughtBook && trayBox) {
+        trayBox.classList.remove('tray-receive-pulse');
+        void trayBox.offsetWidth;
+        trayBox.classList.add('tray-receive-pulse');
+      }
+
+      // 2. Cập nhật Thước Đo Chiều Cao Chồng Sách 15 -> 0 (Góc trên bên phải)
+      const meterBarsEl = document.getElementById('stackHeightMeterBars');
+      const meterNumEl = document.getElementById('meterNumberText');
+      if (meterNumEl) {
+        meterNumEl.textContent = `${remainingCount}/15`;
+        meterNumEl.className = remainingCount === 0
+          ? 'text-[10px] font-black text-emerald-600 leading-none'
+          : 'text-[10px] font-black text-rose-600 leading-none';
+      }
+      if (meterBarsEl) {
+        meterBarsEl.innerHTML = '';
+        for (let i = 0; i < QUESTIONS_DATA.length; i++) {
+          const seg = document.createElement('div');
+          seg.className = 'meter-bar-segment';
+          if (i < remainingCount) {
+            seg.style.background = QUESTIONS_DATA[i].spineMain;
+            seg.style.opacity = '1';
+          } else {
+            seg.style.background = '#cbd5e1';
+            seg.style.opacity = '0.35';
+          }
+          meterBarsEl.appendChild(seg);
+        }
+      }
+    }
+
+    /* ==========================================================================
+       RENDER ĐẦY ĐỦ 15 CUỐN SÁCH 3D (.page) ĐỂ THẤY RÕ SÁCH VƠI DẦN TỪNG QUYỂN
+       ========================================================================== */
+    function renderMinaPageStackOnDesk(options = {}) {
+      const { flyingQuestionIdx = null, wrongSlam = false } = options;
+      const container = document.getElementById('minaStackContainer');
+      container.innerHTML = '';
+
+      const remainingQuestions = QUESTIONS_DATA.filter((_, idx) => !solvedQuestions.has(idx));
+      const remainingCount = remainingQuestions.length;
+
+      // Cập nhật các nhãn đếm số sách
+      document.getElementById('remainingBooksLabel').textContent = `${remainingCount} / 15 quyển`;
+      document.getElementById('scoreCounter').textContent = `${solvedQuestions.size} / 15 ★`;
+      document.getElementById('deskPlaqueCount').textContent =
+        `Trên bàn: ${remainingCount} quyển áp lực + 1 sổ nền tảng`;
+
+      const pctRemaining = Math.round((remainingCount / QUESTIONS_DATA.length) * 100);
+      document.getElementById('pressureProgressBar').style.width = `${pctRemaining}%`;
+
+      // Cập nhật cảm xúc nhân vật ngồi bên cạnh chồng sách
+      const moodBadge = document.getElementById('studentMoodBadge');
+      const studentPhoto = document.getElementById('student-photo');
+
+      if (remainingCount === 0) {
+        moodBadge.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-400 shadow-sm shrink-0';
+        moodBadge.innerHTML = '🌟 Đã gỡ hết 15 cuốn sách áp lực!';
+        studentPhoto.style.filter = 'drop-shadow(0 14px 24px rgba(16, 185, 129, 0.45)) brightness(1.06)';
+      } else if (remainingCount <= 7) {
+        moodBadge.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-amber-100 text-amber-800 border border-amber-300 shadow-sm shrink-0';
+        moodBadge.innerHTML = `😊 Sách đang vơi dần! Còn ${remainingCount} cuốn`;
+        studentPhoto.style.filter = 'drop-shadow(0 14px 20px rgba(32, 24, 38, 0.35)) brightness(1.02)';
+      } else {
+        moodBadge.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-rose-100 text-rose-800 border border-rose-300 shadow-sm shrink-0';
+        moodBadge.innerHTML = `😓 Còn ${remainingCount} cuốn sách áp lực trên bàn`;
+        studentPhoto.style.filter = 'drop-shadow(0 14px 20px rgba(32, 24, 38, 0.38))';
+      }
+
+      // 1. LUÔN ĐẶT CUỐN SỔ VÀNG "NỀN TẢNG KIẾN THỨC" Ở ĐÁY CHỒNG SÁCH TRÊN BÀN
+      const baseLayer = document.createElement('div');
+      baseLayer.className = 'mina-book-layer';
+      baseLayer.style.zIndex = '1';
+      baseLayer.style.setProperty('--layer-offset', '0px');
+      baseLayer.style.setProperty('--layer-x', '0px');
+      baseLayer.innerHTML = `
+        <div class="page foundation-page" style="--page-scale: ${currentPageScale};">
+          <h1>NỀN TẢNG KIẾN THỨC & ĐIỂM SỐ KHÁCH QUAN</h1>
+          <p>
+            Điểm số có vai trò quan trọng trong việc phản ánh mức độ hiểu bài và ghi nhớ kiến thức tại một thời điểm. Khi cởi bỏ hết 15 cuốn sách áp lực, cuốn sổ Nền Tảng Kiến Thức này vẫn luôn ở lại trên bàn học cùng với Sáng tạo, Giao tiếp, Thực hành và Sự tiến bộ!
+          </p>
+        </div>
+      `;
+      container.appendChild(baseLayer);
+
+      // 2. RENDER TẤT CẢ CÁC CUỐN SÁCH CÒN LẠI (TỪ 15 VỀ 0) ĐỂ THẤY RÕ ĐỘ CAO VƠI DẦN TỪNG QUYỂN
+      const activeQ = QUESTIONS_DATA[currentQuestionIndex];
+      const isCurrentSolved = solvedQuestions.has(currentQuestionIndex);
+      const stepPx = 6.2; // Mỗi cuốn sách cao thêm 6.2px -> 15 cuốn tạo thành tháp cao ~93px và thấp dần về 0
+
+      for (let i = 0; i < remainingCount; i++) {
+        const layerQ = remainingQuestions[i];
+        const isTopLayer = (i === remainingCount - 1);
+        const displayData = (isTopLayer && !isCurrentSolved) ? activeQ : layerQ;
+
+        const offsetPx = (i + 1) * stepPx;
+        const jitterX = ((layerQ.id * 7) % 5 - 2) * 1.6;
+
+        const layerDiv = document.createElement('div');
+        let layerClasses = 'mina-book-layer';
+        if (isTopLayer) layerClasses += ' top-interactive-page';
+        if (flyingQuestionIdx !== null) layerClasses += ' stack-settle-down';
+        if (wrongSlam) {
+          layerClasses += isTopLayer ? ' mina-wrong-slam-top' : ' mina-wrong-compress';
+        }
+
+        layerDiv.className = layerClasses;
+        layerDiv.style.zIndex = String(10 + i);
+        layerDiv.style.setProperty('--layer-offset', `${offsetPx}px`);
+        layerDiv.style.setProperty('--layer-x', `${isTopLayer ? 0 : jitterX}px`);
+
+        layerDiv.innerHTML = `
+          <div class="page" style="--page-scale: ${currentPageScale}; --spine-main: ${displayData.spineMain}; --spine-dark: ${displayData.spineDark}; --page-title-color: ${displayData.spineMain};">
+            <h1>${displayData.pageHeading}</h1>
+            <p>${displayData.pageParagraph}</p>
+          </div>
+        `;
+
+        if (isTopLayer) {
+          layerDiv.onclick = () => {
+            playSoundEffect('flip');
+          };
+        }
+
+        container.appendChild(layerDiv);
+      }
+
+      // Nhãn nổi hiển thị chiều cao chồng sách ngay phía trên đỉnh chồng sách
+      const counterTag = document.createElement('div');
+      counterTag.className = 'stack-floating-counter';
+      const topY = Math.max(8, 128 - remainingCount * stepPx);
+      counterTag.style.top = `${topY}px`;
+      if (remainingCount === 0) {
+        counterTag.style.background = 'linear-gradient(135deg, #059669 0%, #10b981 100%)';
+        counterTag.style.borderColor = '#a7f3d0';
+        counterTag.innerHTML = `<i class="fa-solid fa-check-double mr-1"></i>Chỉ còn Sổ Nền Tảng Kiến Thức!`;
+      } else {
+        counterTag.innerHTML = `<i class="fa-solid fa-layer-group mr-1 text-amber-300"></i>Chồng sách: còn ${remainingCount} quyển`;
+      }
+      container.appendChild(counterTag);
+
+      // 3. KHI TRẢ LỜI ĐÚNG: Tạo cuốn sách .page bay theo đường cong sang Khay Sách Đã Gỡ!
+      if (flyingQuestionIdx !== null) {
+        const flyData = QUESTIONS_DATA[flyingQuestionIdx];
+        const flyOffset = (remainingCount + 1) * stepPx;
+        const flyLayer = document.createElement('div');
+        flyLayer.className = 'mina-book-layer mina-fly-to-tray';
+        flyLayer.style.zIndex = '90';
+        flyLayer.style.setProperty('--layer-offset', `${flyOffset}px`);
+        flyLayer.innerHTML = `
+          <div class="page" style="--page-scale: ${currentPageScale}; --spine-main: ${flyData.spineMain}; --spine-dark: ${flyData.spineDark}; --page-title-color: ${flyData.spineMain};">
+            <h1>${flyData.pageHeading} ✓</h1>
+            <p>${flyData.pageParagraph}</p>
+          </div>
+        `;
+        container.appendChild(flyLayer);
+      }
+
+      // 4. KHI TRẢ LỜI SAI: Tạo dấu đóng "ÁP LỰC ĐÈ NẶNG!" giáng xuống đỉnh chồng sách
+      if (wrongSlam) {
+        const stamp = document.createElement('div');
+        stamp.className = 'wrong-pressure-stamp stamp-slam-active';
+        stamp.innerHTML = `<i class="fa-solid fa-bolt mr-1"></i>SAI RỒI! ÁP LỰC ĐÈ NẶNG!`;
+        container.appendChild(stamp);
+      }
+    }
+
+    /* ==========================================================================
+       KÍCH HOẠT HIỆU ỨNG SÂN KHẤU KHI TRẢ LỜI ĐÚNG HOẶC SAI
+       ========================================================================== */
+    function triggerStageVisualFeedback(isCorrect, questionIdx) {
+      const stageEl = document.getElementById('stageViewport');
+      const deskEl = document.getElementById('woodenDeskAssembly');
+      const ringEl = document.getElementById('deskShockwaveRing');
+      const studentImg = document.getElementById('student-photo');
+
+      // Reset classes
+      stageEl.classList.remove('stage-wrong-flash', 'stage-correct-glow');
+      deskEl.classList.remove('desk-wrong-slam-shake');
+      ringEl.classList.remove('ring-wrong-active', 'ring-correct-active');
+      studentImg.classList.remove('student-cheer-anim', 'student-stress-flinch');
+      void stageEl.offsetWidth;
+
+      if (isCorrect) {
+        const qData = QUESTIONS_DATA[questionIdx];
+        stageEl.classList.add('stage-correct-glow');
+        ringEl.classList.add('ring-correct-active');
+        studentImg.classList.add('student-cheer-anim');
+        triggerCorrectBookFlightParticles(qData ? qData.spineMain : '#10b981');
+      } else {
+        stageEl.classList.add('stage-wrong-flash');
+        deskEl.classList.add('desk-wrong-slam-shake');
+        ringEl.classList.add('ring-wrong-active');
+        studentImg.classList.add('student-stress-flinch');
+        triggerWrongSlamParticles();
+      }
+    }
+
+    /* ==========================================================================
+       RENDER BẢNG CÂU HỎI & ĐÁP ÁN A, B, C, D (CỐ ĐỊNH TRONG KHUNG NHÌN)
+       ========================================================================== */
+    function renderQuestionDots() {
+      const container = document.getElementById('questionDotsContainer');
+      container.innerHTML = '';
+
+      QUESTIONS_DATA.forEach((q, idx) => {
+        const btn = document.createElement('button');
+        const isCurrent = idx === currentQuestionIndex;
+        const isSolved = solvedQuestions.has(idx);
+
+        let cls = 'h-6 sm:h-7 rounded-lg text-[10px] sm:text-[11px] font-extrabold transition-all flex items-center justify-center border ';
+        if (isCurrent) {
+          cls += 'bg-indigo-600 text-white border-indigo-900 shadow-sm scale-105';
+        } else if (isSolved) {
+          cls += 'bg-emerald-500 text-white border-emerald-700';
+        } else {
+          cls += 'bg-white/85 text-neutral-700 border-neutral-300 hover:bg-white';
+        }
+
+        btn.className = cls;
+        btn.textContent = idx + 1;
+        btn.onclick = () => {
+          currentQuestionIndex = idx;
+          playSoundEffect('flip');
+          renderAll();
+        };
+        container.appendChild(btn);
+      });
+    }
+
+    function renderQuestionPanel() {
+      const q = QUESTIONS_DATA[currentQuestionIndex];
+      const alreadySolved = solvedQuestions.has(currentQuestionIndex);
+
+      document.getElementById('stageStatusHeading').textContent = alreadySolved
+        ? `Đã Gỡ Sang Khay: Cuốn #${q.numUp} — ${q.bookTitle} ✓`
+        : `Đang Mở Trên Bàn: Cuốn #${q.numUp} — ${q.bookTitle}`;
+
+      document.getElementById('questionProgressBadge').textContent = `Câu ${currentQuestionIndex + 1} / ${QUESTIONS_DATA.length}`;
+      document.getElementById('qMemberTag').textContent = q.member;
+      document.getElementById('qPressureBookTag').textContent = `Sách #${q.numUp}: ${q.bookTitle}`;
+      document.getElementById('questionText').textContent = q.question;
+
+      const optionsGrid = document.getElementById('optionsGrid');
+      optionsGrid.innerHTML = '';
+
+      const letters = ['A', 'B', 'C', 'D'];
+      const chosenIdx = selectedAnswers[currentQuestionIndex];
+
+      q.options.forEach((optText, optIdx) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-3d-btn flex items-center gap-2.5 w-full h-full';
+
+        if (alreadySolved && optIdx === q.correct) {
+          btn.classList.add('correct-choice');
+        } else if (chosenIdx === optIdx && optIdx !== q.correct) {
+          btn.classList.add('wrong-choice');
+        }
+
+        const cleanText = optText.replace(/^[A-D]\.\s*/, '');
+
+        btn.innerHTML = `
+          <span class="w-6 h-6 sm:w-7 sm:h-7 rounded-lg font-extrabold text-xs flex items-center justify-center shrink-0 border ${
+            alreadySolved && optIdx === q.correct
+              ? 'bg-emerald-600 text-white border-emerald-800'
+              : 'bg-indigo-100 text-indigo-900 border-indigo-300'
+          }">
+            ${letters[optIdx]}
+          </span>
+          <span class="font-bold text-neutral-800 leading-snug line-clamp-2" style="font-size: clamp(0.74rem, 1.08vh + 0.2vw, 0.9rem);">
+            ${cleanText}
+          </span>
+        `;
+
+        btn.onclick = () => selectAnswer(optIdx);
+        optionsGrid.appendChild(btn);
+      });
+
+      const feedbackBox = document.getElementById('feedbackBox');
+      const feedbackIcon = document.getElementById('feedbackIcon');
+      const feedbackTitle = document.getElementById('feedbackTitle');
+      const feedbackExplanation = document.getElementById('feedbackExplanation');
+
+      if (chosenIdx !== undefined) {
+        const isCorrect = chosenIdx === q.correct;
+        if (isCorrect) {
+          feedbackBox.className = 'rounded-xl px-2.5 py-1.5 border-2 bg-emerald-50 border-emerald-400 min-h-[48px] flex items-center transition-all';
+          feedbackIcon.className = 'w-6 h-6 sm:w-7 sm:h-7 rounded-lg flex items-center justify-center text-xs shrink-0 font-bold bg-emerald-600 text-white';
+          feedbackIcon.innerHTML = '<i class="fa-solid fa-check"></i>';
+          feedbackTitle.className = 'font-extrabold text-emerald-900 truncate';
+          feedbackTitle.textContent = `Chính xác! Cuốn "${q.bookTitle}" đã bay sang Khay Thu Hồi!`;
+        } else {
+          feedbackBox.className = 'rounded-xl px-2.5 py-1.5 border-2 bg-rose-50 border-rose-400 min-h-[48px] flex items-center transition-all';
+          feedbackIcon.className = 'w-6 h-6 sm:w-7 sm:h-7 rounded-lg flex items-center justify-center text-xs shrink-0 font-bold bg-rose-600 text-white';
+          feedbackIcon.innerHTML = '<i class="fa-solid fa-bolt"></i>';
+          feedbackTitle.className = 'font-extrabold text-rose-900 truncate';
+          feedbackTitle.textContent = 'Chưa chính xác! Chồng sách áp lực vừa dập xuống bàn — thử lại nhé!';
+        }
+        feedbackExplanation.className = 'text-neutral-700 m-0 line-clamp-2 text-[10.5px] sm:text-[11.5px]';
+        feedbackExplanation.textContent = q.explanation;
+      } else {
+        feedbackBox.className = 'rounded-xl px-2.5 py-1.5 border-2 bg-white/75 border-neutral-300/80 min-h-[48px] flex items-center transition-all';
+        feedbackIcon.className = 'w-6 h-6 sm:w-7 sm:h-7 rounded-lg flex items-center justify-center text-xs shrink-0 font-bold bg-indigo-100 text-indigo-700';
+        feedbackIcon.innerHTML = '<i class="fa-solid fa-lightbulb"></i>';
+        feedbackTitle.className = 'font-extrabold text-neutral-800 truncate';
+        feedbackTitle.textContent = 'Hãy chọn 1 trong 4 đáp án A, B, C, D';
+        feedbackExplanation.className = 'text-neutral-600 m-0 line-clamp-2 text-[10.5px] sm:text-[11.5px]';
+        feedbackExplanation.textContent = 'Mỗi câu trả lời đúng sẽ khiến cuốn sách trên cùng bay sang Khay Thu Hồi và làm chồng sách vơi dần.';
+      }
+
+      document.getElementById('prevQuestionBtn').disabled = currentQuestionIndex === 0;
+      document.getElementById('prevQuestionBtn').style.opacity = currentQuestionIndex === 0 ? '0.5' : '1';
+    }
+
+    function selectAnswer(optIdx) {
+      const q = QUESTIONS_DATA[currentQuestionIndex];
+      selectedAnswers[currentQuestionIndex] = optIdx;
+
+      if (optIdx === q.correct) {
+        const wasAlreadySolved = solvedQuestions.has(currentQuestionIndex);
+        solvedQuestions.add(currentQuestionIndex);
+        playSoundEffect('correct');
+
+        // Render chồng sách vơi đi 1 quyển + cuốn sách vừa giải bay sang Khay Thu Hồi
+        renderAll({
+          flyingQuestionIdx: !wasAlreadySolved ? currentQuestionIndex : null,
+          wrongSlam: false,
+          justCaughtBook: !wasAlreadySolved
+        });
+
+        triggerStageVisualFeedback(true, currentQuestionIndex);
+
+        if (solvedQuestions.size === QUESTIONS_DATA.length) {
+          setTimeout(() => {
+            openSummaryModal();
+          }, 1050);
+        }
+      } else {
+        playSoundEffect('wrong');
+        // Render hiệu ứng chồng sách dập mạnh xuống bàn + tia lửa áp lực
+        renderMinaPageStackOnDesk({ flyingQuestionIdx: null, wrongSlam: true });
+        renderQuestionPanel();
+        triggerStageVisualFeedback(false, currentQuestionIndex);
+      }
+    }
+
+    function navigateQuestion(direction) {
+      const nextIdx = currentQuestionIndex + direction;
+      if (nextIdx >= 0 && nextIdx < QUESTIONS_DATA.length) {
+        currentQuestionIndex = nextIdx;
+        playSoundEffect('flip');
+        renderAll();
+      } else if (nextIdx >= QUESTIONS_DATA.length && solvedQuestions.size === QUESTIONS_DATA.length) {
+        openSummaryModal();
+      }
+    }
+
+    function openSummaryModal() {
+      const modal = document.getElementById('summaryModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeSummaryModal() {
+      const modal = document.getElementById('summaryModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function restartQuiz() {
+      solvedQuestions.clear();
+      Object.keys(selectedAnswers).forEach(k => delete selectedAnswers[k]);
+      currentQuestionIndex = 0;
+      closeSummaryModal();
+      playSoundEffect('flip');
+      renderAll();
+    }
+
+    function renderAll(opts = {}) {
+      renderMinaPageStackOnDesk(opts);
+      renderClearedTrayAndHeightMeter(Boolean(opts.justCaughtBook));
+      renderQuestionDots();
+      renderQuestionPanel();
+      fitDeskSceneToViewport();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      resizeFxCanvas();
+      try {
+        const savedImg = localStorage.getItem('saved_student_avatar_v4') || localStorage.getItem('clay_student_img_v3');
+        if (savedImg) {
+          document.getElementById('student-photo').src = savedImg;
+        }
+      } catch (e) {}
+
+      renderAll();
+
+      const stageViewport = document.getElementById('stageViewport');
+      if (window.ResizeObserver && stageViewport) {
+        const ro = new ResizeObserver(() => fitDeskSceneToViewport());
+        ro.observe(stageViewport);
+      }
+      window.addEventListener('resize', () => {
+        resizeFxCanvas();
+        fitDeskSceneToViewport();
+      });
+    });
+  </script>
+</body>
+</html>
