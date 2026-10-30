@@ -3,35 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CyberLaw & AI Arena | Minigame Tin Học 10 - Bài 11 (Nhóm 1 Tổ 4)</title>
+  <title>CYBERLAW & AI VOID | Minigame Tin Học 10 - Bài 11 (Nhóm 1 Tổ 4)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-deep: #080318;
-      --bg-mid: #13072e;
-      --bg-surface: rgba(24, 12, 54, 0.56);
-      --bg-surface-elevated: rgba(38, 20, 82, 0.65);
-      --bg-surface-hover: rgba(58, 31, 118, 0.72);
-      --glass-border: rgba(255, 255, 255, 0.14);
-      --glass-border-bright: rgba(192, 132, 252, 0.45);
-      --glass-highlight: rgba(255, 255, 255, 0.22);
+      --bg-void: #020106;
+      --bg-deep: #05020f;
+      --glass-dark: rgba(8, 4, 21, 0.76);
+      --glass-darker: rgba(4, 2, 12, 0.86);
+      --glass-card: rgba(12, 6, 30, 0.68);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-border-glow: rgba(168, 85, 247, 0.55);
       --text-primary: #f8fafc;
       --text-secondary: #cbd5e1;
-      --text-muted: #94a3b8;
-      --accent-purple: #a855f7;
-      --accent-violet: #7c3aed;
-      --accent-pink: #ec4899;
-      --accent-cyan: #06b6d4;
-      --accent-emerald: #10b981;
-      --accent-amber: #f59e0b;
-      --accent-rose: #f43f5e;
-      --shadow-glass: 0 24px 64px -12px rgba(0, 0, 0, 0.68), inset 0 1px 1px 0 rgba(255, 255, 255, 0.18);
-      --radius-xl: 24px;
-      --radius-lg: 18px;
-      --radius-md: 14px;
-      --transition-smooth: all 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+      --text-muted: #64748b;
+      --neon-purple: #a855f7;
+      --neon-violet: #7c3aed;
+      --neon-pink: #ec4899;
+      --neon-cyan: #06b6d4;
+      --neon-emerald: #10b981;
+      --neon-rose: #f43f5e;
+      --radius-2xl: 28px;
+      --radius-xl: 20px;
+      --radius-lg: 16px;
+      --transition-fast: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-smooth: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     * {
@@ -44,13 +42,12 @@
     body {
       min-height: 100vh;
       font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: var(--bg-deep);
+      background-color: var(--bg-void);
       background-image:
-        radial-gradient(circle at 12% 18%, rgba(139, 92, 246, 0.32) 0%, transparent 42%),
-        radial-gradient(circle at 88% 15%, rgba(236, 72, 153, 0.25) 0%, transparent 38%),
-        radial-gradient(circle at 75% 85%, rgba(6, 182, 212, 0.22) 0%, transparent 42%),
-        radial-gradient(circle at 22% 82%, rgba(99, 102, 241, 0.25) 0%, transparent 45%),
-        linear-gradient(135deg, #070214 0%, #12062c 50%, #090318 100%);
+        radial-gradient(circle at 15% 15%, rgba(124, 58, 237, 0.14) 0%, transparent 38%),
+        radial-gradient(circle at 85% 20%, rgba(236, 72, 153, 0.12) 0%, transparent 35%),
+        radial-gradient(circle at 50% 90%, rgba(6, 182, 212, 0.1) 0%, transparent 45%),
+        linear-gradient(180deg, #010005 0%, #050210 50%, #020008 100%);
       color: var(--text-primary);
       overflow-x: hidden;
       display: flex;
@@ -58,123 +55,150 @@
       position: relative;
     }
 
-    /* Animated 3D-like Glass Orbs inspired by the slide theme */
-    .ambient-canvas {
+    /* Multi-Layer Canvas Particle Systems */
+    #bg-particles,
+    #fx-canvas {
       position: fixed;
       inset: 0;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
     }
 
-    .orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(55px);
-      opacity: 0.55;
-      animation: floatOrb 18s ease-in-out infinite alternate;
+    #bg-particles {
+      z-index: 1;
     }
 
-    .orb-1 {
-      width: 420px;
-      height: 420px;
-      background: radial-gradient(circle, #a855f7, #6366f1);
-      top: -120px;
-      left: -100px;
-    }
-
-    .orb-2 {
-      width: 360px;
-      height: 360px;
-      background: radial-gradient(circle, #ec4899, #9333ea);
-      bottom: -110px;
-      right: -80px;
-      animation-delay: -6s;
-    }
-
-    .orb-3 {
-      width: 280px;
-      height: 280px;
-      background: radial-gradient(circle, #06b6d4, #3b82f6);
-      top: 42%;
-      left: 78%;
-      animation-delay: -11s;
-    }
-
-    /* Subtle Dot Grid Overlay */
-    .grid-overlay {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-      background-size: 28px 28px;
-      mask-image: radial-gradient(circle at center, black 45%, transparent 95%);
-      -webkit-mask-image: radial-gradient(circle at center, black 45%, transparent 95%);
-    }
-
-    @keyframes floatOrb {
-      0% { transform: translate(0, 0) scale(1); }
-      50% { transform: translate(35px, -28px) scale(1.08); }
-      100% { transform: translate(-25px, 25px) scale(0.95); }
-    }
-
-    /* Confetti Canvas */
-    #confetti-canvas {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
+    #fx-canvas {
       z-index: 999;
     }
 
-    /* Core Glassmorphism Classes */
-    .glass-panel {
-      background: var(--bg-surface);
-      backdrop-filter: blur(22px) saturate(180%);
-      -webkit-backdrop-filter: blur(22px) saturate(180%);
-      border: 1px solid var(--glass-border);
-      box-shadow: var(--shadow-glass);
-      border-radius: var(--radius-xl);
-      position: relative;
-      overflow: hidden;
+    /* Cyber Scanline & Vignette Overlay */
+    .cyber-vignette {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      background:
+        radial-gradient(circle at center, transparent 45%, rgba(1, 0, 5, 0.85) 100%),
+        repeating-linear-gradient(
+          0deg,
+          rgba(255, 255, 255, 0.012) 0px,
+          rgba(255, 255, 255, 0.012) 1px,
+          transparent 1px,
+          transparent 3px
+        );
     }
 
-    .glass-panel::before {
+    /* Ambient Deep Neon Orbs */
+    .void-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(85px);
+      opacity: 0.32;
+      pointer-events: none;
+      z-index: 0;
+      animation: pulseOrb 14s ease-in-out infinite alternate;
+    }
+
+    .void-orb-1 {
+      width: 480px;
+      height: 480px;
+      background: radial-gradient(circle, #7c3aed, transparent 70%);
+      top: -160px;
+      left: -140px;
+    }
+
+    .void-orb-2 {
+      width: 440px;
+      height: 440px;
+      background: radial-gradient(circle, #db2777, transparent 70%);
+      bottom: -150px;
+      right: -120px;
+      animation-delay: -5s;
+    }
+
+    .void-orb-3 {
+      width: 360px;
+      height: 360px;
+      background: radial-gradient(circle, #06b6d4, transparent 70%);
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0.16;
+      animation-delay: -9s;
+    }
+
+    @keyframes pulseOrb {
+      0% { transform: scale(0.9) translate(0, 0); opacity: 0.24; }
+      50% { transform: scale(1.12) translate(30px, -25px); opacity: 0.38; }
+      100% { transform: scale(0.95) translate(-25px, 20px); opacity: 0.26; }
+    }
+
+    /* Ultra-Dark Glassmorphism Card with Interactive Spotlight */
+    .dark-glass {
+      background: var(--glass-dark);
+      backdrop-filter: blur(30px) saturate(190%);
+      -webkit-backdrop-filter: blur(30px) saturate(190%);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-2xl);
+      box-shadow:
+        0 30px 80px -15px rgba(0, 0, 0, 0.92),
+        0 0 40px -10px rgba(139, 92, 246, 0.18),
+        inset 0 1px 1px 0 rgba(255, 255, 255, 0.14);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Interactive Cursor Spotlight Inside Glass */
+    .dark-glass::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        650px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(168, 85, 247, 0.13),
+        rgba(236, 72, 153, 0.05) 35%,
+        transparent 70%
+      );
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Glowing Border Rim */
+    .dark-glass::after {
       content: "";
       position: absolute;
       inset: 0;
       border-radius: inherit;
-      padding: 1px;
-      background: linear-gradient(135deg, rgba(255,255,255,0.28), rgba(255,255,255,0.03) 45%, rgba(168,85,247,0.25));
+      padding: 1.2px;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.22) 0%,
+        rgba(168, 85, 247, 0.35) 35%,
+        rgba(15, 7, 35, 0.1) 65%,
+        rgba(6, 182, 212, 0.35) 100%
+      );
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       -webkit-mask-composite: xor;
       mask-composite: exclude;
       pointer-events: none;
+      z-index: 1;
     }
 
-    .glass-pill {
-      background: rgba(255, 255, 255, 0.07);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 999px;
-      padding: 8px 16px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: var(--text-secondary);
-      transition: var(--transition-smooth);
+    .dark-glass > * {
+      position: relative;
+      z-index: 2;
     }
 
-    /* Top Navigation Bar */
+    /* Topbar */
     header.topbar {
       position: relative;
       z-index: 10;
-      max-width: 1240px;
+      max-width: 1120px;
       width: 100%;
-      margin: 18px auto 0;
+      margin: 20px auto 0;
       padding: 0 24px;
       display: flex;
       align-items: center;
@@ -189,74 +213,90 @@
       gap: 14px;
     }
 
-    .brand-icon {
-      width: 46px;
-      height: 46px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, #a855f7 0%, #6366f1 55%, #ec4899 100%);
+    .brand-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 15px;
+      background: linear-gradient(135deg, #090418 0%, #1e0b45 100%);
+      border: 1px solid rgba(168, 85, 247, 0.55);
       display: grid;
       place-items: center;
-      box-shadow: 0 8px 24px rgba(168, 85, 247, 0.45);
-      border: 1px solid rgba(255, 255, 255, 0.35);
+      box-shadow: 0 0 25px rgba(168, 85, 247, 0.45), inset 0 0 12px rgba(236, 72, 153, 0.35);
+      position: relative;
     }
 
-    .brand-text h1 {
-      font-size: 1.12rem;
+    .brand-logo::after {
+      content: "";
+      position: absolute;
+      inset: -3px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #a855f7, #ec4899, #06b6d4);
+      z-index: -1;
+      filter: blur(8px);
+      opacity: 0.65;
+    }
+
+    .brand-info h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.18rem;
       font-weight: 800;
-      letter-spacing: -0.01em;
-      background: linear-gradient(90deg, #ffffff, #e9d5ff, #f5d0fe);
+      letter-spacing: 0.04em;
+      background: linear-gradient(90deg, #ffffff 0%, #d8b4fe 50%, #67e8f9 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
-    .brand-text p {
+    .brand-info p {
       font-size: 0.78rem;
       color: var(--text-muted);
       font-weight: 500;
     }
 
-    .top-actions {
+    .top-controls {
       display: flex;
       align-items: center;
       gap: 10px;
       flex-wrap: wrap;
     }
 
-    .icon-btn {
+    .cyber-btn {
       cursor: pointer;
-      background: rgba(255, 255, 255, 0.07);
-      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(10, 5, 24, 0.8);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       color: var(--text-primary);
-      padding: 9px 14px;
-      border-radius: 12px;
+      padding: 10px 16px;
+      border-radius: 13px;
       font-family: inherit;
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       font-weight: 600;
       display: inline-flex;
       align-items: center;
-      gap: 7px;
-      transition: var(--transition-smooth);
+      gap: 8px;
+      transition: var(--transition-fast);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
     }
 
-    .icon-btn:hover {
-      background: rgba(168, 85, 247, 0.25);
-      border-color: var(--glass-border-bright);
+    .cyber-btn:hover:not(:disabled) {
+      background: rgba(168, 85, 247, 0.18);
+      border-color: rgba(192, 132, 252, 0.6);
       transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(168, 85, 247, 0.28);
+      box-shadow: 0 0 24px rgba(168, 85, 247, 0.35);
     }
 
-    .icon-btn.active {
-      background: linear-gradient(135deg, rgba(168, 85, 247, 0.35), rgba(236, 72, 153, 0.3));
-      border-color: rgba(216, 180, 254, 0.6);
+    .cyber-btn.active {
+      border-color: rgba(6, 182, 212, 0.6);
+      background: rgba(6, 182, 212, 0.12);
+      color: #a5f3fc;
     }
 
     /* Main Container */
-    main.app-container {
+    main.stage {
       position: relative;
       z-index: 10;
-      max-width: 1240px;
+      max-width: 1040px;
       width: 100%;
-      margin: 18px auto 32px;
+      margin: 22px auto 30px;
       padding: 0 24px;
       flex: 1;
       display: flex;
@@ -266,1218 +306,841 @@
 
     .screen {
       display: none;
-      animation: fadeSlideIn 0.42s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .screen.active {
       display: block;
+      animation: cyberReveal 0.55s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    @keyframes fadeSlideIn {
-      from {
+    @keyframes cyberReveal {
+      0% {
         opacity: 0;
-        transform: translateY(18px) scale(0.985);
+        transform: translateY(24px) scale(0.97);
+        filter: blur(10px);
       }
-      to {
+      100% {
         opacity: 1;
         transform: translateY(0) scale(1);
+        filter: blur(0);
       }
     }
 
     /* ================= START SCREEN ================= */
-    .hero-card {
-      padding: 44px 42px;
-      display: grid;
-      grid-template-columns: 1.25fr 0.95fr;
-      gap: 36px;
-      align-items: center;
+    .start-card {
+      padding: 52px 48px;
+      text-align: center;
     }
 
-    .badge-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 18px;
-    }
-
-    .cyber-badge {
-      background: linear-gradient(90deg, rgba(168, 85, 247, 0.22), rgba(236, 72, 153, 0.22));
-      border: 1px solid rgba(216, 180, 254, 0.38);
-      color: #f3e8ff;
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
+    .tag-row {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 22px;
     }
 
-    .hero-title {
-      font-size: clamp(2rem, 3.6vw, 3.1rem);
+    .neon-pill {
+      padding: 7px 16px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: rgba(168, 85, 247, 0.14);
+      border: 1px solid rgba(192, 132, 252, 0.4);
+      color: #e9d5ff;
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.25);
+    }
+
+    .neon-pill.cyan {
+      background: rgba(6, 182, 212, 0.12);
+      border-color: rgba(34, 211, 238, 0.4);
+      color: #a5f3fc;
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.2);
+    }
+
+    .hero-heading {
+      font-size: clamp(2.2rem, 4.3vw, 3.6rem);
       font-weight: 800;
-      line-height: 1.15;
-      margin-bottom: 16px;
+      line-height: 1.14;
       letter-spacing: -0.02em;
+      margin-bottom: 18px;
+      text-shadow: 0 0 40px rgba(168, 85, 247, 0.35);
     }
 
-    .hero-title .gradient-text {
-      background: linear-gradient(95deg, #c084fc 0%, #f472b6 50%, #38bdf8 100%);
+    .hero-heading .neon-grad {
+      background: linear-gradient(90deg, #c084fc 0%, #f472b6 48%, #22d3ee 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
-    .hero-desc {
+    .hero-sub {
+      max-width: 720px;
+      margin: 0 auto 36px;
       color: var(--text-secondary);
-      font-size: 1.02rem;
-      line-height: 1.65;
-      margin-bottom: 28px;
+      font-size: 1.04rem;
+      line-height: 1.68;
     }
 
-    .topic-pills {
+    .feature-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-bottom: 30px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 40px;
+      text-align: left;
     }
 
-    .topic-item {
-      background: rgba(255, 255, 255, 0.045);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 14px;
-      padding: 12px 15px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      transition: var(--transition-smooth);
+    .feature-box {
+      background: rgba(4, 2, 12, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 18px 16px;
+      transition: var(--transition-fast);
+      position: relative;
+      overflow: hidden;
     }
 
-    .topic-item:hover {
-      background: rgba(168, 85, 247, 0.14);
-      border-color: rgba(192, 132, 252, 0.4);
-      transform: translateX(4px);
+    .feature-box:hover {
+      border-color: rgba(168, 85, 247, 0.5);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.75), 0 0 20px rgba(168, 85, 247, 0.2);
     }
 
-    .topic-dot {
-      width: 34px;
-      height: 34px;
-      border-radius: 10px;
-      background: rgba(168, 85, 247, 0.22);
+    .feature-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(6, 182, 212, 0.2));
       border: 1px solid rgba(192, 132, 252, 0.4);
       display: grid;
       place-items: center;
-      font-weight: 700;
-      color: #e9d5ff;
-      flex-shrink: 0;
+      font-size: 1.15rem;
+      margin-bottom: 12px;
     }
 
-    .topic-item span {
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-
-    .topic-item small {
-      display: block;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      font-weight: 400;
-      margin-top: 2px;
-    }
-
-    /* Settings Box on Start Screen */
-    .setup-card {
-      background: rgba(15, 7, 36, 0.62);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 20px;
-      padding: 26px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .setup-card h3 {
-      font-size: 1.08rem;
-      font-weight: 700;
-      color: #f3e8ff;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .mode-selector {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .mode-card {
-      cursor: pointer;
-      padding: 14px;
-      border-radius: 14px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1.5px solid rgba(255, 255, 255, 0.1);
-      text-align: left;
-      color: var(--text-primary);
-      font-family: inherit;
-      transition: var(--transition-smooth);
-    }
-
-    .mode-card:hover {
-      background: rgba(255, 255, 255, 0.08);
-    }
-
-    .mode-card.selected {
-      background: linear-gradient(135deg, rgba(168, 85, 247, 0.28), rgba(236, 72, 153, 0.2));
-      border-color: #c084fc;
-      box-shadow: 0 8px 24px rgba(168, 85, 247, 0.25);
-    }
-
-    .mode-card .mode-title {
-      font-weight: 700;
+    .feature-box h4 {
       font-size: 0.92rem;
-      margin-bottom: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .mode-card .mode-sub {
-      font-size: 0.76rem;
-      color: var(--text-muted);
-      line-height: 1.4;
-    }
-
-    .option-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 10px 14px;
-      background: rgba(255, 255, 255, 0.04);
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .option-row label {
-      font-size: 0.86rem;
-      font-weight: 600;
-      color: var(--text-secondary);
-    }
-
-    .pill-group {
-      display: flex;
-      gap: 6px;
-    }
-
-    .pill-choice {
-      cursor: pointer;
-      padding: 6px 11px;
-      border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--text-secondary);
-      font-size: 0.8rem;
       font-weight: 700;
-      font-family: inherit;
-      transition: var(--transition-smooth);
+      color: #f8fafc;
+      margin-bottom: 4px;
     }
 
-    .pill-choice.active {
-      background: var(--accent-purple);
-      color: white;
-      border-color: #e9d5ff;
-      box-shadow: 0 4px 12px rgba(168, 85, 247, 0.4);
+    .feature-box p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.45;
     }
 
-    .primary-btn {
+    /* Launch Button with Animated Aura */
+    .launch-btn-wrap {
+      display: inline-block;
+      position: relative;
+    }
+
+    .launch-btn-wrap::before {
+      content: "";
+      position: absolute;
+      inset: -4px;
+      border-radius: 22px;
+      background: linear-gradient(90deg, #a855f7, #ec4899, #06b6d4, #a855f7);
+      background-size: 300% 100%;
+      animation: borderFlow 4s linear infinite;
+      filter: blur(12px);
+      opacity: 0.75;
+      z-index: 0;
+    }
+
+    @keyframes borderFlow {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 300% 50%; }
+    }
+
+    .launch-btn {
+      position: relative;
+      z-index: 1;
       cursor: pointer;
-      width: 100%;
-      padding: 16px 24px;
-      border-radius: 16px;
+      padding: 18px 42px;
+      border-radius: 18px;
       border: 1px solid rgba(255, 255, 255, 0.35);
-      background: linear-gradient(135deg, #9333ea 0%, #db2777 55%, #4f46e5 100%);
-      color: white;
+      background: linear-gradient(135deg, #11052C 0%, #2e0f6e 50%, #0d254c 100%);
+      color: #ffffff;
       font-family: inherit;
-      font-size: 1.05rem;
+      font-size: 1.12rem;
       font-weight: 800;
-      letter-spacing: 0.01em;
+      letter-spacing: 0.03em;
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: 10px;
-      box-shadow: 0 14px 34px rgba(168, 85, 247, 0.45);
-      transition: var(--transition-smooth);
+      gap: 12px;
+      transition: var(--transition-fast);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3);
     }
 
-    .primary-btn:hover {
-      transform: translateY(-3px) scale(1.01);
-      box-shadow: 0 20px 42px rgba(219, 39, 119, 0.52);
-    }
-
-    .primary-btn:active {
-      transform: translateY(0);
+    .launch-btn:hover {
+      transform: scale(1.04) translateY(-2px);
+      background: linear-gradient(135deg, #581c87 0%, #9d174d 55%, #0e7490 100%);
     }
 
     /* ================= QUIZ SCREEN ================= */
-    .quiz-layout {
-      display: grid;
-      grid-template-columns: 1fr 330px;
-      gap: 22px;
-      align-items: start;
+    .quiz-card {
+      padding: 36px 40px;
     }
 
-    .quiz-layout.single-col {
-      grid-template-columns: 1fr;
-      max-width: 960px;
-      margin: 0 auto;
-      width: 100%;
-    }
-
-    .quiz-main-card {
-      padding: 32px 34px;
-    }
-
-    /* HUD Bar */
-    .hud-bar {
+    .quiz-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 14px;
+      gap: 16px;
       margin-bottom: 20px;
       flex-wrap: wrap;
     }
 
-    .hud-stats {
+    .q-counter-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(3, 1, 10, 0.85);
+      border: 1px solid rgba(168, 85, 247, 0.45);
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #e9d5ff;
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.25);
+    }
+
+    .q-meta-tags {
       display: flex;
       align-items: center;
       gap: 10px;
       flex-wrap: wrap;
     }
 
-    .stat-chip {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 12px;
-      padding: 8px 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.88rem;
-      font-weight: 700;
-    }
-
-    .stat-chip .value {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.05rem;
-      color: #f5d0fe;
-    }
-
-    .streak-chip.hot {
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(244, 63, 94, 0.25));
-      border-color: rgba(251, 191, 36, 0.55);
-      animation: pulseGlow 1.6s infinite;
-    }
-
-    @keyframes pulseGlow {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.35); }
-      50% { box-shadow: 0 0 18px 4px rgba(245, 158, 11, 0.45); }
-    }
-
-    /* Timer Pill */
-    .timer-box {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: rgba(15, 7, 36, 0.65);
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      padding: 8px 16px;
-      border-radius: 999px;
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: 1.05rem;
-    }
-
-    .timer-box.warning {
-      border-color: var(--accent-amber);
-      color: #fde68a;
-    }
-
-    .timer-box.danger {
-      border-color: var(--accent-rose);
-      color: #fecdd3;
-      animation: shakeSubtle 0.5s infinite;
-    }
-
-    @keyframes shakeSubtle {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-2px); }
-      75% { transform: translateX(2px); }
-    }
-
-    /* Progress Bar & Question Step Dots */
-    .progress-dots {
-      display: grid;
-      grid-template-columns: repeat(10, 1fr);
-      gap: 8px;
-      margin-bottom: 24px;
-    }
-
-    .q-dot {
-      height: 8px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.12);
-      cursor: pointer;
-      transition: var(--transition-smooth);
-      position: relative;
-    }
-
-    .q-dot:hover {
-      background: rgba(255, 255, 255, 0.28);
-      transform: scaleY(1.35);
-    }
-
-    .q-dot.current {
-      background: linear-gradient(90deg, #c084fc, #ec4899);
-      box-shadow: 0 0 12px rgba(192, 132, 252, 0.7);
-    }
-
-    .q-dot.correct {
-      background: var(--accent-emerald);
-    }
-
-    .q-dot.wrong {
-      background: var(--accent-rose);
-    }
-
-    /* Question Header */
-    .question-meta {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 12px;
-      flex-wrap: wrap;
-    }
-
-    .q-category-tag {
+    .meta-tag {
       font-size: 0.78rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
-      padding: 5px 12px;
-      border-radius: 8px;
-      background: rgba(168, 85, 247, 0.2);
-      border: 1px solid rgba(192, 132, 252, 0.38);
-      color: #e9d5ff;
+      letter-spacing: 0.05em;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(168, 85, 247, 0.14);
+      border: 1px solid rgba(192, 132, 252, 0.35);
+      color: #f3e8ff;
     }
 
-    .q-difficulty {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      font-weight: 600;
+    .meta-tag.sub {
+      background: rgba(6, 182, 212, 0.12);
+      border-color: rgba(34, 211, 238, 0.35);
+      color: #a5f3fc;
     }
 
-    .question-box {
-      background: rgba(12, 5, 30, 0.52);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 18px;
-      padding: 22px 24px;
-      margin-bottom: 22px;
+    /* Interactive Neon Progress Nodes */
+    .progress-track {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .p-node {
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      cursor: pointer;
+      transition: var(--transition-fast);
+      position: relative;
+    }
+
+    .p-node:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: scaleY(1.5);
+    }
+
+    .p-node.active {
+      background: linear-gradient(90deg, #a855f7, #ec4899, #06b6d4);
+      border-color: #f5d0fe;
+      box-shadow: 0 0 16px rgba(168, 85, 247, 0.85);
+      transform: scaleY(1.35);
+    }
+
+    .p-node.done-correct {
+      background: var(--neon-emerald);
+      border-color: #6ee7b7;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.6);
+    }
+
+    .p-node.done-wrong {
+      background: var(--neon-rose);
+      border-color: #fda4af;
+      box-shadow: 0 0 12px rgba(244, 63, 94, 0.6);
+    }
+
+    /* Question Display Frame */
+    .question-frame {
+      background: var(--glass-darker);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 22px;
+      padding: 28px 30px;
+      margin-bottom: 24px;
+      box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.85);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .question-frame::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, #a855f7, #ec4899, #06b6d4);
+      box-shadow: 0 0 18px #a855f7;
     }
 
     .question-text {
-      font-size: clamp(1.1rem, 1.8vw, 1.34rem);
+      font-size: clamp(1.15rem, 2vw, 1.42rem);
       font-weight: 700;
-      line-height: 1.52;
+      line-height: 1.56;
       color: #ffffff;
+      letter-spacing: -0.01em;
     }
 
     /* Options Grid */
     .options-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-      margin-bottom: 22px;
+      gap: 16px;
+      margin-bottom: 24px;
     }
 
-    .option-btn {
+    .option-card {
       cursor: pointer;
       text-align: left;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1.5px solid rgba(255, 255, 255, 0.13);
-      border-radius: 16px;
-      padding: 18px 20px;
+      background: rgba(6, 3, 16, 0.78);
+      border: 1.5px solid rgba(255, 255, 255, 0.1);
+      border-radius: 18px;
+      padding: 20px 22px;
       color: var(--text-primary);
       font-family: inherit;
-      font-size: 0.98rem;
+      font-size: 1rem;
       font-weight: 500;
-      line-height: 1.5;
+      line-height: 1.52;
       display: flex;
       align-items: flex-start;
-      gap: 14px;
-      transition: var(--transition-smooth);
+      gap: 16px;
+      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
       position: relative;
       overflow: hidden;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.65);
     }
 
-    .option-btn:hover:not(:disabled) {
-      background: rgba(168, 85, 247, 0.2);
-      border-color: rgba(216, 180, 254, 0.55);
-      transform: translateY(-2px);
-      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.35);
+    .option-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        320px circle at var(--opt-x, 50%) var(--opt-y, 50%),
+        rgba(168, 85, 247, 0.22),
+        transparent 70%
+      );
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      pointer-events: none;
     }
 
-    .option-key {
-      width: 34px;
-      height: 34px;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+    .option-card:hover:not(:disabled)::before {
+      opacity: 1;
+    }
+
+    .option-card:hover:not(:disabled) {
+      border-color: rgba(192, 132, 252, 0.65);
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.8), 0 0 25px rgba(168, 85, 247, 0.28);
+    }
+
+    .opt-badge {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.18);
       display: grid;
       place-items: center;
       font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: 0.95rem;
-      color: #f3e8ff;
+      font-weight: 800;
+      font-size: 1rem;
+      color: #e9d5ff;
       flex-shrink: 0;
-      transition: var(--transition-smooth);
+      transition: var(--transition-fast);
+      position: relative;
+      z-index: 1;
     }
 
-    .option-btn:hover:not(:disabled) .option-key {
-      background: var(--accent-purple);
-      border-color: #f5d0fe;
-      color: white;
+    .option-card:hover:not(:disabled) .opt-badge {
+      background: linear-gradient(135deg, #a855f7, #ec4899);
+      border-color: #ffffff;
+      color: #ffffff;
+      box-shadow: 0 0 18px rgba(168, 85, 247, 0.75);
     }
 
-    .option-btn.correct {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.28), rgba(5, 150, 105, 0.18));
+    .opt-label {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Correct & Wrong States */
+    .option-card.correct {
+      background: linear-gradient(135deg, rgba(6, 78, 59, 0.65), rgba(4, 47, 46, 0.82));
       border-color: #34d399;
-      box-shadow: 0 0 28px rgba(16, 185, 129, 0.3);
+      box-shadow: 0 0 38px rgba(16, 185, 129, 0.45), inset 0 0 20px rgba(16, 185, 129, 0.25);
+      animation: correctPulse 0.5s ease;
     }
 
-    .option-btn.correct .option-key {
-      background: var(--accent-emerald);
+    .option-card.correct .opt-badge {
+      background: #10b981;
       border-color: #a7f3d0;
-      color: #052e16;
+      color: #022c22;
+      box-shadow: 0 0 20px #10b981;
     }
 
-    .option-btn.wrong {
-      background: linear-gradient(135deg, rgba(244, 63, 94, 0.28), rgba(190, 18, 60, 0.18));
+    @keyframes correctPulse {
+      0% { transform: scale(0.98); }
+      50% { transform: scale(1.03); }
+      100% { transform: scale(1); }
+    }
+
+    .option-card.wrong {
+      background: linear-gradient(135deg, rgba(136, 19, 55, 0.65), rgba(76, 5, 25, 0.82));
       border-color: #fb7185;
+      box-shadow: 0 0 32px rgba(244, 63, 94, 0.4);
+      animation: glitchShake 0.42s ease;
     }
 
-    .option-btn.wrong .option-key {
-      background: var(--accent-rose);
+    .option-card.wrong .opt-badge {
+      background: #f43f5e;
       border-color: #fecdd3;
-      color: white;
+      color: #ffffff;
+      box-shadow: 0 0 18px #f43f5e;
     }
 
-    .option-btn.dimmed {
-      opacity: 0.48;
+    @keyframes glitchShake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-8px) skewX(-2deg); }
+      40% { transform: translateX(8px) skewX(2deg); }
+      60% { transform: translateX(-5px); }
+      80% { transform: translateX(5px); }
     }
 
-    /* 50:50 hidden option */
-    .option-btn.eliminated {
-      opacity: 0.22;
+    .option-card.dimmed {
+      opacity: 0.35;
+      filter: grayscale(40%);
+    }
+
+    .option-card.eliminated {
+      opacity: 0.16;
       pointer-events: none;
-      filter: blur(1px);
+      filter: blur(2px);
+      transform: scale(0.97);
     }
 
-    /* Explanation Box */
-    .explanation-card {
+    /* Explanation Drawer */
+    .explanation-drawer {
       display: none;
-      background: linear-gradient(135deg, rgba(30, 15, 68, 0.82), rgba(17, 24, 39, 0.85));
-      border: 1px solid rgba(192, 132, 252, 0.4);
-      border-radius: 16px;
-      padding: 18px 20px;
-      margin-bottom: 20px;
-      animation: fadeSlideIn 0.3s ease;
+      background: linear-gradient(135deg, rgba(14, 7, 34, 0.92), rgba(5, 15, 32, 0.92));
+      border: 1px solid rgba(168, 85, 247, 0.45);
+      border-radius: 18px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8), 0 0 25px rgba(168, 85, 247, 0.18);
+      animation: cyberReveal 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .explanation-card.show {
+    .explanation-drawer.show {
       display: block;
     }
 
-    .exp-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 8px;
+    .exp-status {
       font-weight: 800;
-      font-size: 0.95rem;
-    }
-
-    .exp-header.is-correct {
-      color: #6ee7b7;
-    }
-
-    .exp-header.is-wrong {
-      color: #fda4af;
-    }
-
-    .exp-body {
-      font-size: 0.9rem;
-      line-height: 1.6;
-      color: var(--text-secondary);
-    }
-
-    .exp-law-ref {
-      margin-top: 8px;
-      display: inline-block;
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: #d8b4fe;
-      background: rgba(168, 85, 247, 0.16);
-      padding: 4px 10px;
-      border-radius: 6px;
-      border: 1px solid rgba(168, 85, 247, 0.32);
-    }
-
-    /* Quiz Footer Controls */
-    .quiz-footer {
+      font-size: 1rem;
+      margin-bottom: 8px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      padding-top: 18px;
     }
 
-    .lifelines {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
+    .exp-status.good { color: #34d399; }
+    .exp-status.bad { color: #fb7185; }
+
+    .exp-desc {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.62;
+      margin-bottom: 10px;
     }
 
-    .lifeline-btn {
-      cursor: pointer;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: var(--text-primary);
-      padding: 9px 14px;
-      border-radius: 12px;
-      font-family: inherit;
-      font-size: 0.82rem;
-      font-weight: 700;
+    .exp-badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: var(--transition-smooth);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #a5f3fc;
+      background: rgba(6, 182, 212, 0.12);
+      border: 1px solid rgba(6, 182, 212, 0.35);
+      padding: 5px 12px;
+      border-radius: 8px;
     }
 
-    .lifeline-btn:hover:not(:disabled) {
-      background: rgba(6, 182, 212, 0.22);
-      border-color: rgba(34, 211, 238, 0.55);
-      transform: translateY(-2px);
+    /* Bottom Action Bar */
+    .quiz-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    .lifeline-btn:disabled {
-      opacity: 0.35;
-      cursor: not-allowed;
-    }
-
-    .nav-btns {
+    .helper-group,
+    .nav-group {
       display: flex;
       align-items: center;
       gap: 10px;
+      flex-wrap: wrap;
     }
 
-    .next-btn {
+    .next-cyber-btn {
       cursor: pointer;
-      background: linear-gradient(135deg, #a855f7, #ec4899);
+      background: linear-gradient(135deg, #7c3aed 0%, #db2777 55%, #0891b2 100%);
       border: 1px solid rgba(255, 255, 255, 0.35);
-      color: white;
-      padding: 11px 22px;
-      border-radius: 12px;
+      color: #ffffff;
+      padding: 12px 26px;
+      border-radius: 14px;
       font-family: inherit;
-      font-size: 0.92rem;
-      font-weight: 700;
+      font-size: 0.94rem;
+      font-weight: 800;
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      transition: var(--transition-smooth);
-      box-shadow: 0 8px 20px rgba(168, 85, 247, 0.35);
+      transition: var(--transition-fast);
+      box-shadow: 0 0 28px rgba(168, 85, 247, 0.45);
     }
 
-    .next-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 26px rgba(236, 72, 153, 0.45);
+    .next-cyber-btn:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 0 36px rgba(236, 72, 153, 0.65);
     }
 
-    /* ================= SIDEBAR: TEAM SCOREBOARD / MYSTERY BOX ================= */
-    .sidebar-card {
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-    }
-
-    .sidebar-title {
-      font-size: 0.98rem;
-      font-weight: 800;
-      color: #f3e8ff;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .team-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .team-item {
-      background: rgba(255, 255, 255, 0.045);
-      border: 1.5px solid rgba(255, 255, 255, 0.1);
-      border-radius: 14px;
-      padding: 12px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      transition: var(--transition-smooth);
-      cursor: pointer;
-    }
-
-    .team-item.active-turn {
-      background: linear-gradient(135deg, rgba(168, 85, 247, 0.26), rgba(236, 72, 153, 0.18));
-      border-color: #c084fc;
-      box-shadow: 0 6px 20px rgba(168, 85, 247, 0.25);
-    }
-
-    .team-info {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .team-avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 9px;
-      display: grid;
-      place-items: center;
-      font-weight: 800;
-      font-size: 0.85rem;
-    }
-
-    .team-name {
-      font-weight: 700;
-      font-size: 0.9rem;
-    }
-
-    .team-turn-tag {
-      font-size: 0.7rem;
-      color: #e9d5ff;
-      display: block;
-    }
-
-    .team-controls {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .team-score {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: #f5d0fe;
-      min-width: 48px;
-      text-align: right;
-    }
-
-    .mini-score-btn {
-      cursor: pointer;
-      width: 24px;
-      height: 24px;
-      border-radius: 6px;
-      border: 1px solid rgba(255,255,255,0.18);
-      background: rgba(255,255,255,0.08);
-      color: white;
-      font-weight: 700;
-      display: grid;
-      place-items: center;
-      transition: var(--transition-smooth);
-    }
-
-    .mini-score-btn:hover {
-      background: var(--accent-purple);
-    }
-
-    /* Mystery Box Widget */
-    .mystery-widget {
-      background: linear-gradient(135deg, rgba(88, 28, 135, 0.42), rgba(157, 23, 77, 0.32));
-      border: 1px dashed rgba(244, 114, 182, 0.5);
-      border-radius: 16px;
-      padding: 16px;
+    /* ================= SUMMARY SCREEN ================= */
+    .summary-card {
+      padding: 44px 42px;
       text-align: center;
     }
 
-    .mystery-widget h4 {
-      font-size: 0.88rem;
-      color: #fbcfe8;
-      margin-bottom: 6px;
-    }
-
-    .mystery-widget p {
-      font-size: 0.78rem;
-      color: var(--text-secondary);
-      margin-bottom: 12px;
-      line-height: 1.45;
-    }
-
-    .mystery-btn {
-      cursor: pointer;
-      width: 100%;
-      padding: 10px 14px;
-      border-radius: 10px;
-      border: 1px solid rgba(251, 191, 36, 0.5);
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.3), rgba(236, 72, 153, 0.3));
-      color: #fef3c7;
-      font-family: inherit;
-      font-weight: 700;
-      font-size: 0.84rem;
-      transition: var(--transition-smooth);
-    }
-
-    .mystery-btn:hover:not(:disabled) {
-      transform: scale(1.03);
-      box-shadow: 0 6px 18px rgba(245, 158, 11, 0.35);
-    }
-
-    .mystery-btn:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
-
-    /* ================= RESULT SCREEN ================= */
-    .result-card {
-      padding: 40px;
-      text-align: center;
-      max-width: 960px;
-      margin: 0 auto;
-    }
-
-    .trophy-badge {
-      width: 84px;
-      height: 84px;
-      margin: 0 auto 18px;
+    .cyber-crest {
+      width: 88px;
+      height: 88px;
+      margin: 0 auto 20px;
       border-radius: 26px;
-      background: linear-gradient(135deg, rgba(245, 158, 11, 0.3), rgba(168, 85, 247, 0.35));
-      border: 1.5px solid rgba(251, 191, 36, 0.6);
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.25), rgba(6, 182, 212, 0.25));
+      border: 1.5px solid rgba(192, 132, 252, 0.65);
       display: grid;
       place-items: center;
-      font-size: 2.5rem;
-      box-shadow: 0 18px 40px rgba(245, 158, 11, 0.25);
+      font-size: 2.6rem;
+      box-shadow: 0 0 45px rgba(168, 85, 247, 0.45);
     }
 
-    .result-title {
-      font-size: 2.2rem;
+    .summary-title {
+      font-size: 2.3rem;
       font-weight: 800;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, #ffffff, #e9d5ff, #67e8f9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    .result-subtitle {
+    .summary-sub {
       color: var(--text-secondary);
-      font-size: 1rem;
+      font-size: 1.02rem;
       margin-bottom: 28px;
     }
 
-    .result-metrics {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      margin-bottom: 30px;
-    }
-
-    .metric-box {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 16px;
-      padding: 18px 14px;
-    }
-
-    .metric-box .m-val {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #f5d0fe;
-      display: block;
-    }
-
-    .metric-box .m-label {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      margin-top: 4px;
-      display: block;
-    }
-
-    .review-list {
+    .review-scroll {
       text-align: left;
-      max-height: 340px;
+      max-height: 390px;
       overflow-y: auto;
       padding-right: 8px;
-      margin-bottom: 28px;
+      margin-bottom: 30px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
     }
 
-    .review-item {
-      background: rgba(15, 7, 36, 0.55);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 14px;
-      padding: 14px 16px;
+    .review-scroll::-webkit-scrollbar {
+      width: 6px;
     }
 
-    .review-item-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 6px;
+    .review-scroll::-webkit-scrollbar-thumb {
+      background: rgba(168, 85, 247, 0.45);
+      border-radius: 999px;
+    }
+
+    .review-card {
+      background: rgba(4, 2, 12, 0.82);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 16px;
+      padding: 16px 20px;
+      transition: var(--transition-fast);
+    }
+
+    .review-card:hover {
+      border-color: rgba(168, 85, 247, 0.45);
+    }
+
+    .review-q {
       font-weight: 700;
-      font-size: 0.92rem;
+      font-size: 0.95rem;
+      color: #f8fafc;
+      margin-bottom: 6px;
     }
 
-    .review-ans {
-      font-size: 0.84rem;
-      color: #86efac;
+    .review-a {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #34d399;
       margin-bottom: 4px;
     }
 
-    .review-exp {
-      font-size: 0.8rem;
+    .review-e {
+      font-size: 0.82rem;
       color: var(--text-muted);
+      line-height: 1.5;
     }
 
-    .result-actions {
-      display: flex;
-      justify-content: center;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-
-    /* Shortcut hint footer */
-    footer.shortcut-bar {
+    /* Footer Shortcuts */
+    footer.hotkey-bar {
       position: relative;
       z-index: 10;
       text-align: center;
-      padding: 10px 20px 18px;
+      padding: 10px 20px 20px;
       font-size: 0.78rem;
       color: var(--text-muted);
     }
 
     kbd {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 5px;
-      padding: 2px 6px;
+      background: rgba(15, 7, 35, 0.9);
+      border: 1px solid rgba(168, 85, 247, 0.4);
+      border-radius: 6px;
+      padding: 2px 7px;
       font-family: 'Space Grotesk', monospace;
       font-size: 0.74rem;
       color: #e9d5ff;
+      box-shadow: 0 0 10px rgba(168, 85, 247, 0.2);
     }
 
-    @media (max-width: 980px) {
-      .hero-card,
-      .quiz-layout {
+    @media (max-width: 900px) {
+      .feature-grid,
+      .options-grid {
         grid-template-columns: 1fr;
       }
-      .options-grid,
-      .topic-pills {
-        grid-template-columns: 1fr;
-      }
-      .result-metrics {
-        grid-template-columns: repeat(2, 1fr);
+      .start-card,
+      .quiz-card,
+      .summary-card {
+        padding: 28px 22px;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Ambient Background -->
-  <div class="ambient-canvas">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-  </div>
-  <div class="grid-overlay"></div>
-  <canvas id="confetti-canvas"></canvas>
+  <!-- Deep Void Orbs -->
+  <div class="void-orb void-orb-1"></div>
+  <div class="void-orb void-orb-2"></div>
+  <div class="void-orb void-orb-3"></div>
 
-  <!-- Top Navigation -->
+  <!-- Interactive Neural Constellation Background Canvas -->
+  <canvas id="bg-particles"></canvas>
+  <div class="cyber-vignette"></div>
+
+  <!-- Foreground Shockwave, Burst & Cursor Trail Canvas -->
+  <canvas id="fx-canvas"></canvas>
+
+  <!-- Header -->
   <header class="topbar">
     <div class="brand">
-      <div class="brand-icon">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <div class="brand-logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e9d5ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
           <path d="M9 12l2 2 4-4"/>
         </svg>
       </div>
-      <div class="brand-text">
-        <h1>CYBERLAW &amp; AI ARENA</h1>
-        <p>Tin học 10 (KNTT) • Bài 11: Ứng xử trên môi trường số &amp; Pháp luật mạng • Nhóm 1 Tổ 4</p>
+      <div class="brand-info">
+        <h1>CYBERLAW &amp; AI VOID</h1>
+        <p>Tin học 10 (KNTT) • Bài 11: Pháp luật &amp; Ứng xử trên môi trường số • Nhóm 1 Tổ 4</p>
       </div>
     </div>
 
-    <div class="top-actions">
-      <button class="icon-btn active" id="sound-toggle" onclick="toggleSound()" title="Bật/Tắt âm thanh (Phím M)">
-        <span id="sound-icon">🔊</span> <span id="sound-label">Âm thanh: Bật</span>
+    <div class="top-controls">
+      <button class="cyber-btn" onclick="reshuffleAndRestart()" title="Xáo trộn lại bộ câu hỏi mới (Phím R)">
+        <span>🔀</span> Đảo Câu Hỏi Mới
       </button>
-      <button class="icon-btn" onclick="toggleFullscreen()" title="Toàn màn hình trình chiếu (Phím F)">
+      <button class="cyber-btn active" id="sound-btn" onclick="toggleSound()" title="Bật/Tắt âm thanh (Phím M)">
+        <span id="sound-icon">🔊</span> <span id="sound-text">Âm thanh</span>
+      </button>
+      <button class="cyber-btn" onclick="toggleFullscreen()" title="Toàn màn hình máy chiếu (Phím F)">
         <span>⛶</span> Toàn màn hình
       </button>
-      <button class="icon-btn" onclick="resetToHome()" title="Về màn hình chính">
-        <span>🏠</span> Trang đầu
+      <button class="cyber-btn" onclick="goHome()" title="Về màn hình mở đầu">
+        <span>🏠</span> Mở đầu
       </button>
     </div>
   </header>
 
-  <main class="app-container">
-    <!-- ================= SCREEN 1: START SCREEN ================= -->
+  <!-- Main Stage -->
+  <main class="stage">
+    <!-- SCREEN 1: HERO INTRO -->
     <section id="screen-start" class="screen active">
-      <div class="glass-panel hero-card">
-        <div>
-          <div class="badge-row">
-            <span class="cyber-badge">✨ Minigame Sau Thuyết Trình</span>
-            <span class="glass-pill">10 Câu Hỏi Trắc Nghiệm Trọng Tâm</span>
-          </div>
-          <h2 class="hero-title">
-            Thử Thách <span class="gradient-text">Công Dân Số &amp; AI Có Trách Nhiệm</span>
-          </h2>
-          <p class="hero-desc">
-            Cùng ôn tập nhanh kiến thức Bài 11 qua 10 tình huống thực tế về <strong>Luật An ninh mạng</strong>, <strong>Luật Công nghệ thông tin</strong>, <strong>Nghị định 15/2020/NĐ-CP</strong>, nhận diện <strong>Deepfake AI</strong> và bảo vệ <strong>quyền riêng tư, bản quyền</strong> trên không gian mạng.
-          </p>
-
-          <div class="topic-pills">
-            <div class="topic-item">
-              <div class="topic-dot">01</div>
-              <div>
-                <span>Văn bản pháp luật &amp; Tin giả</span>
-                <small>Luật CNTT, Luật An ninh mạng, kiểm chứng nguồn tin</small>
-              </div>
-            </div>
-            <div class="topic-item">
-              <div class="topic-dot">02</div>
-              <div>
-                <span>Quyền riêng tư &amp; Deepfake AI</span>
-                <small>Bảo vệ danh dự, nhân phẩm, cảnh giác giả mạo giọng nói/hình ảnh</small>
-              </div>
-            </div>
-            <div class="topic-item">
-              <div class="topic-dot">03</div>
-              <div>
-                <span>Bản quyền &amp; Quảng cáo mạng</span>
-                <small>Sở hữu trí tuệ, đạo đức học thuật, Nghị định 15/2020/NĐ-CP</small>
-              </div>
-            </div>
-            <div class="topic-item">
-              <div class="topic-dot">04</div>
-              <div>
-                <span>Giải pháp &amp; Quy tắc ứng xử</span>
-                <small>Sử dụng mạng xã hội và AI an toàn, văn minh, đúng luật</small>
-              </div>
-            </div>
-          </div>
+      <div class="dark-glass start-card" id="hero-tilt-card">
+        <div class="tag-row">
+          <span class="neon-pill">✨ Minigame Tương Tác Sau Thuyết Trình</span>
+          <span class="neon-pill cyan">🔀 Tự Động Xáo Trộn 10 Tình Huống</span>
         </div>
 
-        <!-- Game Setup Panel -->
-        <div class="setup-card">
-          <h3>⚙️ Thiết lập chế độ chơi trên lớp</h3>
+        <h2 class="hero-heading">
+          Khám Phá <span class="neon-grad">Pháp Luật Số &amp; Đạo Đức AI</span>
+        </h2>
 
-          <div>
-            <label style="font-size:0.8rem;color:var(--text-muted);display:block;margin-bottom:8px;">CHỌN CHẾ ĐỘ TRÌNH CHIẾU</label>
-            <div class="mode-selector">
-              <button class="mode-card selected" id="mode-classic" onclick="selectMode('classic')">
-                <div class="mode-title">⚡ Cá nhân / Cả lớp <span>✓</span></div>
-                <div class="mode-sub">Trả lời nhanh, tích chuỗi Streak và mở Hộp quà Bí ẩn.</div>
-              </button>
-              <button class="mode-card" id="mode-team" onclick="selectMode('team')">
-                <div class="mode-title">🏆 Thi đấu Tổ / Đội <span>👥</span></div>
-                <div class="mode-sub">Bảng điểm trực tiếp cho 4 Tổ/Nhóm tranh tài trên lớp.</div>
-              </button>
-            </div>
-          </div>
-
-          <div class="option-row">
-            <label>⏱️ Thời gian mỗi câu</label>
-            <div class="pill-group">
-              <button class="pill-choice" onclick="setTimerOption(15, this)">15s</button>
-              <button class="pill-choice active" onclick="setTimerOption(25, this)">25s</button>
-              <button class="pill-choice" onclick="setTimerOption(0, this)">Không giới hạn</button>
-            </div>
-          </div>
-
-          <div class="option-row">
-            <label>🔀 Xáo trộn thứ tự câu hỏi</label>
-            <div class="pill-group">
-              <button class="pill-choice active" id="order-fixed" onclick="setShuffle(false)">Theo thứ tự 1–10</button>
-              <button class="pill-choice" id="order-random" onclick="setShuffle(true)">Ngẫu nhiên</button>
-            </div>
-          </div>
-
-          <button class="primary-btn" onclick="startGame()">
-            <span>🚀 BẮT ĐẦU MINIGAME NGAY</span>
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- ================= SCREEN 2: QUIZ ARENA ================= -->
-    <section id="screen-quiz" class="screen">
-      <div class="quiz-layout" id="quiz-layout-container">
-        <!-- Main Question Glass Card -->
-        <div class="glass-panel quiz-main-card">
-          <div class="hud-bar">
-            <div class="hud-stats">
-              <div class="stat-chip">
-                <span>Câu hỏi</span>
-                <span class="value" id="hud-q-index">1 / 10</span>
-              </div>
-              <div class="stat-chip">
-                <span>💎 Điểm số</span>
-                <span class="value" id="hud-score">0</span>
-              </div>
-              <div class="stat-chip streak-chip" id="hud-streak-box">
-                <span>🔥 Chuỗi đúng</span>
-                <span class="value" id="hud-streak">0</span>
-              </div>
-            </div>
-
-            <div class="timer-box" id="timer-display">
-              <span>⏳</span>
-              <span id="timer-seconds">25s</span>
-            </div>
-          </div>
-
-          <!-- Interactive 10 Question Dots -->
-          <div class="progress-dots" id="progress-dots"></div>
-
-          <div class="question-meta">
-            <span class="q-category-tag" id="q-category">Luật An Ninh Mạng</span>
-            <span class="q-difficulty" id="q-member-ref">Liên hệ: Nhiệm vụ 1 &amp; 3</span>
-          </div>
-
-          <div class="question-box">
-            <p class="question-text" id="q-text">Đang tải câu hỏi...</p>
-          </div>
-
-          <div class="options-grid" id="options-container"></div>
-
-          <!-- Legal & Presentation Explanation Box -->
-          <div class="explanation-card" id="explanation-box">
-            <div class="exp-header" id="exp-title">🎉 Chính xác!</div>
-            <p class="exp-body" id="exp-text"></p>
-            <span class="exp-law-ref" id="exp-ref"></span>
-          </div>
-
-          <!-- Footer Controls -->
-          <div class="quiz-footer">
-            <div class="lifelines">
-              <button class="lifeline-btn" id="btn-5050" onclick="useLifeline5050()" title="Loại bỏ 2 phương án sai">
-                <span>✂️</span> Trợ giúp 50:50
-              </button>
-              <button class="lifeline-btn" id="btn-hint" onclick="useLifelineHint()" title="Xem gợi ý kiến thức từ bài thuyết trình">
-                <span>💡</span> Gợi ý Pháp lý
-              </button>
-            </div>
-
-            <div class="nav-btns">
-              <button class="icon-btn" onclick="prevQuestion()" id="btn-prev">← Câu trước</button>
-              <button class="next-btn" onclick="nextQuestion()" id="btn-next">
-                <span id="btn-next-label">Câu tiếp theo</span> →
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right Sidebar: Team Scoreboard & Mystery Box -->
-        <aside class="glass-panel sidebar-card" id="quiz-sidebar">
-          <div>
-            <div class="sidebar-title">
-              <span>🏆 BẢNG ĐIỂM ĐỘI THI</span>
-              <small style="font-size:0.74rem;color:var(--text-muted);font-weight:500;">Bấm chọn đội trả lời</small>
-            </div>
-            <p style="font-size:0.78rem;color:var(--text-muted);margin:4px 0 12px;">
-              Đội đang được chọn sẽ tự động nhận điểm khi trả lời đúng!
-            </p>
-            <div class="team-list" id="team-list"></div>
-          </div>
-
-          <div class="mystery-widget">
-            <h4>🎁 HỘP QUÀ BÍ ẨN CYBER</h4>
-            <p id="mystery-status">Trả lời đúng để mở hộp quà ngẫu nhiên (+50 đến +200 điểm hoặc nhân đôi điểm câu)!</p>
-            <button class="mystery-btn" id="btn-mystery" onclick="openMysteryBox()" disabled>
-              ✨ Mở Hộp Quà Thưởng
-            </button>
-          </div>
-        </aside>
-      </div>
-    </section>
-
-    <!-- ================= SCREEN 3: FINAL RESULTS ================= -->
-    <section id="screen-result" class="screen">
-      <div class="glass-panel result-card">
-        <div class="trophy-badge">🏆</div>
-        <h2 class="result-title" id="res-headline">Hoàn Thành Xuất Sắc!</h2>
-        <p class="result-subtitle" id="res-subline">
-          Cảm ơn cả lớp đã tham gia phần Minigame tổng kết Bài 11 của Nhóm 1 - Tổ 4!
+        <p class="hero-sub">
+          Cùng cả lớp giải mã 10 tình huống thực tế về <strong>Luật An ninh mạng</strong>, <strong>Luật Công nghệ thông tin</strong>, <strong>Nghị định 15/2020/NĐ-CP</strong>, nhận diện <strong>Deepfake AI</strong> và bảo vệ <strong>quyền riêng tư, bản quyền</strong> trên không gian mạng.
         </p>
 
-        <div class="result-metrics">
-          <div class="metric-box">
-            <span class="m-val" id="res-score">0</span>
-            <span class="m-label">Tổng Điểm Đạt Được</span>
+        <div class="feature-grid">
+          <div class="feature-box">
+            <div class="feature-icon">⚖️</div>
+            <h4>Văn Bản Pháp Luật</h4>
+            <p>Luật CNTT, Luật An ninh mạng &amp; Bộ Quy tắc ứng xử trên MXH.</p>
           </div>
-          <div class="metric-box">
-            <span class="m-val" id="res-correct">0 / 10</span>
-            <span class="m-label">Số Câu Chính Xác</span>
+          <div class="feature-box">
+            <div class="feature-icon">🎭</div>
+            <h4>Deepfake &amp; Quyền Riêng Tư</h4>
+            <p>Cảnh giác AI giả mạo giọng nói, hình ảnh xâm phạm danh dự, nhân phẩm.</p>
           </div>
-          <div class="metric-box">
-            <span class="m-val" id="res-accuracy">0%</span>
-            <span class="m-label">Tỉ Lệ Chính Xác</span>
+          <div class="feature-box">
+            <div class="feature-icon">©️</div>
+            <h4>Bản Quyền &amp; Quảng Cáo</h4>
+            <p>Sở hữu trí tuệ, trung thực học thuật &amp; Điều 101 Nghị định 15/2020/NĐ-CP.</p>
           </div>
-          <div class="metric-box">
-            <span class="m-val" id="res-best-streak">0 🔥</span>
-            <span class="m-label">Chuỗi Đúng Cao Nhất</span>
+          <div class="feature-box">
+            <div class="feature-icon">🛡️</div>
+            <h4>Kỹ Năng An Toàn Số</h4>
+            <p>Kiểm chứng nguồn tin, phòng tránh lừa đảo và sử dụng AI có trách nhiệm.</p>
           </div>
         </div>
 
-        <h3 style="text-align:left;font-size:1rem;margin-bottom:12px;color:#e9d5ff;">
-          📋 Bảng Tổng Kết Đáp Án &amp; Kiến Thức Cốt Lõi
-        </h3>
-        <div class="review-list" id="review-list"></div>
-
-        <div class="result-actions">
-          <button class="primary-btn" style="width:auto;padding:14px 28px;" onclick="startGame()">
-            🔄 Chơi Lại Lần Nữa
+        <div class="launch-btn-wrap">
+          <button class="launch-btn" onclick="startQuiz(event)">
+            <span>🚀 KHỞI ĐỘNG THỬ THÁCH NGAY</span>
           </button>
-          <button class="icon-btn" style="padding:14px 22px;" onclick="resetToHome()">
-            🏠 Về Màn Hình Chính
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 2: QUIZ STAGE -->
+    <section id="screen-quiz" class="screen">
+      <div class="dark-glass quiz-card" id="quiz-tilt-card">
+        <div class="quiz-header">
+          <div class="q-counter-pill">
+            <span>⚡ TÌNH HUỐNG</span>
+            <span id="q-counter">1 / 10</span>
+          </div>
+
+          <div class="q-meta-tags">
+            <span class="meta-tag" id="q-cat">Luật An Ninh Mạng</span>
+            <span class="meta-tag sub" id="q-ref">Thành viên 3 • Mục b</span>
+          </div>
+        </div>
+
+        <!-- 10 Interactive Progress Nodes -->
+        <div class="progress-track" id="progress-track"></div>
+
+        <!-- Question Text -->
+        <div class="question-frame">
+          <p class="question-text" id="q-text">Đang tải câu hỏi...</p>
+        </div>
+
+        <!-- 4 Answer Cards -->
+        <div class="options-grid" id="options-grid"></div>
+
+        <!-- Instant Legal Explanation Drawer -->
+        <div class="explanation-drawer" id="exp-drawer">
+          <div class="exp-status" id="exp-status"></div>
+          <p class="exp-desc" id="exp-desc"></p>
+          <div class="exp-badge" id="exp-law"></div>
+        </div>
+
+        <!-- Footer Controls -->
+        <div class="quiz-actions">
+          <div class="helper-group">
+            <button class="cyber-btn" id="btn-5050" onclick="trigger5050(event)" title="Loại bỏ 2 đáp án sai (Phím H)">
+              <span>✂️</span> Lọc 50:50
+            </button>
+            <button class="cyber-btn" id="btn-hint" onclick="triggerHint(event)" title="Xem gợi ý từ bài thuyết trình (Phím G)">
+              <span>💡</span> Gợi Ý Nhanh
+            </button>
+          </div>
+
+          <div class="nav-group">
+            <button class="cyber-btn" id="btn-prev" onclick="prevQ(event)">
+              ← Câu trước
+            </button>
+            <button class="next-cyber-btn" id="btn-next" onclick="nextQ(event)">
+              <span id="next-label">Câu tiếp theo</span> →
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 3: SUMMARY & REVIEW -->
+    <section id="screen-summary" class="screen">
+      <div class="dark-glass summary-card">
+        <div class="cyber-crest">🌌</div>
+        <h2 class="summary-title">Hoàn Thành 10 Tình Huống!</h2>
+        <p class="summary-sub">
+          Cảm ơn cô và các bạn đã tham gia phần Minigame tương tác Bài 11 của <strong>Nhóm 1 - Tổ 4</strong>!
+        </p>
+
+        <div class="review-scroll" id="review-scroll"></div>
+
+        <div style="display:flex;justify-content:center;gap:14px;flex-wrap:wrap;">
+          <button class="launch-btn" onclick="startQuiz(event)">
+            <span>🔀 Xáo Trộn &amp; Chơi Lượt Mới</span>
+          </button>
+          <button class="cyber-btn" style="padding:16px 24px;" onclick="goHome()">
+            <span>🏠 Về Màn Hình Đầu</span>
           </button>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="shortcut-bar">
-    Phím tắt trình chiếu nhanh: Chọn đáp án <kbd>A</kbd> <kbd>B</kbd> <kbd>C</kbd> <kbd>D</kbd> hoặc <kbd>1</kbd>–<kbd>4</kbd> • Câu tiếp theo <kbd>Space</kbd> / <kbd>Enter</kbd> • Trợ giúp 50:50 <kbd>H</kbd> • Toàn màn hình <kbd>F</kbd> • Âm thanh <kbd>M</kbd>
+  <footer class="hotkey-bar">
+    Phím tắt điều khiển: Chọn đáp án <kbd>A</kbd> <kbd>B</kbd> <kbd>C</kbd> <kbd>D</kbd> (hoặc <kbd>1</kbd>–<kbd>4</kbd>) • Chuyển câu <kbd>Space</kbd> / <kbd>Enter</kbd> • Lọc 50:50 <kbd>H</kbd> • Gợi ý <kbd>G</kbd> • Đảo câu hỏi <kbd>R</kbd> • Toàn màn hình <kbd>F</kbd>
   </footer>
 
   <script>
-    /* ============================================================================
-       DATA: 10 CÂU HỎI TỪ FILE TRẮC NGHIỆM SLIDE TIN & KIẾN THỨC THUYẾT TRÌNH BÀI 11
-       ============================================================================ */
-    const ORIGINAL_QUESTIONS = [
+    /* ==========================================================================
+       1. NGÂN HÀNG 10 CÂU HỎI TỪ FILE WORD & NỘI DUNG THUYẾT TRÌNH BÀI 11
+       ========================================================================== */
+    const QUESTION_BANK = [
       {
-        id: 1,
         category: "Văn bản quy phạm pháp luật",
-        memberRef: "Nội dung Thành viên 1 & 3 • Mục a, b",
-        question: "Câu 1. Văn bản nào sau đây quy định về an ninh mạng tại Việt Nam?",
+        memberRef: "Thành viên 1 & 3 • Mục a, b",
+        question: "Văn bản nào sau đây quy định về an ninh mạng tại Việt Nam?",
         options: [
           "Luật An ninh mạng",
           "Luật Giáo dục",
@@ -1485,15 +1148,14 @@
           "Luật Bảo vệ môi trường"
         ],
         correct: 0,
-        hint: "Văn bản pháp luật được Quốc hội thông qua năm 2018 nhằm bảo vệ an toàn quốc gia và trật tự an toàn xã hội trên không gian mạng.",
+        hint: "Văn bản pháp luật được Quốc hội thông qua năm 2018 nhằm bảo vệ an toàn thông tin và trật tự an toàn xã hội trên không gian mạng.",
         explanation: "Luật An ninh mạng (2018) quy định rõ các nguyên tắc bảo vệ an ninh mạng và các hành vi bị nghiêm cấm (như tại Khoản 1 Điều 8) đối với người dùng trên không gian mạng.",
-        lawRef: "Căn cứ: Luật An ninh mạng năm 2018 • SGK Tin học 10 Bài 11"
+        lawRef: "⚖️ Căn cứ: Luật An ninh mạng năm 2018 • SGK Tin học 10 Bài 11"
       },
       {
-        id: 2,
         category: "Kiểm chứng thông tin & Tin giả",
-        memberRef: "Nội dung Thành viên 2 & 5 • Kiểm chứng tin tức",
-        question: "Câu 2. Khi tiếp nhận một thông tin chưa được kiểm chứng trên mạng xã hội, người dùng nên làm gì?",
+        memberRef: "Thành viên 2 & 5 • Kiểm chứng tin tức",
+        question: "Khi tiếp nhận một thông tin chưa được kiểm chứng trên mạng xã hội, người dùng nên làm gì?",
         options: [
           "Chia sẻ ngay để cảnh báo mọi người.",
           "Kiểm tra nguồn tin và đối chiếu với các nguồn đáng tin cậy.",
@@ -1501,15 +1163,14 @@
           "Tin tưởng nếu người quen đăng tải."
         ],
         correct: 1,
-        hint: "Số lượt thích (like) cao hoặc người quen chia sẻ chưa chắc đã đúng sự thật. Hãy nhớ nguyên tắc đối chiếu với các trang chính thống (.gov.vn).",
-        explanation: "Người dùng có trách nhiệm bảo đảm tính chính xác của thông tin. Cần kiểm tra nguồn tin trên các báo chính thống, cổng thông tin Chính phủ (.gov.vn) trước khi tin hoặc chia sẻ.",
-        lawRef: "Căn cứ: Luật Công nghệ thông tin & Kỹ năng kiểm chứng thông tin (NV2, NV5)"
+        hint: "Số lượt thích (like) cao hoặc người quen chia sẻ chưa chắc đã đúng sự thật. Hãy đối chiếu với các trang báo chính thống (.gov.vn).",
+        explanation: "Người dùng có trách nhiệm bảo đảm tính chính xác của thông tin. Cần kiểm tra nguồn tin trên các cơ quan báo chí chính thống, cổng thông tin Chính phủ (.gov.vn) trước khi tin hoặc chia sẻ.",
+        lawRef: "⚖️ Căn cứ: Luật Công nghệ thông tin & Kỹ năng kiểm chứng thông tin (NV2, NV5)"
       },
       {
-        id: 3,
         category: "Đạo đức & Pháp luật về AI",
-        memberRef: "Nội dung Thành viên 3 & 6 • AI & Deepfake",
-        question: "Câu 3. Hành vi nào sau đây thể hiện việc sử dụng AI không có trách nhiệm?",
+        memberRef: "Thành viên 3 & 6 • AI & Deepfake",
+        question: "Hành vi nào sau đây thể hiện việc sử dụng AI không có trách nhiệm?",
         options: [
           "Sử dụng AI để tìm kiếm kiến thức học tập.",
           "Kiểm tra lại thông tin do AI cung cấp.",
@@ -1519,13 +1180,12 @@
         correct: 2,
         hint: "Hãy chú ý đến hành vi lạm dụng công nghệ cắt ghép khuôn mặt (Deepfake) gây tổn hại danh dự hoặc đánh lừa người xem.",
         explanation: "Sử dụng AI (như công nghệ Deepfake) để tạo hình ảnh, video giả mạo người khác nhằm gây hiểu lầm, bôi nhọ hoặc lừa đảo là hành vi vi phạm đạo đức và vi phạm Luật An ninh mạng.",
-        lawRef: "Căn cứ: Điều 8, Điều 16 Luật An ninh mạng • Quy tắc ứng xử AI có trách nhiệm"
+        lawRef: "⚖️ Căn cứ: Điều 8, Điều 16 Luật An ninh mạng • Quy tắc ứng xử AI có trách nhiệm"
       },
       {
-        id: 4,
         category: "Quyền riêng tư & Dữ liệu cá nhân",
-        memberRef: "Nội dung Thành viên 3 • Bảo vệ quyền riêng tư",
-        question: "Câu 4. Hành vi nào sau đây có thể xâm phạm quyền riêng tư của người khác?",
+        memberRef: "Thành viên 3 • Bảo vệ quyền riêng tư",
+        question: "Hành vi nào sau đây có thể xâm phạm quyền riêng tư của người khác?",
         options: [
           "Chia sẻ thông báo công khai của nhà trường.",
           "Sử dụng AI để tóm tắt tài liệu.",
@@ -1533,15 +1193,14 @@
           "Tự ý công khai thông tin cá nhân của người khác trái pháp luật."
         ],
         correct: 3,
-        hint: "Mọi dữ liệu như số điện thoại, địa chỉ, tin nhắn riêng tư, hình ảnh cá nhân đều được pháp luật bảo vệ.",
+        hint: "Mọi dữ liệu như số điện thoại, địa chỉ, tin nhắn riêng tư, hình ảnh cá nhân đều được pháp luật bảo vệ chặt chẽ.",
         explanation: "Luật An ninh mạng nghiêm cấm hành vi chiếm đoạt, mua bán hoặc tự ý công khai thông tin thuộc bí mật cá nhân, bí mật gia đình và đời sống riêng tư của người khác mà không được phép.",
-        lawRef: "Căn cứ: Điều 17, Điều 18 Luật An ninh mạng & Điều 101 Nghị định 15/2020/NĐ-CP"
+        lawRef: "⚖️ Căn cứ: Điều 17, Điều 18 Luật An ninh mạng & Điều 101 Nghị định 15/2020/NĐ-CP"
       },
       {
-        id: 5,
         category: "Quyền tác giả & Bản quyền số",
-        memberRef: "Nội dung Thành viên 4 • Bản quyền & Sở hữu trí tuệ",
-        question: "Câu 5. Trong lĩnh vực bản quyền, hành vi nào sau đây là không phù hợp?",
+        memberRef: "Thành viên 4 • Bản quyền & Sở hữu trí tuệ",
+        question: "Trong lĩnh vực bản quyền, hành vi nào sau đây là không phù hợp?",
         options: [
           "Xin phép chủ sở hữu khi cần thiết trước khi sử dụng tác phẩm.",
           "Tự ý sao chép tác phẩm của người khác và nhận là sản phẩm do mình sáng tạo.",
@@ -1551,13 +1210,12 @@
         correct: 1,
         hint: "Việc 'đạo văn' hoặc chiếm đoạt quyền tác giả trên môi trường số là hành vi vi phạm Luật Sở hữu trí tuệ.",
         explanation: "Tự ý sao chép tác phẩm của người khác rồi mạo nhận là của mình xâm phạm nghiêm trọng quyền tác giả và quyền sở hữu trí tuệ được pháp luật bảo hộ.",
-        lawRef: "Căn cứ: Luật Sở hữu trí tuệ & Nội dung Bản quyền số (Bài 11 Tin 10)"
+        lawRef: "⚖️ Căn cứ: Luật Sở hữu trí tuệ & Nội dung Bản quyền số (Bài 11 Tin 10)"
       },
       {
-        id: 6,
         category: "Quảng cáo sai sự thật trên mạng",
-        memberRef: "Nội dung Thành viên 4 & 5 • Quảng cáo & Kiểm chứng",
-        question: "Câu 6. Một quảng cáo trên mạng xã hội khẳng định sản phẩm có thể chữa khỏi mọi bệnh nhưng không có bằng chứng đáng tin cậy. Người dùng nên làm gì?",
+        memberRef: "Thành viên 4 & 5 • Quảng cáo & Kiểm chứng",
+        question: "Một quảng cáo trên mạng xã hội khẳng định sản phẩm có thể chữa khỏi mọi bệnh nhưng không có bằng chứng đáng tin cậy. Người dùng nên làm gì?",
         options: [
           "Tin tưởng vì quảng cáo có nhiều lượt xem.",
           "Mua sản phẩm vì quảng cáo có hình ảnh chuyên gia.",
@@ -1567,13 +1225,12 @@
         correct: 2,
         hint: "Nhiều quảng cáo hiện nay dùng cả AI ghép mặt bác sĩ, chuyên gia để phóng đại công dụng sản phẩm.",
         explanation: "Quảng cáo phóng đại công dụng, sai sự thật là hành vi bị cấm. Người dùng cần tỉnh táo kiểm tra nguồn gốc, giấy phép và căn cứ khoa học trước khi tin tưởng hoặc chia sẻ.",
-        lawRef: "Căn cứ: Luật Quảng cáo, Luật CNTT & Nghị định 15/2020/NĐ-CP (NV4)"
+        lawRef: "⚖️ Căn cứ: Luật Quảng cáo, Luật CNTT & Nghị định 15/2020/NĐ-CP (NV4)"
       },
       {
-        id: 7,
         category: "Sử dụng AI An toàn & Trách nhiệm",
-        memberRef: "Nội dung Thành viên 5 & 6 • Giải pháp & Quy tắc ứng xử",
-        question: "Câu 7. Đâu là cách sử dụng AI an toàn và có trách nhiệm?",
+        memberRef: "Thành viên 5 & 6 • Giải pháp & Quy tắc ứng xử",
+        question: "Đâu là cách sử dụng AI an toàn và có trách nhiệm?",
         options: [
           "Cung cấp mật khẩu cho AI để thuận tiện sử dụng.",
           "Tin tưởng hoàn toàn vào mọi câu trả lời của AI.",
@@ -1581,15 +1238,14 @@
           "Bảo vệ dữ liệu cá nhân, kiểm chứng thông tin và tôn trọng quyền của người khác."
         ],
         correct: 3,
-        hint: "AI có thể xảy ra hiện tượng 'ảo giác' (tạo thông tin sai) và tiềm ẩn rủi ro lộ dữ liệu nếu người dùng nhập thông tin nhạy cảm.",
+        hint: "AI có thể tạo thông tin sai lệch ('ảo giác AI') và tiềm ẩn rủi ro lộ dữ liệu nếu người dùng nhập thông tin nhạy cảm.",
         explanation: "Khi sử dụng AI, tuyệt đối không cung cấp mật khẩu hay dữ liệu nhạy cảm; luôn kiểm chứng lại kết quả đầu ra và tôn trọng quyền riêng tư, danh dự, bản quyền của người khác.",
-        lawRef: "Căn cứ: Giải pháp sử dụng MXH & AI an toàn (Nhiệm vụ 5 & 6)"
+        lawRef: "⚖️ Căn cứ: Giải pháp sử dụng MXH & AI an toàn (Nhiệm vụ 5 & 6)"
       },
       {
-        id: 8,
         category: "Tình huống thực tế: Deepfake Giọng nói",
-        memberRef: "Nội dung Thành viên 3 • Ví dụ AI giả mạo hình ảnh, giọng nói",
-        question: "Câu 8. Một học sinh sử dụng AI tạo video giả giọng nói của giáo viên để làm trò đùa trong nhóm lớp. Video khiến nhiều người hiểu lầm về phát ngôn của giáo viên. Nhận định nào sau đây chính xác nhất?",
+        memberRef: "Thành viên 3 • Ví dụ AI giả mạo hình ảnh, giọng nói",
+        question: "Một học sinh sử dụng AI tạo video giả giọng nói của giáo viên để làm trò đùa trong nhóm lớp. Video khiến nhiều người hiểu lầm về phát ngôn của giáo viên. Nhận định nào sau đây chính xác nhất?",
         options: [
           "Hành vi này không vi phạm pháp luật vì video chỉ được chia sẻ trong nhóm lớp và không nhằm mục đích kiếm tiền.",
           "Hành vi này chỉ vi phạm quy tắc ứng xử trên mạng, không liên quan đến quyền cá nhân hay trách nhiệm pháp lý.",
@@ -1599,13 +1255,12 @@
         correct: 2,
         hint: "Dù chỉ với mục đích 'trêu đùa trong nhóm lớp' và không kiếm tiền, việc giả mạo làm ảnh hưởng uy tín người khác vẫn vi phạm pháp luật.",
         explanation: "Dùng AI giả mạo giọng nói gây hiểu lầm về phát ngôn của giáo viên trực tiếp xâm phạm quyền cá nhân, uy tín, danh dự của giáo viên và có thể bị xử lý theo Luật An ninh mạng cùng Điều 101 Nghị định 15/2020/NĐ-CP.",
-        lawRef: "Căn cứ: Luật An ninh mạng & Khoản 1 Điều 101 Nghị định 15/2020/NĐ-CP"
+        lawRef: "⚖️ Căn cứ: Luật An ninh mạng & Khoản 1 Điều 101 Nghị định 15/2020/NĐ-CP"
       },
       {
-        id: 9,
         category: "Tình huống thực tế: AI & Bản quyền",
-        memberRef: "Nội dung Thành viên 4 • AI và quyền sở hữu trí tuệ",
-        question: "Câu 9. Một học sinh sử dụng AI tạo bài thuyết trình bằng cách sao chép phần lớn nội dung từ một bài viết trên Internet, không trích dẫn nguồn và nhận đó là sản phẩm do mình tự nghiên cứu. Nhận định nào phù hợp nhất?",
+        memberRef: "Thành viên 4 • AI và quyền sở hữu trí tuệ",
+        question: "Một học sinh sử dụng AI tạo bài thuyết trình bằng cách sao chép phần lớn nội dung từ một bài viết trên Internet, không trích dẫn nguồn và nhận đó là sản phẩm do mình tự nghiên cứu. Nhận định nào phù hợp nhất?",
         options: [
           "Hành vi này không có vấn đề về bản quyền vì nội dung được AI tổng hợp và chỉ sử dụng trong hoạt động học tập.",
           "Hành vi này có thể liên quan đến quyền tác giả và tính trung thực học thuật, tùy nội dung sao chép và cách sử dụng tác phẩm.",
@@ -1615,13 +1270,12 @@
         correct: 1,
         hint: "AI chỉ là công cụ hỗ trợ, người sử dụng vẫn phải chịu trách nhiệm về quyền tác giả và sự trung thực trong học tập.",
         explanation: "Việc sao chép phần lớn nội dung qua AI mà không trích dẫn nguồn và nhận làm của mình vi phạm tính trung thực học thuật và có thể xâm phạm quyền tác giả của tác phẩm gốc.",
-        lawRef: "Căn cứ: Quy định về Bản quyền & Đạo đức sử dụng AI (Nhiệm vụ 4 & 6)"
+        lawRef: "⚖️ Căn cứ: Quy định về Bản quyền & Đạo đức sử dụng AI (Nhiệm vụ 4 & 6)"
       },
       {
-        id: 10,
         category: "Tình huống thực tế: Phát tán tin từ AI",
-        memberRef: "Nội dung Thành viên 2, 5 & 6 • Trách nhiệm thông tin",
-        question: "Câu 10. Một người chia sẻ thông tin chưa được kiểm chứng do AI tạo ra lên mạng xã hội. Dù đã ghi chú rằng thông tin chưa xác minh, bài viết vẫn khiến nhiều người hiểu nhầm. Cách xử lý nào phù hợp nhất?",
+        memberRef: "Thành viên 2, 5 & 6 • Trách nhiệm thông tin",
+        question: "Một người chia sẻ thông tin chưa được kiểm chứng do AI tạo ra lên mạng xã hội. Dù đã ghi chú rằng thông tin chưa xác minh, bài viết vẫn khiến nhiều người hiểu nhầm. Cách xử lý nào phù hợp nhất?",
         options: [
           "Tiếp tục chia sẻ bài viết vì đã ghi chú rõ thông tin chưa được xác minh và không chịu trách nhiệm về nội dung.",
           "Xóa tài khoản mạng xã hội để tránh trách nhiệm vì thông tin ban đầu được tạo ra bởi một công cụ AI.",
@@ -1631,30 +1285,28 @@
         correct: 3,
         hint: "Dòng chữ 'tin chưa kiểm chứng' không giúp miễn trừ trách nhiệm nếu thông tin đó là giả và gây hoang mang dư luận.",
         explanation: "Người đăng tải phải chịu trách nhiệm về thông tin mình chia sẻ trên không gian mạng. Khi phát hiện nội dung gây hiểu lầm, cần chủ động kiểm chứng, đính chính công khai hoặc gỡ bỏ ngay.",
-        lawRef: "Căn cứ: Luật An ninh mạng, Bộ Quy tắc ứng xử trên MXH & Nghị định 15/2020/NĐ-CP"
+        lawRef: "⚖️ Căn cứ: Luật An ninh mạng, Bộ Quy tắc ứng xử trên MXH & Nghị định 15/2020/NĐ-CP"
       }
     ];
 
-    /* ============================================================================
-       GAME STATE & AUDIO ENGINE (Web Audio API - Zero External Assets)
-       ============================================================================ */
-    let soundEnabled = true;
+    /* ==========================================================================
+       2. ENGINE ÂM THANH SYNTHESIZER (WEB AUDIO API)
+       ========================================================================== */
+    let soundOn = true;
     let audioCtx = null;
 
-    function getAudioContext() {
+    function getAudio() {
       if (!audioCtx) {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if (AudioContext) audioCtx = new AudioContext();
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (AC) audioCtx = new AC();
       }
-      if (audioCtx && audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
+      if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
       return audioCtx;
     }
 
-    function playTone(freq, type = 'sine', duration = 0.14, gainVal = 0.12, delay = 0) {
-      if (!soundEnabled) return;
-      const ctx = getAudioContext();
+    function playNote(freq, type = 'sine', duration = 0.16, vol = 0.12, delay = 0) {
+      if (!soundOn) return;
+      const ctx = getAudio();
       if (!ctx) return;
 
       const osc = ctx.createOscillator();
@@ -1663,7 +1315,7 @@
       osc.frequency.setValueAtTime(freq, ctx.currentTime + delay);
 
       gain.gain.setValueAtTime(0.001, ctx.currentTime + delay);
-      gain.gain.exponentialRampToValueAtTime(gainVal, ctx.currentTime + delay + 0.02);
+      gain.gain.exponentialRampToValueAtTime(vol, ctx.currentTime + delay + 0.02);
       gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + delay + duration);
 
       osc.connect(gain);
@@ -1673,510 +1325,316 @@
     }
 
     function sfxClick() {
-      playTone(520, 'triangle', 0.07, 0.08);
+      playNote(580, 'triangle', 0.08, 0.08);
     }
 
     function sfxCorrect() {
-      playTone(523.25, 'sine', 0.14, 0.14, 0);
-      playTone(659.25, 'sine', 0.16, 0.14, 0.09);
-      playTone(783.99, 'sine', 0.22, 0.16, 0.18);
-      playTone(1046.5, 'triangle', 0.35, 0.15, 0.27);
-    }
-
-    function sfxWrong() {
-      playTone(240, 'sawtooth', 0.18, 0.11, 0);
-      playTone(185, 'sawtooth', 0.28, 0.12, 0.14);
-    }
-
-    function sfxMystery() {
-      [587.33, 659.25, 783.99, 987.77, 1174.66].forEach((f, idx) => {
-        playTone(f, 'triangle', 0.14, 0.13, idx * 0.06);
+      [523.25, 659.25, 783.99, 1046.5, 1318.5].forEach((f, i) => {
+        playNote(f, 'triangle', 0.24, 0.14, i * 0.07);
       });
     }
 
-    function sfxVictory() {
-      const notes = [523.25, 659.25, 783.99, 1046.5, 783.99, 1046.5];
-      notes.forEach((f, idx) => {
-        playTone(f, 'triangle', 0.22, 0.15, idx * 0.11);
+    function sfxWrong() {
+      playNote(220, 'sawtooth', 0.2, 0.12, 0);
+      playNote(165, 'sawtooth', 0.3, 0.13, 0.12);
+    }
+
+    function sfxFinish() {
+      [523.25, 659.25, 783.99, 1046.5, 987.77, 1046.5].forEach((f, i) => {
+        playNote(f, 'triangle', 0.28, 0.15, i * 0.1);
       });
     }
 
     function toggleSound() {
-      soundEnabled = !soundEnabled;
-      document.getElementById('sound-icon').textContent = soundEnabled ? '🔊' : '🔇';
-      document.getElementById('sound-label').textContent = soundEnabled ? 'Âm thanh: Bật' : 'Âm thanh: Tắt';
-      document.getElementById('sound-toggle').classList.toggle('active', soundEnabled);
-      if (soundEnabled) sfxClick();
+      soundOn = !soundOn;
+      document.getElementById('sound-icon').textContent = soundOn ? '🔊' : '🔇';
+      document.getElementById('sound-btn').classList.toggle('active', soundOn);
+      if (soundOn) sfxClick();
     }
 
-    /* ============================================================================
-       GAME CONFIGURATION & STATE
-       ============================================================================ */
-    let gameMode = 'classic'; // 'classic' or 'team'
-    let timePerQuestion = 25;
-    let shuffleQuestions = false;
-
+    /* ==========================================================================
+       3. LOGIC TRÒ CHƠI (LUÔN XÁO TRỘN CÂU HỎI - KHÔNG ĐIỂM/ĐỘI/TIME LIMIT)
+       ========================================================================== */
     let questions = [];
-    let currentIndex = 0;
-    let score = 0;
-    let streak = 0;
-    let bestStreak = 0;
-    let answeredStates = []; // { answered: bool, selected: number, isCorrect: bool, eliminated: [] }
-    let timerInterval = null;
-    let timeLeft = 25;
-    let lifeline5050Used = false;
-    let lifelineHintUsed = false;
-    let canOpenMystery = false;
+    let currentIdx = 0;
+    let states = [];
 
-    let activeTeamIndex = 0;
-    let teams = [
-      { name: "Đội 1 (Tổ 1)", score: 0, color: "#a855f7" },
-      { name: "Đội 2 (Tổ 2)", score: 0, color: "#ec4899" },
-      { name: "Đội 3 (Tổ 3)", score: 0, color: "#06b6d4" },
-      { name: "Đội 4 (Tổ 4)", score: 0, color: "#10b981" }
-    ];
-
-    function selectMode(mode) {
-      sfxClick();
-      gameMode = mode;
-      document.getElementById('mode-classic').classList.toggle('selected', mode === 'classic');
-      document.getElementById('mode-team').classList.toggle('selected', mode === 'team');
+    function fisherYatesShuffle(arr) {
+      const copy = JSON.parse(JSON.stringify(arr));
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
     }
 
-    function setTimerOption(seconds, btnEl) {
-      sfxClick();
-      timePerQuestion = seconds;
-      btnEl.parentElement.querySelectorAll('.pill-choice').forEach(b => b.classList.remove('active'));
-      btnEl.classList.add('active');
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
     }
 
-    function setShuffle(shouldShuffle) {
+    function goHome() {
       sfxClick();
-      shuffleQuestions = shouldShuffle;
-      document.getElementById('order-fixed').classList.toggle('active', !shouldShuffle);
-      document.getElementById('order-random').classList.toggle('active', shouldShuffle);
-    }
-
-    function showScreen(screenId) {
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      document.getElementById(screenId).classList.add('active');
-    }
-
-    function resetToHome() {
-      sfxClick();
-      stopTimer();
       showScreen('screen-start');
     }
 
-    function startGame() {
+    function startQuiz(ev) {
       sfxClick();
-      questions = JSON.parse(JSON.stringify(ORIGINAL_QUESTIONS));
-      if (shuffleQuestions) {
-        questions.sort(() => Math.random() - 0.5);
+      if (ev && ev.clientX) {
+        spawnShockwave(ev.clientX, ev.clientY, '#a855f7');
+        spawnBurst(ev.clientX, ev.clientY, ['#a855f7', '#ec4899', '#06b6d4'], 55);
       }
 
-      currentIndex = 0;
-      score = 0;
-      streak = 0;
-      bestStreak = 0;
-      lifeline5050Used = false;
-      lifelineHintUsed = false;
-      canOpenMystery = false;
-
-      answeredStates = questions.map(() => ({
+      // Luôn xáo trộn ngẫu nhiên 10 câu hỏi mỗi lần bắt đầu
+      questions = fisherYatesShuffle(QUESTION_BANK);
+      currentIdx = 0;
+      states = questions.map(() => ({
         answered: false,
         selected: null,
         isCorrect: false,
-        eliminated: []
+        eliminated: [],
+        hintShown: false
       }));
 
-      teams.forEach(t => t.score = 0);
-      activeTeamIndex = 0;
-
-      document.getElementById('btn-5050').disabled = false;
-      document.getElementById('btn-hint').disabled = false;
-
-      renderProgressDots();
-      renderTeamSidebar();
+      buildProgressNodes();
       showScreen('screen-quiz');
-      loadQuestion(0);
+      renderQuestion(0);
     }
 
-    function renderProgressDots() {
-      const container = document.getElementById('progress-dots');
-      container.innerHTML = '';
-      questions.forEach((q, idx) => {
-        const dot = document.createElement('div');
-        dot.className = 'q-dot';
-        dot.title = `Câu ${idx + 1}`;
-        dot.onclick = () => {
+    function reshuffleAndRestart() {
+      startQuiz({ clientX: window.innerWidth / 2, clientY: window.innerHeight / 2 });
+    }
+
+    function buildProgressNodes() {
+      const track = document.getElementById('progress-track');
+      track.innerHTML = '';
+      questions.forEach((_, idx) => {
+        const node = document.createElement('div');
+        node.className = 'p-node';
+        node.title = `Tình huống ${idx + 1}`;
+        node.onclick = (e) => {
           sfxClick();
-          loadQuestion(idx);
+          spawnBurst(e.clientX, e.clientY, ['#a855f7', '#06b6d4'], 18);
+          renderQuestion(idx);
         };
-        container.appendChild(dot);
+        track.appendChild(node);
       });
-      updateProgressDots();
     }
 
-    function updateProgressDots() {
-      const dots = document.querySelectorAll('.q-dot');
-      dots.forEach((dot, idx) => {
-        dot.className = 'q-dot';
-        if (idx === currentIndex) dot.classList.add('current');
-        if (answeredStates[idx].answered) {
-          dot.classList.add(answeredStates[idx].isCorrect ? 'correct' : 'wrong');
+    function updateProgressNodes() {
+      const nodes = document.querySelectorAll('.p-node');
+      nodes.forEach((node, idx) => {
+        node.className = 'p-node';
+        if (idx === currentIdx) node.classList.add('active');
+        if (states[idx].answered) {
+          node.classList.add(states[idx].isCorrect ? 'done-correct' : 'done-wrong');
         }
       });
     }
 
-    function renderTeamSidebar() {
-      const list = document.getElementById('team-list');
-      list.innerHTML = '';
-      teams.forEach((t, idx) => {
-        const item = document.createElement('div');
-        item.className = `team-item ${idx === activeTeamIndex ? 'active-turn' : ''}`;
-        item.onclick = () => {
-          activeTeamIndex = idx;
-          renderTeamSidebar();
-        };
-        item.innerHTML = `
-          <div class="team-info">
-            <div class="team-avatar" style="background:${t.color}33;border:1px solid ${t.color};color:#fff;">
-              T${idx + 1}
-            </div>
-            <div>
-              <div class="team-name">${t.name}</div>
-              <span class="team-turn-tag">${idx === activeTeamIndex ? '⚡ Đang giành quyền trả lời' : 'Bấm để chọn đội'}</span>
-            </div>
-          </div>
-          <div class="team-controls" onclick="event.stopPropagation()">
-            <button class="mini-score-btn" onclick="adjustTeamScore(${idx}, -50)" title="Trừ 50 điểm">-</button>
-            <div class="team-score">${t.score}</div>
-            <button class="mini-score-btn" onclick="adjustTeamScore(${idx}, 50)" title="Cộng 50 điểm">+</button>
-          </div>
-        `;
-        list.appendChild(item);
-      });
-    }
-
-    function adjustTeamScore(idx, delta) {
-      sfxClick();
-      teams[idx].score = Math.max(0, teams[idx].score + delta);
-      renderTeamSidebar();
-    }
-
-    /* ============================================================================
-       QUESTION RENDERING & INTERACTION
-       ============================================================================ */
-    function loadQuestion(idx) {
-      currentIndex = idx;
+    function renderQuestion(idx) {
+      currentIdx = idx;
       const q = questions[idx];
-      const state = answeredStates[idx];
+      const st = states[idx];
 
-      document.getElementById('hud-q-index').textContent = `${idx + 1} / ${questions.length}`;
-      document.getElementById('hud-score').textContent = score;
-      document.getElementById('hud-streak').textContent = streak;
-      document.getElementById('hud-streak-box').classList.toggle('hot', streak >= 2);
+      document.getElementById('q-counter').textContent = `${idx + 1} / ${questions.length}`;
+      document.getElementById('q-cat').textContent = q.category;
+      document.getElementById('q-ref').textContent = q.memberRef;
+      document.getElementById('q-text').textContent = `Câu ${idx + 1}. ${q.question}`;
 
-      document.getElementById('q-category').textContent = q.category;
-      document.getElementById('q-member-ref').textContent = q.memberRef;
-      document.getElementById('q-text').textContent = q.question;
-
-      const optionsContainer = document.getElementById('options-container');
-      optionsContainer.innerHTML = '';
+      const grid = document.getElementById('options-grid');
+      grid.innerHTML = '';
       const keys = ['A', 'B', 'C', 'D'];
 
       q.options.forEach((optText, optIdx) => {
         const btn = document.createElement('button');
-        btn.className = 'option-btn';
-        if (state.eliminated.includes(optIdx)) {
+        btn.className = 'option-card';
+
+        if (st.eliminated.includes(optIdx)) {
           btn.classList.add('eliminated');
         }
 
-        if (state.answered) {
+        if (st.answered) {
           btn.disabled = true;
           if (optIdx === q.correct) {
             btn.classList.add('correct');
-          } else if (optIdx === state.selected) {
+          } else if (optIdx === st.selected) {
             btn.classList.add('wrong');
           } else {
             btn.classList.add('dimmed');
           }
         } else {
-          btn.onclick = () => selectAnswer(optIdx);
+          btn.onclick = (ev) => chooseOption(optIdx, ev);
+          btn.onmousemove = (ev) => {
+            const rect = btn.getBoundingClientRect();
+            btn.style.setProperty('--opt-x', `${ev.clientX - rect.left}px`);
+            btn.style.setProperty('--opt-y', `${ev.clientY - rect.top}px`);
+          };
         }
 
         btn.innerHTML = `
-          <span class="option-key">${keys[optIdx]}</span>
-          <span>${optText}</span>
+          <span class="opt-badge">${keys[optIdx]}</span>
+          <span class="opt-label">${optText}</span>
         `;
-        optionsContainer.appendChild(btn);
+        grid.appendChild(btn);
       });
 
-      const expBox = document.getElementById('explanation-box');
-      if (state.answered) {
-        showExplanation(state.isCorrect, q);
-        stopTimer();
+      const drawer = document.getElementById('exp-drawer');
+      if (st.answered) {
+        renderExplanation(st.isCorrect, q);
+      } else if (st.hintShown) {
+        renderHint(q);
       } else {
-        expBox.classList.remove('show');
-        startTimer();
+        drawer.classList.remove('show');
       }
 
+      document.getElementById('btn-5050').disabled = st.answered || st.eliminated.length > 0;
+      document.getElementById('btn-hint').disabled = st.answered || st.hintShown;
       document.getElementById('btn-prev').disabled = idx === 0;
-      document.getElementById('btn-next-label').textContent =
-        idx === questions.length - 1 ? 'Xem Kết Quả Chung Cuộc' : 'Câu tiếp theo';
+      document.getElementById('next-label').textContent =
+        idx === questions.length - 1 ? 'Tổng Kết 10 Câu' : 'Câu tiếp theo';
 
-      updateProgressDots();
+      updateProgressNodes();
     }
 
-    function startTimer() {
-      stopTimer();
-      const timerBox = document.getElementById('timer-display');
-      const timerSec = document.getElementById('timer-seconds');
+    function chooseOption(optIdx, ev) {
+      const st = states[currentIdx];
+      if (st.answered) return;
 
-      if (timePerQuestion === 0) {
-        timerBox.className = 'timer-box';
-        timerSec.textContent = '∞ Tự do';
-        return;
-      }
-
-      timeLeft = timePerQuestion;
-      updateTimerUI();
-
-      timerInterval = setInterval(() => {
-        timeLeft--;
-        updateTimerUI();
-        if (timeLeft <= 5 && timeLeft > 0) {
-          playTone(680, 'sine', 0.05, 0.05);
-        }
-        if (timeLeft <= 0) {
-          stopTimer();
-          handleTimeOut();
-        }
-      }, 1000);
-    }
-
-    function updateTimerUI() {
-      const timerBox = document.getElementById('timer-display');
-      const timerSec = document.getElementById('timer-seconds');
-      timerSec.textContent = `${timeLeft}s`;
-      timerBox.className = 'timer-box';
-      if (timeLeft <= 10 && timeLeft > 5) timerBox.classList.add('warning');
-      if (timeLeft <= 5) timerBox.classList.add('danger');
-    }
-
-    function stopTimer() {
-      if (timerInterval) {
-        clearInterval(timerInterval);
-        timerInterval = null;
-      }
-    }
-
-    function handleTimeOut() {
-      const state = answeredStates[currentIndex];
-      if (state.answered) return;
-      sfxWrong();
-      state.answered = true;
-      state.selected = -1;
-      state.isCorrect = false;
-      streak = 0;
-      loadQuestion(currentIndex);
-    }
-
-    function selectAnswer(optIdx) {
-      const state = answeredStates[currentIndex];
-      if (state.answered) return;
-
-      stopTimer();
-      const q = questions[currentIndex];
+      const q = questions[currentIdx];
       const isCorrect = optIdx === q.correct;
 
-      state.answered = true;
-      state.selected = optIdx;
-      state.isCorrect = isCorrect;
+      st.answered = true;
+      st.selected = optIdx;
+      st.isCorrect = isCorrect;
+
+      const x = ev && ev.clientX ? ev.clientX : window.innerWidth / 2;
+      const y = ev && ev.clientY ? ev.clientY : window.innerHeight / 2;
 
       if (isCorrect) {
         sfxCorrect();
-        streak++;
-        if (streak > bestStreak) bestStreak = streak;
-
-        const timeBonus = timePerQuestion > 0 ? Math.max(0, timeLeft * 2) : 20;
-        const streakBonus = streak >= 2 ? streak * 15 : 0;
-        const gained = 100 + timeBonus + streakBonus;
-        score += gained;
-
-        // Add points to active team as well
-        teams[activeTeamIndex].score += 100;
-        canOpenMystery = true;
-        document.getElementById('btn-mystery').disabled = false;
-        document.getElementById('mystery-status').textContent =
-          `🎉 Trả lời chính xác! ${teams[activeTeamIndex].name} hoặc bạn có 1 lượt mở Hộp quà Bí ẩn!`;
-
-        if (streak >= 3) launchConfetti(35);
+        spawnShockwave(x, y, '#10b981');
+        spawnShockwave(x, y, '#06b6d4', 120);
+        spawnBurst(x, y, ['#10b981', '#34d399', '#06b6d4', '#a855f7', '#f8fafc'], 95);
       } else {
         sfxWrong();
-        streak = 0;
-        canOpenMystery = false;
-        document.getElementById('btn-mystery').disabled = true;
-        document.getElementById('mystery-status').textContent =
-          'Hãy trả lời đúng câu tiếp theo để mở khóa Hộp quà Bí ẩn!';
+        spawnShockwave(x, y, '#f43f5e');
+        spawnBurst(x, y, ['#f43f5e', '#fb7185', '#e11d48'], 45);
       }
 
-      // Advance team turn automatically in team mode
-      if (gameMode === 'team') {
-        renderTeamSidebar();
-        activeTeamIndex = (activeTeamIndex + 1) % teams.length;
-      } else {
-        renderTeamSidebar();
-      }
-
-      loadQuestion(currentIndex);
+      renderQuestion(currentIdx);
     }
 
-    function showExplanation(isCorrect, q) {
-      const expBox = document.getElementById('explanation-box');
-      const expTitle = document.getElementById('exp-title');
-      const expText = document.getElementById('exp-text');
-      const expRef = document.getElementById('exp-ref');
-
+    function renderExplanation(isCorrect, q) {
+      const drawer = document.getElementById('exp-drawer');
+      const status = document.getElementById('exp-status');
+      const desc = document.getElementById('exp-desc');
+      const law = document.getElementById('exp-law');
       const keys = ['A', 'B', 'C', 'D'];
-      expTitle.className = `exp-header ${isCorrect ? 'is-correct' : 'is-wrong'}`;
-      expTitle.innerHTML = isCorrect
-        ? `<span>✅ Chính xác! Đáp án đúng là ${keys[q.correct]}</span><span>+Điểm thưởng</span>`
-        : `<span>❌ Chưa chính xác! Đáp án đúng là ${keys[q.correct]}</span><span>Ôn tập kiến thức</span>`;
 
-      expText.textContent = q.explanation;
-      expRef.textContent = q.lawRef;
-      expBox.classList.add('show');
+      status.className = `exp-status ${isCorrect ? 'good' : 'bad'}`;
+      status.innerHTML = isCorrect
+        ? `<span>✨ CHÍNH XÁC! Đáp án đúng là ${keys[q.correct]}</span><span>✔ Kiến thức chuẩn</span>`
+        : `<span>⚡ CHƯA CHÍNH XÁC! Đáp án đúng là ${keys[q.correct]}</span><span>💡 Giải thích chi tiết</span>`;
+
+      desc.textContent = q.explanation;
+      law.textContent = q.lawRef;
+      drawer.classList.add('show');
     }
 
-    /* ============================================================================
-       LIFELINES & MYSTERY BOX
-       ============================================================================ */
-    function useLifeline5050() {
-      const state = answeredStates[currentIndex];
-      if (lifeline5050Used || state.answered) return;
+    function renderHint(q) {
+      const drawer = document.getElementById('exp-drawer');
+      const status = document.getElementById('exp-status');
+      const desc = document.getElementById('exp-desc');
+      const law = document.getElementById('exp-law');
+
+      status.className = 'exp-status good';
+      status.innerHTML = '<span>💡 GỢI Ý TỪ NHÓM THUYẾT TRÌNH:</span>';
+      desc.textContent = q.hint;
+      law.textContent = q.memberRef;
+      drawer.classList.add('show');
+    }
+
+    function trigger5050(ev) {
+      const st = states[currentIdx];
+      if (st.answered || st.eliminated.length > 0) return;
 
       sfxClick();
-      lifeline5050Used = true;
-      document.getElementById('btn-5050').disabled = true;
+      if (ev && ev.clientX) {
+        spawnShockwave(ev.clientX, ev.clientY, '#06b6d4');
+        spawnBurst(ev.clientX, ev.clientY, ['#06b6d4', '#a855f7'], 35);
+      }
 
-      const q = questions[currentIndex];
-      const wrongIndices = [0, 1, 2, 3].filter(i => i !== q.correct);
-      wrongIndices.sort(() => Math.random() - 0.5);
-      state.eliminated = wrongIndices.slice(0, 2);
-      loadQuestion(currentIndex);
+      const q = questions[currentIdx];
+      const wrongs = [0, 1, 2, 3].filter(i => i !== q.correct);
+      wrongs.sort(() => Math.random() - 0.5);
+      st.eliminated = wrongs.slice(0, 2);
+      renderQuestion(currentIdx);
     }
 
-    function useLifelineHint() {
-      const state = answeredStates[currentIndex];
-      if (lifelineHintUsed || state.answered) return;
+    function triggerHint(ev) {
+      const st = states[currentIdx];
+      if (st.answered || st.hintShown) return;
 
       sfxClick();
-      lifelineHintUsed = true;
-      document.getElementById('btn-hint').disabled = true;
+      if (ev && ev.clientX) {
+        spawnShockwave(ev.clientX, ev.clientY, '#ec4899');
+        spawnBurst(ev.clientX, ev.clientY, ['#ec4899', '#f5d0fe'], 30);
+      }
 
-      const q = questions[currentIndex];
-      const expBox = document.getElementById('explanation-box');
-      const expTitle = document.getElementById('exp-title');
-      const expText = document.getElementById('exp-text');
-      const expRef = document.getElementById('exp-ref');
-
-      expTitle.className = 'exp-header is-correct';
-      expTitle.innerHTML = '<span>💡 Gợi ý từ Nhóm thuyết trình:</span>';
-      expText.textContent = q.hint;
-      expRef.textContent = q.memberRef;
-      expBox.classList.add('show');
+      st.hintShown = true;
+      renderQuestion(currentIdx);
     }
 
-    function openMysteryBox() {
-      if (!canOpenMystery) return;
-      canOpenMystery = false;
-      document.getElementById('btn-mystery').disabled = true;
-      sfxMystery();
-
-      const rewards = [
-        { text: "🌟 Siêu cấp An ninh mạng! Cộng thêm +150 điểm!", pts: 150 },
-        { text: "🚀 Lá chắn AI Thông thái! Cộng thêm +100 điểm!", pts: 100 },
-        { text: "💎 Công dân số Gương mẫu! Cộng thêm +200 điểm!", pts: 200 },
-        { text: "⚡ Tăng tốc Kiểm chứng tin! Cộng thêm +80 điểm!", pts: 80 }
-      ];
-      const pick = rewards[Math.floor(Math.random() * rewards.length)];
-      score += pick.pts;
-      teams[activeTeamIndex].score += pick.pts;
-
-      document.getElementById('hud-score').textContent = score;
-      document.getElementById('mystery-status').textContent = pick.text;
-      renderTeamSidebar();
-      launchConfetti(45);
-    }
-
-    function prevQuestion() {
-      if (currentIndex > 0) {
+    function prevQ(ev) {
+      if (currentIdx > 0) {
         sfxClick();
-        loadQuestion(currentIndex - 1);
+        renderQuestion(currentIdx - 1);
       }
     }
 
-    function nextQuestion() {
+    function nextQ(ev) {
       sfxClick();
-      if (currentIndex < questions.length - 1) {
-        loadQuestion(currentIndex + 1);
+      if (ev && ev.clientX) {
+        spawnBurst(ev.clientX, ev.clientY, ['#a855f7', '#ec4899', '#06b6d4'], 28);
+      }
+      if (currentIdx < questions.length - 1) {
+        renderQuestion(currentIdx + 1);
       } else {
-        finishGame();
+        showSummary();
       }
     }
 
-    /* ============================================================================
-       FINISH SCREEN & SUMMARY
-       ============================================================================ */
-    function finishGame() {
-      stopTimer();
-      sfxVictory();
-      launchConfetti(110);
+    function showSummary() {
+      sfxFinish();
+      // Launch multiple fireworks bursts across screen
+      for (let i = 0; i < 5; i++) {
+        setTimeout(() => {
+          const rx = window.innerWidth * (0.2 + Math.random() * 0.6);
+          const ry = window.innerHeight * (0.2 + Math.random() * 0.4);
+          spawnShockwave(rx, ry, '#a855f7');
+          spawnBurst(rx, ry, ['#a855f7', '#ec4899', '#06b6d4', '#10b981', '#f8fafc'], 85);
+        }, i * 260);
+      }
 
-      const correctCount = answeredStates.filter(s => s.isCorrect).length;
-      const accuracy = Math.round((correctCount / questions.length) * 100);
-
-      document.getElementById('res-score').textContent = score;
-      document.getElementById('res-correct').textContent = `${correctCount} / ${questions.length}`;
-      document.getElementById('res-accuracy').textContent = `${accuracy}%`;
-      document.getElementById('res-best-streak').textContent = `${bestStreak} 🔥`;
-
-      let headline = "Chuyên Gia Pháp Luật Số & AI! 🌟";
-      if (correctCount < 5) headline = "Cần Củng Cố Thêm Kiến Thức Mạng! 💪";
-      else if (correctCount < 8) headline = "Công Dân Số Tỉnh Táo & Hiểu Luật! 👏";
-
-      document.getElementById('res-headline').textContent = headline;
-
-      const reviewList = document.getElementById('review-list');
-      reviewList.innerHTML = '';
+      const list = document.getElementById('review-scroll');
+      list.innerHTML = '';
       const keys = ['A', 'B', 'C', 'D'];
 
       questions.forEach((q, idx) => {
-        const st = answeredStates[idx];
-        const item = document.createElement('div');
-        item.className = 'review-item';
-        const badge = st.isCorrect
-          ? '<span style="color:#6ee7b7;">✔ Đúng</span>'
-          : '<span style="color:#fda4af;">✘ Chưa đúng</span>';
-        item.innerHTML = `
-          <div class="review-item-head">
-            <span>${q.question}</span>
-            ${badge}
-          </div>
-          <div class="review-ans">Đáp án chuẩn: ${keys[q.correct]}. ${q.options[q.correct]}</div>
-          <div class="review-exp">${q.explanation}</div>
+        const card = document.createElement('div');
+        card.className = 'review-card';
+        card.innerHTML = `
+          <div class="review-q">Câu ${idx + 1}: ${q.question}</div>
+          <div class="review-a">✔ Đáp án đúng: ${keys[q.correct]}. ${q.options[q.correct]}</div>
+          <div class="review-e">${q.explanation}</div>
         `;
-        reviewList.appendChild(item);
+        list.appendChild(card);
       });
 
-      showScreen('screen-result');
+      showScreen('screen-summary');
     }
 
-    /* ============================================================================
-       FULLSCREEN & KEYBOARD SHORTCUTS FOR CLASSROOM PRESENTATION
-       ============================================================================ */
     function toggleFullscreen() {
       sfxClick();
       if (!document.fullscreenElement) {
@@ -2187,89 +1645,259 @@
     }
 
     window.addEventListener('keydown', (e) => {
-      const quizActive = document.getElementById('screen-quiz').classList.contains('active');
       const key = e.key.toUpperCase();
+      if (key === 'M') { toggleSound(); return; }
+      if (key === 'F') { toggleFullscreen(); return; }
+      if (key === 'R') { reshuffleAndRestart(); return; }
 
-      if (key === 'M') {
-        toggleSound();
-        return;
-      }
-      if (key === 'F') {
-        toggleFullscreen();
-        return;
-      }
+      const isQuiz = document.getElementById('screen-quiz').classList.contains('active');
+      if (!isQuiz) return;
 
-      if (!quizActive) return;
-
-      if (['A', '1'].includes(key)) selectAnswer(0);
-      else if (['B', '2'].includes(key)) selectAnswer(1);
-      else if (['C', '3'].includes(key)) selectAnswer(2);
-      else if (['D', '4'].includes(key)) selectAnswer(3);
-      else if (key === 'H') useLifeline5050();
-      else if (e.code === 'Space' || e.code === 'Enter') {
+      if (['A', '1'].includes(key)) chooseOption(0);
+      else if (['B', '2'].includes(key)) chooseOption(1);
+      else if (['C', '3'].includes(key)) chooseOption(2);
+      else if (['D', '4'].includes(key)) chooseOption(3);
+      else if (key === 'H') trigger5050();
+      else if (key === 'G') triggerHint();
+      else if (e.code === 'Space' || e.code === 'Enter' || e.code === 'ArrowRight') {
         e.preventDefault();
-        nextQuestion();
-      } else if (e.code === 'ArrowRight') {
-        nextQuestion();
+        nextQ();
       } else if (e.code === 'ArrowLeft') {
-        prevQuestion();
+        prevQ();
       }
     });
 
-    /* ============================================================================
-       LIGHTWEIGHT CONFETTI ENGINE
-       ============================================================================ */
-    const confettiCanvas = document.getElementById('confetti-canvas');
-    const cCtx = confettiCanvas.getContext('2d');
-    let particles = [];
+    /* ==========================================================================
+       4. HỆ THỐNG PARTICLE ĐA TẦNG: MẠNG NƠ-RON CYBER + TIA LỬA + SÓNG XUNG KÍCH
+       ========================================================================== */
+    const bgCanvas = document.getElementById('bg-particles');
+    const bgCtx = bgCanvas.getContext('2d');
+    const fxCanvas = document.getElementById('fx-canvas');
+    const fxCtx = fxCanvas.getContext('2d');
 
-    function resizeCanvas() {
-      confettiCanvas.width = window.innerWidth;
-      confettiCanvas.height = window.innerHeight;
+    let W = window.innerWidth;
+    let H = window.innerHeight;
+    let mouse = { x: W / 2, y: H / 2, active: false };
+
+    let bgNodes = [];
+    let burstParticles = [];
+    let shockwaves = [];
+    let trailSparks = [];
+
+    function resizeCanvases() {
+      W = window.innerWidth;
+      H = window.innerHeight;
+      bgCanvas.width = W;
+      bgCanvas.height = H;
+      fxCanvas.width = W;
+      fxCanvas.height = H;
+      initBgNodes();
     }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
 
-    function launchConfetti(count = 60) {
-      const colors = ['#a855f7', '#ec4899', '#06b6d4', '#10b981', '#f59e0b', '#f8fafc'];
-      for (let i = 0; i < count; i++) {
-        particles.push({
-          x: window.innerWidth / 2 + (Math.random() - 0.5) * 260,
-          y: window.innerHeight * 0.35,
-          vx: (Math.random() - 0.5) * 14,
-          vy: -(Math.random() * 10 + 4),
-          size: Math.random() * 8 + 5,
+    function initBgNodes() {
+      const count = Math.min(95, Math.floor((W * H) / 14000));
+      const palette = ['#a855f7', '#ec4899', '#06b6d4', '#8b5cf6', '#38bdf8'];
+      bgNodes = Array.from({ length: count }, () => ({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.75,
+        vy: (Math.random() - 0.5) * 0.75,
+        r: Math.random() * 2.2 + 1,
+        color: palette[Math.floor(Math.random() * palette.length)],
+        pulse: Math.random() * Math.PI * 2
+      }));
+    }
+
+    window.addEventListener('resize', resizeCanvases);
+    resizeCanvases();
+
+    // Mouse tracking for spotlight, 3D tilt, and cursor trail sparks
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+      mouse.active = true;
+
+      // Update glass card spotlight coordinates
+      document.querySelectorAll('.dark-glass').forEach(card => {
+        const rect = card.getBoundingClientRect();
+        card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+        card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+      });
+
+      // Spawn subtle glowing cursor trail particles
+      if (Math.random() < 0.65) {
+        const colors = ['#a855f7', '#ec4899', '#06b6d4', '#e9d5ff'];
+        trailSparks.push({
+          x: e.clientX + (Math.random() - 0.5) * 8,
+          y: e.clientY + (Math.random() - 0.5) * 8,
+          vx: (Math.random() - 0.5) * 1.4,
+          vy: (Math.random() - 0.5) * 1.4 - 0.4,
+          r: Math.random() * 2.6 + 1,
           color: colors[Math.floor(Math.random() * colors.length)],
-          rot: Math.random() * 360,
-          vRot: (Math.random() - 0.5) * 12,
-          alpha: 1
+          alpha: 0.85
         });
       }
-      requestAnimationFrame(updateConfetti);
-    }
+    });
 
-    function updateConfetti() {
-      cCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-      particles.forEach(p => {
-        p.x += p.vx;
-        p.y += p.vy;
-        p.vy += 0.32;
-        p.rot += p.vRot;
-        p.alpha -= 0.012;
-
-        cCtx.save();
-        cCtx.globalAlpha = Math.max(0, p.alpha);
-        cCtx.translate(p.x, p.y);
-        cCtx.rotate((p.rot * Math.PI) / 180);
-        cCtx.fillStyle = p.color;
-        cCtx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.65);
-        cCtx.restore();
-      });
-      particles = particles.filter(p => p.alpha > 0 && p.y < confettiCanvas.height + 40);
-      if (particles.length > 0) {
-        requestAnimationFrame(updateConfetti);
+    function spawnBurst(x, y, colors, count = 60) {
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 11 + 2.5;
+        burstParticles.push({
+          x,
+          y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 1.5,
+          size: Math.random() * 5.5 + 2.5,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          alpha: 1,
+          decay: Math.random() * 0.016 + 0.012,
+          gravity: 0.18,
+          rot: Math.random() * Math.PI * 2,
+          vRot: (Math.random() - 0.5) * 0.2
+        });
       }
     }
+
+    function spawnShockwave(x, y, color = '#a855f7', maxR = 190) {
+      shockwaves.push({
+        x,
+        y,
+        r: 8,
+        maxR,
+        color,
+        alpha: 0.9
+      });
+    }
+
+    function animateLoops() {
+      // 1. Render Neural Constellation Background
+      bgCtx.clearRect(0, 0, W, H);
+
+      for (let i = 0; i < bgNodes.length; i++) {
+        const n = bgNodes[i];
+        n.x += n.vx;
+        n.y += n.vy;
+        n.pulse += 0.03;
+
+        if (n.x < 0 || n.x > W) n.vx *= -1;
+        if (n.y < 0 || n.y > H) n.vy *= -1;
+
+        // Gentle mouse interaction
+        const dxM = mouse.x - n.x;
+        const dyM = mouse.y - n.y;
+        const distM = Math.hypot(dxM, dyM);
+        if (distM < 170) {
+          bgCtx.beginPath();
+          bgCtx.moveTo(n.x, n.y);
+          bgCtx.lineTo(mouse.x, mouse.y);
+          bgCtx.strokeStyle = `rgba(168, 85, 247, ${(1 - distM / 170) * 0.35})`;
+          bgCtx.lineWidth = 1;
+          bgCtx.stroke();
+        }
+
+        // Connect nearby nodes
+        for (let j = i + 1; j < bgNodes.length; j++) {
+          const n2 = bgNodes[j];
+          const dx = n.x - n2.x;
+          const dy = n.y - n2.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 130) {
+            bgCtx.beginPath();
+            bgCtx.moveTo(n.x, n.y);
+            bgCtx.lineTo(n2.x, n2.y);
+            bgCtx.strokeStyle = `rgba(148, 163, 184, ${(1 - dist / 130) * 0.14})`;
+            bgCtx.lineWidth = 0.8;
+            bgCtx.stroke();
+          }
+        }
+
+        // Draw glowing node
+        const glowRadius = n.r + Math.sin(n.pulse) * 0.6;
+        bgCtx.beginPath();
+        bgCtx.arc(n.x, n.y, Math.max(0.8, glowRadius), 0, Math.PI * 2);
+        bgCtx.fillStyle = n.color;
+        bgCtx.shadowBlur = 12;
+        bgCtx.shadowColor = n.color;
+        bgCtx.fill();
+        bgCtx.shadowBlur = 0;
+      }
+
+      // 2. Render Foreground FX (Cursor Trail, Shockwaves, Burst Particles)
+      fxCtx.clearRect(0, 0, W, H);
+
+      // Trail sparks
+      for (let i = trailSparks.length - 1; i >= 0; i--) {
+        const s = trailSparks[i];
+        s.x += s.vx;
+        s.y += s.vy;
+        s.alpha -= 0.032;
+        if (s.alpha <= 0) {
+          trailSparks.splice(i, 1);
+          continue;
+        }
+        fxCtx.save();
+        fxCtx.globalAlpha = s.alpha;
+        fxCtx.beginPath();
+        fxCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        fxCtx.fillStyle = s.color;
+        fxCtx.shadowBlur = 10;
+        fxCtx.shadowColor = s.color;
+        fxCtx.fill();
+        fxCtx.restore();
+      }
+
+      // Shockwaves
+      for (let i = shockwaves.length - 1; i >= 0; i--) {
+        const sw = shockwaves[i];
+        sw.r += (sw.maxR - sw.r) * 0.14;
+        sw.alpha -= 0.032;
+        if (sw.alpha <= 0.01) {
+          shockwaves.splice(i, 1);
+          continue;
+        }
+        fxCtx.save();
+        fxCtx.globalAlpha = sw.alpha;
+        fxCtx.beginPath();
+        fxCtx.arc(sw.x, sw.y, sw.r, 0, Math.PI * 2);
+        fxCtx.strokeStyle = sw.color;
+        fxCtx.lineWidth = 2.5;
+        fxCtx.shadowBlur = 18;
+        fxCtx.shadowColor = sw.color;
+        fxCtx.stroke();
+        fxCtx.restore();
+      }
+
+      // Burst Particles
+      for (let i = burstParticles.length - 1; i >= 0; i--) {
+        const p = burstParticles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += p.gravity;
+        p.vx *= 0.985;
+        p.rot += p.vRot;
+        p.alpha -= p.decay;
+
+        if (p.alpha <= 0) {
+          burstParticles.splice(i, 1);
+          continue;
+        }
+
+        fxCtx.save();
+        fxCtx.globalAlpha = p.alpha;
+        fxCtx.translate(p.x, p.y);
+        fxCtx.rotate(p.rot);
+        fxCtx.fillStyle = p.color;
+        fxCtx.shadowBlur = 14;
+        fxCtx.shadowColor = p.color;
+        fxCtx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+        fxCtx.restore();
+      }
+
+      requestAnimationFrame(animateLoops);
+    }
+
+    requestAnimationFrame(animateLoops);
   </script>
 </body>
 </html>
